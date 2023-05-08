@@ -60,16 +60,28 @@ namespace ProgrammerTools
             this.label13 = new System.Windows.Forms.Label();
             this.tbRepositoryGenaric = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tbServiceProjName = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.tbServiceInterfaceFolderName = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.tbServiceDTOFolderName = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
+            this.tbServiceDTOFolderName = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tbServiceInterfaceFolderName = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tbServiceProjName = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbSelectedPath
@@ -103,14 +115,14 @@ namespace ProgrammerTools
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(25, 142);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(206, 342);
+            this.listBox1.Size = new System.Drawing.Size(206, 329);
             this.listBox1.TabIndex = 3;
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(166, 505);
+            this.btnRemove.Location = new System.Drawing.Point(145, 486);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(64, 20);
+            this.btnRemove.Size = new System.Drawing.Size(86, 20);
             this.btnRemove.TabIndex = 2;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -137,7 +149,7 @@ namespace ProgrammerTools
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(933, 476);
+            this.btnCreate.Location = new System.Drawing.Point(757, 438);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(98, 49);
             this.btnCreate.TabIndex = 2;
@@ -147,7 +159,7 @@ namespace ProgrammerTools
             // 
             // tbRepoNameSpace
             // 
-            this.tbRepoNameSpace.Location = new System.Drawing.Point(274, 288);
+            this.tbRepoNameSpace.Location = new System.Drawing.Point(6, 33);
             this.tbRepoNameSpace.Name = "tbRepoNameSpace";
             this.tbRepoNameSpace.Size = new System.Drawing.Size(259, 20);
             this.tbRepoNameSpace.TabIndex = 0;
@@ -156,7 +168,7 @@ namespace ProgrammerTools
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(274, 271);
+            this.label4.Location = new System.Drawing.Point(6, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(211, 13);
             this.label4.TabIndex = 1;
@@ -164,7 +176,7 @@ namespace ProgrammerTools
             // 
             // tbDomainModels
             // 
-            this.tbDomainModels.Location = new System.Drawing.Point(274, 404);
+            this.tbDomainModels.Location = new System.Drawing.Point(6, 36);
             this.tbDomainModels.Name = "tbDomainModels";
             this.tbDomainModels.Size = new System.Drawing.Size(259, 20);
             this.tbDomainModels.TabIndex = 0;
@@ -173,7 +185,7 @@ namespace ProgrammerTools
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(274, 388);
+            this.label5.Location = new System.Drawing.Point(6, 20);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(149, 13);
             this.label5.TabIndex = 1;
@@ -181,7 +193,7 @@ namespace ProgrammerTools
             // 
             // tbDomainInterface
             // 
-            this.tbDomainInterface.Location = new System.Drawing.Point(274, 329);
+            this.tbDomainInterface.Location = new System.Drawing.Point(6, 74);
             this.tbDomainInterface.Name = "tbDomainInterface";
             this.tbDomainInterface.Size = new System.Drawing.Size(259, 20);
             this.tbDomainInterface.TabIndex = 0;
@@ -190,7 +202,7 @@ namespace ProgrammerTools
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(274, 312);
+            this.label6.Location = new System.Drawing.Point(6, 57);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(203, 13);
             this.label6.TabIndex = 1;
@@ -198,7 +210,7 @@ namespace ProgrammerTools
             // 
             // tbDbContext
             // 
-            this.tbDbContext.Location = new System.Drawing.Point(274, 176);
+            this.tbDbContext.Location = new System.Drawing.Point(9, 82);
             this.tbDbContext.Name = "tbDbContext";
             this.tbDbContext.Size = new System.Drawing.Size(259, 20);
             this.tbDbContext.TabIndex = 0;
@@ -207,7 +219,7 @@ namespace ProgrammerTools
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(274, 159);
+            this.label7.Location = new System.Drawing.Point(9, 65);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(116, 13);
             this.label7.TabIndex = 1;
@@ -215,7 +227,7 @@ namespace ProgrammerTools
             // 
             // tbDbContextNameSpace
             // 
-            this.tbDbContextNameSpace.Location = new System.Drawing.Point(274, 135);
+            this.tbDbContextNameSpace.Location = new System.Drawing.Point(9, 41);
             this.tbDbContextNameSpace.Name = "tbDbContextNameSpace";
             this.tbDbContextNameSpace.Size = new System.Drawing.Size(259, 20);
             this.tbDbContextNameSpace.TabIndex = 0;
@@ -224,7 +236,7 @@ namespace ProgrammerTools
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(271, 118);
+            this.label8.Location = new System.Drawing.Point(6, 24);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(122, 13);
             this.label8.TabIndex = 1;
@@ -233,7 +245,7 @@ namespace ProgrammerTools
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(932, 528);
+            this.label9.Location = new System.Drawing.Point(756, 490);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(99, 13);
             this.label9.TabIndex = 4;
@@ -277,9 +289,9 @@ namespace ProgrammerTools
             // 
             // btnRemoveAll
             // 
-            this.btnRemoveAll.Location = new System.Drawing.Point(25, 505);
+            this.btnRemoveAll.Location = new System.Drawing.Point(28, 486);
             this.btnRemoveAll.Name = "btnRemoveAll";
-            this.btnRemoveAll.Size = new System.Drawing.Size(74, 20);
+            this.btnRemoveAll.Size = new System.Drawing.Size(87, 20);
             this.btnRemoveAll.TabIndex = 2;
             this.btnRemoveAll.Text = "Remove All";
             this.btnRemoveAll.UseVisualStyleBackColor = true;
@@ -297,7 +309,7 @@ namespace ProgrammerTools
             // 
             // tbdbContextInstance
             // 
-            this.tbdbContextInstance.Location = new System.Drawing.Point(274, 217);
+            this.tbdbContextInstance.Location = new System.Drawing.Point(9, 123);
             this.tbdbContextInstance.Name = "tbdbContextInstance";
             this.tbdbContextInstance.Size = new System.Drawing.Size(259, 20);
             this.tbdbContextInstance.TabIndex = 0;
@@ -306,7 +318,7 @@ namespace ProgrammerTools
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(274, 200);
+            this.label13.Location = new System.Drawing.Point(9, 106);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(132, 13);
             this.label13.TabIndex = 1;
@@ -314,7 +326,7 @@ namespace ProgrammerTools
             // 
             // tbRepositoryGenaric
             // 
-            this.tbRepositoryGenaric.Location = new System.Drawing.Point(274, 447);
+            this.tbRepositoryGenaric.Location = new System.Drawing.Point(6, 79);
             this.tbRepositoryGenaric.Name = "tbRepositoryGenaric";
             this.tbRepositoryGenaric.Size = new System.Drawing.Size(259, 20);
             this.tbRepositoryGenaric.TabIndex = 0;
@@ -323,29 +335,11 @@ namespace ProgrammerTools
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(274, 431);
+            this.label3.Location = new System.Drawing.Point(6, 63);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(233, 13);
             this.label3.TabIndex = 1;
             this.label3.Text = "Genaric Repository Name Space [Infrastructure]";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(271, 240);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(271, 13);
-            this.label15.TabIndex = 7;
-            this.label15.Text = "____________________________________________";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(268, 353);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(271, 13);
-            this.label16.TabIndex = 7;
-            this.label16.Text = "____________________________________________";
             // 
             // groupBox1
             // 
@@ -355,54 +349,12 @@ namespace ProgrammerTools
             this.groupBox1.Controls.Add(this.tbServiceInterfaceFolderName);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.tbServiceProjName);
-            this.groupBox1.Location = new System.Drawing.Point(561, 98);
+            this.groupBox1.Location = new System.Drawing.Point(575, 118);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(289, 166);
+            this.groupBox1.Size = new System.Drawing.Size(280, 153);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Services";
-            // 
-            // tbServiceProjName
-            // 
-            this.tbServiceProjName.Location = new System.Drawing.Point(9, 41);
-            this.tbServiceProjName.Name = "tbServiceProjName";
-            this.tbServiceProjName.Size = new System.Drawing.Size(259, 20);
-            this.tbServiceProjName.TabIndex = 0;
-            this.tbServiceProjName.Text = "TransPro.Service";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 24);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(110, 13);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "Service Project Name";
-            // 
-            // tbServiceInterfaceFolderName
-            // 
-            this.tbServiceInterfaceFolderName.Location = new System.Drawing.Point(9, 81);
-            this.tbServiceInterfaceFolderName.Name = "tbServiceInterfaceFolderName";
-            this.tbServiceInterfaceFolderName.Size = new System.Drawing.Size(259, 20);
-            this.tbServiceInterfaceFolderName.TabIndex = 0;
-            this.tbServiceInterfaceFolderName.Text = "Interfaces";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 64);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(156, 13);
-            this.label17.TabIndex = 1;
-            this.label17.Text = "Service Interfaces Folder Name";
-            // 
-            // tbServiceDTOFolderName
-            // 
-            this.tbServiceDTOFolderName.Location = new System.Drawing.Point(9, 121);
-            this.tbServiceDTOFolderName.Name = "tbServiceDTOFolderName";
-            this.tbServiceDTOFolderName.Size = new System.Drawing.Size(259, 20);
-            this.tbServiceDTOFolderName.TabIndex = 0;
-            this.tbServiceDTOFolderName.Text = "DTO";
             // 
             // label18
             // 
@@ -413,14 +365,165 @@ namespace ProgrammerTools
             this.label18.TabIndex = 1;
             this.label18.Text = "DTO Folder Name";
             // 
+            // tbServiceDTOFolderName
+            // 
+            this.tbServiceDTOFolderName.Location = new System.Drawing.Point(9, 121);
+            this.tbServiceDTOFolderName.Name = "tbServiceDTOFolderName";
+            this.tbServiceDTOFolderName.Size = new System.Drawing.Size(259, 20);
+            this.tbServiceDTOFolderName.TabIndex = 0;
+            this.tbServiceDTOFolderName.Text = "DTO";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 64);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(156, 13);
+            this.label17.TabIndex = 1;
+            this.label17.Text = "Service Interfaces Folder Name";
+            // 
+            // tbServiceInterfaceFolderName
+            // 
+            this.tbServiceInterfaceFolderName.Location = new System.Drawing.Point(9, 81);
+            this.tbServiceInterfaceFolderName.Name = "tbServiceInterfaceFolderName";
+            this.tbServiceInterfaceFolderName.Size = new System.Drawing.Size(259, 20);
+            this.tbServiceInterfaceFolderName.TabIndex = 0;
+            this.tbServiceInterfaceFolderName.Text = "Interfaces";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 24);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(110, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Service Project Name";
+            // 
+            // tbServiceProjName
+            // 
+            this.tbServiceProjName.Location = new System.Drawing.Point(9, 41);
+            this.tbServiceProjName.Name = "tbServiceProjName";
+            this.tbServiceProjName.Size = new System.Drawing.Size(259, 20);
+            this.tbServiceProjName.TabIndex = 0;
+            this.tbServiceProjName.Text = "TransPro.Service";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.tbDbContext);
+            this.groupBox2.Controls.Add(this.tbdbContextInstance);
+            this.groupBox2.Controls.Add(this.tbDbContextNameSpace);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Location = new System.Drawing.Point(274, 118);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(280, 153);
+            this.groupBox2.TabIndex = 9;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "DB Context";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.tbRepoNameSpace);
+            this.groupBox3.Controls.Add(this.tbDomainInterface);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Location = new System.Drawing.Point(274, 277);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(280, 105);
+            this.groupBox3.TabIndex = 10;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Repositories";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.tbDomainModels);
+            this.groupBox4.Controls.Add(this.tbRepositoryGenaric);
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Location = new System.Drawing.Point(274, 388);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(280, 115);
+            this.groupBox4.TabIndex = 11;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Entities && Infrastructure";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label15);
+            this.groupBox5.Controls.Add(this.textBox1);
+            this.groupBox5.Controls.Add(this.label16);
+            this.groupBox5.Controls.Add(this.textBox2);
+            this.groupBox5.Controls.Add(this.label19);
+            this.groupBox5.Controls.Add(this.textBox3);
+            this.groupBox5.Location = new System.Drawing.Point(575, 277);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(280, 153);
+            this.groupBox5.TabIndex = 8;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Controllers";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 104);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(93, 13);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "DTO Folder Name";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(9, 121);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(259, 20);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "DTO";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 64);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(156, 13);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "Service Interfaces Folder Name";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(9, 81);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(259, 20);
+            this.textBox2.TabIndex = 0;
+            this.textBox2.Text = "Interfaces";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 24);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(110, 13);
+            this.label19.TabIndex = 1;
+            this.label19.Text = "Service Project Name";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(9, 41);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(259, 20);
+            this.textBox3.TabIndex = 0;
+            this.textBox3.Text = "TransPro.Service";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 558);
+            this.ClientSize = new System.Drawing.Size(869, 545);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.label15);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.listBox1);
@@ -430,24 +533,10 @@ namespace ProgrammerTools
             this.Controls.Add(this.btnAddNewModel);
             this.Controls.Add(this.btnSelectRepoPath);
             this.Controls.Add(this.btnSelectModels);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.tbRepositoryGenaric);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.tbDbContextNameSpace);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.tbdbContextInstance);
-            this.Controls.Add(this.tbDbContext);
-            this.Controls.Add(this.tbDomainInterface);
-            this.Controls.Add(this.tbDomainModels);
-            this.Controls.Add(this.tbRepoNameSpace);
             this.Controls.Add(this.tbModelName);
             this.Controls.Add(this.tbSelectedPath);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -456,6 +545,14 @@ namespace ProgrammerTools
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -492,8 +589,6 @@ namespace ProgrammerTools
         private Label label13;
         private TextBox tbRepositoryGenaric;
         private Label label3;
-        private Label label15;
-        private Label label16;
         private GroupBox groupBox1;
         private Label label17;
         private TextBox tbServiceInterfaceFolderName;
@@ -501,5 +596,15 @@ namespace ProgrammerTools
         private TextBox tbServiceProjName;
         private Label label18;
         private TextBox tbServiceDTOFolderName;
+        private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private GroupBox groupBox4;
+        private GroupBox groupBox5;
+        private Label label15;
+        private TextBox textBox1;
+        private Label label16;
+        private TextBox textBox2;
+        private Label label19;
+        private TextBox textBox3;
     }
 }
