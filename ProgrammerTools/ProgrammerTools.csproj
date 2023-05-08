@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BaseModel.cs" />
+    <Compile Include="Branch.cs" />
+    <Compile Include="Company.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

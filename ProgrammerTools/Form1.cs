@@ -8,6 +8,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Reflection.Emit;
 using System.Diagnostics;
 using System.Reflection;
+using System.Xml.Serialization;
+
 
 namespace ProgrammerTools
 {
@@ -90,15 +92,16 @@ namespace ProgrammerTools
         }
         public void CreateRepoFileByName(string modelName, string path)
         {
-            string nameSpace = tbRepoNameSpace.Text;
-            string RepositoryData = "using " + tbDbContextNameSpace.Text + "; \n" +
+            string nameSpace = tbDomainInterface.Text;
+            string RepositoryData = "using Microsoft.EntityFrameworkCore; \n" +
+            "using " + tbRepoNameSpace.Text + "; \n" +
             "using " + tbDomainModels.Text + "; \n" +
-            "using " + tbDomainInterface.Text + "; \n" +
+            "using " + tbRepositoryGenaric.Text + "; \n" +
             "namespace " + nameSpace + "\n" +
             "{" + "\n" +
-               "    public class " + modelName + "Repository : GenericRepository<" + modelName + ">, I" + modelName + "Repository" + "\n" +
+               "    public class " + modelName + "Repository : Repository<" + modelName + ">, I" + modelName + "Repository" + "\n" +
                 "    {" + "\n" +
-                   "        public " + modelName + "Repository(" + tbDbContext.Text + " " + tbdbContextInstance.Text + " ) : base(" + tbdbContextInstance.Text + ") \n" +
+                   "        public " + modelName + "Repository(" + "DbContext" + " " + tbdbContextInstance.Text + " ) : base(" + tbdbContextInstance.Text + ") \n" +
                     "        {" + "\n" +
                     "        }" + "\n" +
                 "    }" + "\n" +
@@ -114,14 +117,41 @@ namespace ProgrammerTools
         public void CreateIRepoFileByName(string modelName, string path)
         {
             string RepositoryData = "using " + tbDomainModels.Text + "; \n" +
-            "namespace " + tbDomainInterface.Text + "\n" +
+            "using " + tbRepositoryGenaric.Text + "; \n" +
+            "namespace " + tbRepoNameSpace.Text + "\n" +
             "{" + "\n" +
-               "    public interface I" + modelName + "Repository : IGenericRepository<" + modelName + "> \n" +
+               "    public interface I" + modelName + "Repository : IRepository<" + modelName + "> \n" +
                 "    {" + "\n" +
                 "    }" + "\n" +
             "}";
 
 
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\I" + modelName + "Repository.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(RepositoryData);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void CreateServiceIRepoFileByName(string modelName, string path)
+        {
+            string modelNameDTO = modelName + "DTO";
+            string RepositoryData = "using System; \n " +
+            "using System.Collections.Generic; \n" +
+            "using System.Threading.Tasks; \n" +
+            "using " + tbServiceDTOFolderName.Text + "; \n" +
+            "namespace " + tbServiceInterfaceFolderName.Text + "\n" +
+            "{" + "\n" +
+               "    public interface I" + modelName + "Service \n" +
+                "    {" + "\n" +
+                "        Task<" + modelNameDTO + "> Get" + modelName + "ByID(Guid ID); \n" +
+                "        Task<IEnumerable<" + modelNameDTO + ">> GetAll" + modelName + "(D); \n" +
+
+                "    }" + "\n" +
+            "}";
+
+            
             // Create the file, or overwrite if the file exists. 
             using (FileStream fs = File.Create(path + "\\I" + modelName + "Repository.cs"))
             {
@@ -173,35 +203,43 @@ namespace ProgrammerTools
         {
             if (!check())
                 return;
+
             sFileNames = new List<string>();
             GetFileNames();
             string SelectedPath = tbSelectedPath.Text;
 
             string pathOfRepo = SelectedPath + "\\" + "Repository";
-            if (!System.IO.Directory.Exists(pathOfRepo))
-                System.IO.Directory.CreateDirectory(pathOfRepo);
-
-            //create Repository
-            foreach (var modelName in sFileNames)
-            {
-                CreateRepoFileByName(modelName, pathOfRepo);
-            }
-
+            if (!System.IO.Directory.Exists(pathOfRepo)) System.IO.Directory.CreateDirectory(pathOfRepo);
             string pathOfIRepo = SelectedPath + "\\" + "IRepository";
-            if (!System.IO.Directory.Exists(pathOfIRepo))
-                System.IO.Directory.CreateDirectory(pathOfIRepo);
-            //create IRepository
-            foreach (var modelName in sFileNames)
-            {
-                CreateIRepoFileByName(modelName, pathOfIRepo);
-            }
+            if (!System.IO.Directory.Exists(pathOfIRepo)) System.IO.Directory.CreateDirectory(pathOfIRepo);
+
+
+            CreateRepositoryGroup(sFileNames, pathOfRepo);
+            CreateIRepositoryGroup(sFileNames, pathOfIRepo);
             CreateUnitOfWork(sFileNames, SelectedPath);
             CreateIUnitOfWork(sFileNames, SelectedPath);
             CreateAppDbContext(sFileNames, SelectedPath);
+
             CreateConfigFIle(SelectedPath);
+
             MessageBox.Show("All Done Well");
             Process.Start("explorer.exe", SelectedPath);
 
+        }
+
+        private void CreateRepositoryGroup(List<string> sFilesNames, string path)
+        {
+            //create IRepository
+            foreach (var modelName in sFileNames)
+            { CreateRepoFileByName(modelName, path); }
+        }
+        private void CreateIRepositoryGroup(List<string> sFilesNames, string path)
+        {
+            //create IRepository
+            foreach (var modelName in sFileNames)
+            {
+                CreateIRepoFileByName(modelName, path);
+            }
         }
         private void ReadConfiguration(string path)
         {
@@ -228,9 +266,9 @@ namespace ProgrammerTools
                 tbdbContextInstance.Text = keyValuePairs["dbContextInstanceName"] != null ? keyValuePairs["dbContextInstanceName"] : "";
             }
             catch (Exception ex)
-            { 
+            {
             }
-           
+
         }
         private void CreateConfigFIle(string SelectedOutPut)
         {
@@ -263,7 +301,7 @@ namespace ProgrammerTools
 
             foreach (var modelName in sFilesNames)
             {
-                RepositoryData += "        public DbSet<" + modelName + "> " + modelName + "s { set; get; }  \n";
+                RepositoryData += "        public virtual DbSet<" + modelName + "> " + modelName + "s { set; get; }  \n";
             }
             RepositoryData += "// End ApplicationDbContext \n";
 
@@ -285,14 +323,14 @@ namespace ProgrammerTools
             string RepositoryData = "//UnitOfWork Start Constractor() part \n";
             foreach (var modelName in sFilesNames)
             {
-                RepositoryData += modelName + "s = new " + modelName + "Repository(" + tbdbContextInstance.Text + "); \n";
+                RepositoryData += modelName + "Repository" + " = new " + modelName + "Repository(" + tbdbContextInstance.Text + "); \n";
             }
             RepositoryData += "// End Constractor part \n \n";
             RepositoryData += "// strat Content \n";
 
             foreach (var modelName in sFilesNames)
             {
-                RepositoryData += "public I" + modelName + "Repository " + modelName + "s { get; private set; }  \n";
+                RepositoryData += "public I" + modelName + "Repository " + modelName + "Repository" + " { get; private set; }  \n";
             }
             RepositoryData += "// End Content \n";
 
@@ -315,7 +353,7 @@ namespace ProgrammerTools
 
             foreach (var modelName in sFilesNames)
             {
-                RepositoryData += "        I" + modelName + "Repository " + modelName + "s { get; }  \n";
+                RepositoryData += "        I" + modelName + "Repository " + modelName + "Repository" + " { get; }  \n";
             }
             RepositoryData += "// End IUniteOfWork \n";
 
