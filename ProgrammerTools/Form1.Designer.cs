@@ -78,6 +78,8 @@ namespace ProgrammerTools
             this.label19 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
@@ -85,10 +87,8 @@ namespace ProgrammerTools
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
-            this.label20 = new System.Windows.Forms.Label();
             this.btnCustom = new System.Windows.Forms.Button();
+            this.label20 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -546,6 +546,26 @@ namespace ProgrammerTools
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Generate";
             // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(37, 204);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(122, 17);
+            this.checkBox9.TabIndex = 0;
+            this.checkBox9.Text = "Map DTO to Models";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(37, 181);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(75, 17);
+            this.checkBox8.TabIndex = 0;
+            this.checkBox8.Text = "Controllers";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
@@ -616,25 +636,16 @@ namespace ProgrammerTools
             this.checkBox1.Text = "All";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
+            // btnCustom
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(37, 181);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(75, 17);
-            this.checkBox8.TabIndex = 0;
-            this.checkBox8.Text = "Controllers";
-            this.checkBox8.UseVisualStyleBackColor = true;
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(37, 204);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(122, 17);
-            this.checkBox9.TabIndex = 0;
-            this.checkBox9.Text = "Map DTO to Models";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.btnCustom.Enabled = false;
+            this.btnCustom.Location = new System.Drawing.Point(86, 296);
+            this.btnCustom.Name = "btnCustom";
+            this.btnCustom.Size = new System.Drawing.Size(85, 26);
+            this.btnCustom.TabIndex = 2;
+            this.btnCustom.Text = "Custom";
+            this.btnCustom.UseVisualStyleBackColor = true;
+            this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
             // 
             // label20
             // 
@@ -644,16 +655,6 @@ namespace ProgrammerTools
             this.label20.Size = new System.Drawing.Size(157, 13);
             this.label20.TabIndex = 1;
             this.label20.Text = "save your time , save your effort";
-            // 
-            // btnCustom
-            // 
-            this.btnCustom.Location = new System.Drawing.Point(86, 296);
-            this.btnCustom.Name = "btnCustom";
-            this.btnCustom.Size = new System.Drawing.Size(85, 26);
-            this.btnCustom.TabIndex = 2;
-            this.btnCustom.Text = "Custom";
-            this.btnCustom.UseVisualStyleBackColor = true;
-            this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
             // 
             // Form1
             // 
