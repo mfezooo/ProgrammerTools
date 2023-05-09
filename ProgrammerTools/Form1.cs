@@ -93,7 +93,8 @@ namespace ProgrammerTools
         public void CreateRepoFileByName(string modelName, string path)
         {
             string nameSpace = tbDomainInterface.Text;
-            string RepositoryData = "using Microsoft.EntityFrameworkCore; \n" +
+            string RepositoryData = 
+            "using Microsoft.EntityFrameworkCore; \n" +
             "using " + tbRepoNameSpace.Text + "; \n" +
             "using " + tbDomainModels.Text + "; \n" +
             "using " + tbRepositoryGenaric.Text + "; \n" +
@@ -116,12 +117,14 @@ namespace ProgrammerTools
         }
         public void CreateIRepoFileByName(string modelName, string path)
         {
-            string RepositoryData = "using " + tbDomainModels.Text + "; \n" +
+            string RepositoryData =
+            "using " + tbDomainModels.Text + "; \n" +
             "using " + tbRepositoryGenaric.Text + "; \n" +
             "namespace " + tbRepoNameSpace.Text + "\n" +
             "{" + "\n" +
                "    public interface I" + modelName + "Repository : IRepository<" + modelName + "> \n" +
                 "    {" + "\n" +
+                " " +
                 "    }" + "\n" +
             "}";
 
@@ -151,7 +154,7 @@ namespace ProgrammerTools
                 "    }" + "\n" +
             "}";
 
-            
+
             // Create the file, or overwrite if the file exists. 
             using (FileStream fs = File.Create(path + "\\I" + modelName + "Repository.cs"))
             {
@@ -212,7 +215,6 @@ namespace ProgrammerTools
             if (!System.IO.Directory.Exists(pathOfRepo)) System.IO.Directory.CreateDirectory(pathOfRepo);
             string pathOfIRepo = SelectedPath + "\\" + "IRepository";
             if (!System.IO.Directory.Exists(pathOfIRepo)) System.IO.Directory.CreateDirectory(pathOfIRepo);
-
 
             CreateRepositoryGroup(sFileNames, pathOfRepo);
             CreateIRepositoryGroup(sFileNames, pathOfIRepo);
@@ -370,6 +372,7 @@ namespace ProgrammerTools
                 fs.Write(info, 0, info.Length);
             }
         }
+
         private void btnAddNewModel_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(tbModelName.Text))
@@ -401,6 +404,12 @@ namespace ProgrammerTools
                 ReadConfiguration(configPath);
 
             }
+        }
+
+        private void btnCustom_Click(object sender, EventArgs e)
+        {
+            FrmCustom frmCustom = new FrmCustom();
+            frmCustom.ShowDialog();
         }
     }
 }
