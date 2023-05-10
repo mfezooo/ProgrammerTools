@@ -240,10 +240,11 @@ namespace ProgrammerTools
                 CreateIUnitOfWork(sFileNames, SelectedPath);
             if (cbCustomFile.Checked)
                 CreateCustomFileGroup(sFileNames, SelectedPath);
+                
+            CreateAppDbContext(sFileNames, SelectedPath);
+
+
             if (cbSaveConfig.Checked)
-                CreateAppDbContext(sFileNames, SelectedPath);
-
-
             CreateConfigFIle(SelectedPath);
 
             MessageBox.Show("All Done Well");
@@ -337,10 +338,13 @@ namespace ProgrammerTools
         private void CreateAppDbContext(List<string> sFilesNames, string path)
         {
             string RepositoryData = "// Start ApplicationDbContext \n";
-
+          
             foreach (var modelName in sFilesNames)
             {
-                RepositoryData += "        public virtual DbSet<" + modelName + "> " + modelName + "s { set; get; }  \n";
+                char lastCharacter = modelName[modelName.Length - 1];
+                string s = lastCharacter == 'y' ? "ies" : "s";
+                string modelNamePlural = modelName.Remove(modelName.Length - 1)+ s;
+                RepositoryData += "        public virtual DbSet<" + modelName + "> " + modelNamePlural + " { set; get; }  \n";
             }
             RepositoryData += "// End ApplicationDbContext \n";
 

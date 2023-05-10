@@ -103,7 +103,7 @@ namespace ProgrammerTools
             // 
             this.tbSelectedPath.Location = new System.Drawing.Point(271, 79);
             this.tbSelectedPath.Name = "tbSelectedPath";
-            this.tbSelectedPath.Size = new System.Drawing.Size(188, 20);
+            this.tbSelectedPath.Size = new System.Drawing.Size(200, 20);
             this.tbSelectedPath.TabIndex = 0;
             // 
             // label1
@@ -154,7 +154,7 @@ namespace ProgrammerTools
             // 
             // btnSelectRepoPath
             // 
-            this.btnSelectRepoPath.Location = new System.Drawing.Point(465, 80);
+            this.btnSelectRepoPath.Location = new System.Drawing.Point(477, 80);
             this.btnSelectRepoPath.Name = "btnSelectRepoPath";
             this.btnSelectRepoPath.Size = new System.Drawing.Size(77, 20);
             this.btnSelectRepoPath.TabIndex = 2;
@@ -552,7 +552,7 @@ namespace ProgrammerTools
             // cbCustomFile
             // 
             this.cbCustomFile.AutoSize = true;
-            this.cbCustomFile.Location = new System.Drawing.Point(37, 228);
+            this.cbCustomFile.Location = new System.Drawing.Point(37, 227);
             this.cbCustomFile.Name = "cbCustomFile";
             this.cbCustomFile.Size = new System.Drawing.Size(80, 17);
             this.cbCustomFile.TabIndex = 0;
@@ -664,11 +664,11 @@ namespace ProgrammerTools
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(24, 30);
+            this.label20.Location = new System.Drawing.Point(39, 30);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(157, 13);
+            this.label20.Size = new System.Drawing.Size(154, 13);
             this.label20.TabIndex = 1;
-            this.label20.Text = "save your time , save your effort";
+            this.label20.Text = "save your time, save your effort";
             // 
             // cbSaveConfig
             // 
