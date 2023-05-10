@@ -117,4 +117,110 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>$(function () {
+    var tbl = '';
+    var stitle = "{0}";
+    var controllerName = '/{0}/';
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        getAll();
+    }
+
+    $(document).on('click', ".btnDelete", function () {
+        let sid = $(this).attr('sid');
+        runSwal(deleteItem, sid, 'Submit your Delete', '');
+    });
+
+
+    frmCreate.onsubmit = async (e) =&gt; {
+        e.preventDefault();
+
+        let response = await fetch(`${controllerName}` + "Create", {
+            method: 'POST',
+            body: new FormData(frmCreate)
+        });
+
+        let result = await response.json();
+        if (result.isSuccess) {
+            tbl = "";
+            result.obj.forEach(drawTbl);
+            $("#tbl").empty();
+            $("#tbl").append(tbl);
+        }
+        // alert(result.message);
+    }
+
+    function drawTbl(item, index) {
+        tbl += ` &lt;tr&gt;
+            &lt;td&gt;${index + 1}&lt;/td&gt;
+            &lt;td&gt;${item.name}&lt;/td&gt;
+            &lt;td&gt;${item.description}&lt;/td&gt;
+            &lt;td class="text-nowrap"&gt;${new Date(item.createdTime).toISOString().split('T')[0]}&lt;/td&gt;            
+            &lt;td&gt;
+            &lt;div class="btn-group btn-group-md text-nowrap" role="group" aria-label="Basic example"&gt;
+                &lt;a class="btn btn-secondary btnEdit" sid ="${item.id}" href="#"&gt; Edit &lt;/a&gt;
+                &lt;a class="btn btn-secondary btnDelete" href="#" sid ="${item.id}"&gt; Delete &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;`
+    }
+
+    function getAll() {
+        $.get(`${controllerName}` + "GetAll", null,
+            function (response) {
+                tbl = "";
+                response.forEach(drawTbl);
+                $("#tbl").empty();
+                $("#tbl").append(tbl);
+            }).fail(function (err) {
+                console.log("error " + err.responseText);
+            });
+    }
+    function runSwal(callback, sid, title, inputType) {
+        Swal.fire({
+            title: title,
+            input: inputType,
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Confirm Request',
+            cancelButtonText: 'Close',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: () =&gt; !Swal.isLoading()
+        }).then((result) =&gt; {
+            if (result.isConfirmed) {
+                if (inputType != '') {
+                    callback(sid, result.value);
+                }
+                else {
+                    callback(sid);
+                }
+            }
+        })
+    }
+    function deleteItem(sid) {
+        $.post(`${controllerName}` + "Delete", { id: sid },
+            function (data) {
+                if (data.isSuccess) {
+                    Swal.fire(
+                        'Delete!',
+                        stitle+' deleted successfuly .',
+                        'success')
+                    getAll();
+                }
+                else {
+                    Swal.fire(
+                        'Cancel!',
+                        'Your ' + stitle + ' has Canceltion Error .\n',
+                        'Error')
+                }
+            }).fail(function (err) {
+                console.log("error " + err.responseText);
+            });
+    }
+
+
+});</value>
+  </data>
 </root>

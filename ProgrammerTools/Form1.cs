@@ -93,7 +93,7 @@ namespace ProgrammerTools
         public void CreateRepoFileByName(string modelName, string path)
         {
             string nameSpace = tbDomainInterface.Text;
-            string RepositoryData = 
+            string RepositoryData =
             "using Microsoft.EntityFrameworkCore; \n" +
             "using " + tbRepoNameSpace.Text + "; \n" +
             "using " + tbDomainModels.Text + "; \n" +
@@ -163,41 +163,59 @@ namespace ProgrammerTools
                 fs.Write(info, 0, info.Length);
             }
         }
+        private bool isAnyCheck()
+        {
+            foreach (Control c in gpCheckBoxs.Controls)
+            {
+                if (c is CheckBox)
+                {
+                    CheckBox cb = (CheckBox)c;
+                    if (cb.Checked)
+                        return true;
+                }
+            }
+            return false;
+        }
         bool check()
         {
-            if (string.IsNullOrEmpty(tbSelectedPath.Text))
+            if (!isAnyCheck())
             {
-                MessageBox.Show("select Repostiroy destination");
+                MessageBox.Show("Please check what files you need to create", "Error Message");
                 return false;
             }
             if (string.IsNullOrEmpty(tbSelectedPath.Text))
             {
-                MessageBox.Show("select Repostiroy destination");
+                MessageBox.Show("select output file destination", "Error Message");
                 return false;
             }
             if (string.IsNullOrEmpty(tbRepoNameSpace.Text))
             {
-                MessageBox.Show("select Name Space ");
+                MessageBox.Show("select Name Space ", "Error Message");
                 return false;
             }
             if (string.IsNullOrEmpty(tbDomainModels.Text))
             {
-                MessageBox.Show("select Domain Models ");
+                MessageBox.Show("select Domain Models ", "Error Message");
                 return false;
             }
             if (string.IsNullOrEmpty(tbDomainInterface.Text))
             {
-                MessageBox.Show("select Domain Interface ");
+                MessageBox.Show("select Domain Interface ", "Error Message");
                 return false;
             }
             if (string.IsNullOrEmpty(tbDbContext.Text))
             {
-                MessageBox.Show("select DbContext Name ");
+                MessageBox.Show("select DbContext Name ", "Error Message");
+                return false;
+            }
+            if (cbCustomFile.Checked && string.IsNullOrEmpty(FileContent))
+            {
+                MessageBox.Show("Custom file has no Data. \n please click Custom button and set your data ", "Error Message");
                 return false;
             }
             if (listBox1.Items.Count < 1)
             {
-                MessageBox.Show("select Models");
+                MessageBox.Show("Please select models first or add its names", "Error Message");
                 return false;
             }
             return true;
@@ -211,16 +229,20 @@ namespace ProgrammerTools
             GetFileNames();
             string SelectedPath = tbSelectedPath.Text;
 
-            string pathOfRepo = SelectedPath + "\\" + "Repository";
-            if (!System.IO.Directory.Exists(pathOfRepo)) System.IO.Directory.CreateDirectory(pathOfRepo);
-            string pathOfIRepo = SelectedPath + "\\" + "IRepository";
-            if (!System.IO.Directory.Exists(pathOfIRepo)) System.IO.Directory.CreateDirectory(pathOfIRepo);
 
-            CreateRepositoryGroup(sFileNames, pathOfRepo);
-            CreateIRepositoryGroup(sFileNames, pathOfIRepo);
-            CreateUnitOfWork(sFileNames, SelectedPath);
-            CreateIUnitOfWork(sFileNames, SelectedPath);
-            CreateAppDbContext(sFileNames, SelectedPath);
+            if (cbRepository.Checked)
+                CreateRepositoryGroup(sFileNames, SelectedPath);
+            if (cbIRepository.Checked)
+                CreateIRepositoryGroup(sFileNames, SelectedPath);
+            if (cbUnitOfWork.Checked)
+                CreateUnitOfWork(sFileNames, SelectedPath);
+            if (cbIUnitOfWork.Checked)
+                CreateIUnitOfWork(sFileNames, SelectedPath);
+            if (cbCustomFile.Checked)
+                CreateCustomFileGroup(sFileNames, SelectedPath);
+            if (cbSaveConfig.Checked)
+                CreateAppDbContext(sFileNames, SelectedPath);
+
 
             CreateConfigFIle(SelectedPath);
 
@@ -228,15 +250,30 @@ namespace ProgrammerTools
             Process.Start("explorer.exe", SelectedPath);
 
         }
+        private void CreateCustomFileGroup(List<string> sFilesNames, string path)
+        {
+            path += "\\" + "CustomFiles";
+            if (!System.IO.Directory.Exists(path))
+            { System.IO.Directory.CreateDirectory(path); }
 
+            foreach (var modelName in sFileNames)
+            {
+                CreateCustomFile(modelName, path);
+            }
+
+        }
         private void CreateRepositoryGroup(List<string> sFilesNames, string path)
         {
+            path += "\\" + "Repository";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
             foreach (var modelName in sFileNames)
             { CreateRepoFileByName(modelName, path); }
         }
         private void CreateIRepositoryGroup(List<string> sFilesNames, string path)
         {
+            path += "\\" + "IRepository";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
             foreach (var modelName in sFileNames)
             {
@@ -372,6 +409,20 @@ namespace ProgrammerTools
                 fs.Write(info, 0, info.Length);
             }
         }
+        private void CreateCustomFile(string ModelName, string path)
+        {
+            string contentAfterReplaced = string.Empty;
+            string content = FileContent;
+            string fileNameWithExt = PreFileName + ModelName + AfterFileName + "." + FileExtention;
+            contentAfterReplaced = content.Replace("{0}", ModelName);
+
+            using (FileStream fs = File.Create(path + "\\" + fileNameWithExt))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(contentAfterReplaced);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
 
         private void btnAddNewModel_Click(object sender, EventArgs e)
         {
@@ -405,11 +456,67 @@ namespace ProgrammerTools
 
             }
         }
+        string FileContent;
+        string PreFileName;
+        string AfterFileName;
+        string FileExtention;
 
         private void btnCustom_Click(object sender, EventArgs e)
         {
+
             FrmCustom frmCustom = new FrmCustom();
+            if (!string.IsNullOrEmpty(FileContent))
+            {
+                frmCustom.FileContent = FileContent;
+                frmCustom.PreFileName = PreFileName;
+                frmCustom.AfterFileName = AfterFileName;
+                frmCustom.FileExtention = FileExtention;
+            }
             frmCustom.ShowDialog();
+            if (frmCustom.DialogResult == DialogResult.OK)
+            {
+                FileContent = frmCustom.FileContent;
+                PreFileName = frmCustom.PreFileName;
+                AfterFileName = frmCustom.AfterFileName;
+                FileExtention = frmCustom.FileExtention;
+            }
+        }
+
+        private void cbAll_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void cbAll_CheckStateChanged(object sender, EventArgs e)
+        {
+            checkAll(((CheckBox)sender).Checked);
+
+        }
+        private void checkAll(bool check)
+        {
+            foreach (Control c in gpCheckBoxs.Controls)
+            {
+                if (c is CheckBox)
+                {
+                    CheckBox cb = (CheckBox)c;
+                    cb.Checked = check;
+                }
+            }
+        }
+
+        private void label9_Click_1(object sender, EventArgs e)
+        {
+            MessageBox.Show("By Mohamed Fayez \n Mobile +201023283130", "Contact Information");
+        }
+
+        private void tbModelName_KeyUp(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyCode == Keys.Enter)
+            //{
+            //    btnAddNewModel_Click(sender, e);
+            //}
+
         }
     }
 }

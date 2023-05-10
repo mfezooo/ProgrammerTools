@@ -77,24 +77,26 @@ namespace ProgrammerTools
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.gpCheckBoxs = new System.Windows.Forms.GroupBox();
+            this.cbCustomFile = new System.Windows.Forms.CheckBox();
+            this.cbMapDToToMdel = new System.Windows.Forms.CheckBox();
+            this.cbControllers = new System.Windows.Forms.CheckBox();
+            this.cbDTOs = new System.Windows.Forms.CheckBox();
+            this.cbServices = new System.Windows.Forms.CheckBox();
+            this.cbIUnitOfWork = new System.Windows.Forms.CheckBox();
+            this.cbUnitOfWork = new System.Windows.Forms.CheckBox();
+            this.cbIRepository = new System.Windows.Forms.CheckBox();
+            this.cbRepository = new System.Windows.Forms.CheckBox();
+            this.cbAll = new System.Windows.Forms.CheckBox();
             this.btnCustom = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
+            this.cbSaveConfig = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.groupBox6.SuspendLayout();
+            this.gpCheckBoxs.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbSelectedPath
@@ -258,12 +260,12 @@ namespace ProgrammerTools
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(876, 493);
+            this.label9.Location = new System.Drawing.Point(957, 490);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(99, 13);
             this.label9.TabIndex = 4;
             this.label9.Text = "Developed by Fezo";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
+            this.label9.Click += new System.EventHandler(this.label9_Click_1);
             // 
             // tbModelName
             // 
@@ -527,119 +529,131 @@ namespace ProgrammerTools
             this.textBox3.TabIndex = 0;
             this.textBox3.Text = "TransPro.Service";
             // 
-            // groupBox6
+            // gpCheckBoxs
             // 
-            this.groupBox6.Controls.Add(this.checkBox9);
-            this.groupBox6.Controls.Add(this.checkBox8);
-            this.groupBox6.Controls.Add(this.checkBox7);
-            this.groupBox6.Controls.Add(this.checkBox6);
-            this.groupBox6.Controls.Add(this.checkBox5);
-            this.groupBox6.Controls.Add(this.checkBox4);
-            this.groupBox6.Controls.Add(this.checkBox3);
-            this.groupBox6.Controls.Add(this.checkBox2);
-            this.groupBox6.Controls.Add(this.checkBox1);
-            this.groupBox6.Controls.Add(this.btnCustom);
-            this.groupBox6.Location = new System.Drawing.Point(879, 102);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(177, 328);
-            this.groupBox6.TabIndex = 12;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Generate";
+            this.gpCheckBoxs.Controls.Add(this.cbCustomFile);
+            this.gpCheckBoxs.Controls.Add(this.cbMapDToToMdel);
+            this.gpCheckBoxs.Controls.Add(this.cbControllers);
+            this.gpCheckBoxs.Controls.Add(this.cbDTOs);
+            this.gpCheckBoxs.Controls.Add(this.cbServices);
+            this.gpCheckBoxs.Controls.Add(this.cbIUnitOfWork);
+            this.gpCheckBoxs.Controls.Add(this.cbUnitOfWork);
+            this.gpCheckBoxs.Controls.Add(this.cbIRepository);
+            this.gpCheckBoxs.Controls.Add(this.cbRepository);
+            this.gpCheckBoxs.Controls.Add(this.cbAll);
+            this.gpCheckBoxs.Controls.Add(this.btnCustom);
+            this.gpCheckBoxs.Location = new System.Drawing.Point(879, 102);
+            this.gpCheckBoxs.Name = "gpCheckBoxs";
+            this.gpCheckBoxs.Size = new System.Drawing.Size(177, 304);
+            this.gpCheckBoxs.TabIndex = 12;
+            this.gpCheckBoxs.TabStop = false;
+            this.gpCheckBoxs.Text = "Generate";
             // 
-            // checkBox9
+            // cbCustomFile
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(37, 204);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(122, 17);
-            this.checkBox9.TabIndex = 0;
-            this.checkBox9.Text = "Map DTO to Models";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.cbCustomFile.AutoSize = true;
+            this.cbCustomFile.Location = new System.Drawing.Point(37, 228);
+            this.cbCustomFile.Name = "cbCustomFile";
+            this.cbCustomFile.Size = new System.Drawing.Size(80, 17);
+            this.cbCustomFile.TabIndex = 0;
+            this.cbCustomFile.Text = "Custom File";
+            this.cbCustomFile.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
+            // cbMapDToToMdel
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(37, 181);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(75, 17);
-            this.checkBox8.TabIndex = 0;
-            this.checkBox8.Text = "Controllers";
-            this.checkBox8.UseVisualStyleBackColor = true;
+            this.cbMapDToToMdel.AutoSize = true;
+            this.cbMapDToToMdel.Location = new System.Drawing.Point(37, 204);
+            this.cbMapDToToMdel.Name = "cbMapDToToMdel";
+            this.cbMapDToToMdel.Size = new System.Drawing.Size(122, 17);
+            this.cbMapDToToMdel.TabIndex = 0;
+            this.cbMapDToToMdel.Text = "Map DTO to Models";
+            this.cbMapDToToMdel.UseVisualStyleBackColor = true;
             // 
-            // checkBox7
+            // cbControllers
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(37, 158);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(54, 17);
-            this.checkBox7.TabIndex = 0;
-            this.checkBox7.Text = "DTOs";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.cbControllers.AutoSize = true;
+            this.cbControllers.Location = new System.Drawing.Point(37, 181);
+            this.cbControllers.Name = "cbControllers";
+            this.cbControllers.Size = new System.Drawing.Size(75, 17);
+            this.cbControllers.TabIndex = 0;
+            this.cbControllers.Text = "Controllers";
+            this.cbControllers.UseVisualStyleBackColor = true;
             // 
-            // checkBox6
+            // cbDTOs
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(37, 135);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(67, 17);
-            this.checkBox6.TabIndex = 0;
-            this.checkBox6.Text = "Services";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.cbDTOs.AutoSize = true;
+            this.cbDTOs.Location = new System.Drawing.Point(37, 158);
+            this.cbDTOs.Name = "cbDTOs";
+            this.cbDTOs.Size = new System.Drawing.Size(54, 17);
+            this.cbDTOs.TabIndex = 0;
+            this.cbDTOs.Text = "DTOs";
+            this.cbDTOs.UseVisualStyleBackColor = true;
             // 
-            // checkBox5
+            // cbServices
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(37, 112);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(82, 17);
-            this.checkBox5.TabIndex = 0;
-            this.checkBox5.Text = "IUnitOfwork";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.cbServices.AutoSize = true;
+            this.cbServices.Location = new System.Drawing.Point(37, 135);
+            this.cbServices.Name = "cbServices";
+            this.cbServices.Size = new System.Drawing.Size(67, 17);
+            this.cbServices.TabIndex = 0;
+            this.cbServices.Text = "Services";
+            this.cbServices.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // cbIUnitOfWork
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(37, 89);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(88, 17);
-            this.checkBox4.TabIndex = 0;
-            this.checkBox4.Text = "UniteOfWork";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.cbIUnitOfWork.AutoSize = true;
+            this.cbIUnitOfWork.Location = new System.Drawing.Point(37, 112);
+            this.cbIUnitOfWork.Name = "cbIUnitOfWork";
+            this.cbIUnitOfWork.Size = new System.Drawing.Size(82, 17);
+            this.cbIUnitOfWork.TabIndex = 0;
+            this.cbIUnitOfWork.Text = "IUnitOfwork";
+            this.cbIUnitOfWork.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // cbUnitOfWork
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(37, 66);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(79, 17);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "IRepository";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.cbUnitOfWork.AutoSize = true;
+            this.cbUnitOfWork.Location = new System.Drawing.Point(37, 89);
+            this.cbUnitOfWork.Name = "cbUnitOfWork";
+            this.cbUnitOfWork.Size = new System.Drawing.Size(88, 17);
+            this.cbUnitOfWork.TabIndex = 0;
+            this.cbUnitOfWork.Text = "UniteOfWork";
+            this.cbUnitOfWork.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // cbIRepository
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(37, 43);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(76, 17);
-            this.checkBox2.TabIndex = 0;
-            this.checkBox2.Text = "Repository";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.cbIRepository.AutoSize = true;
+            this.cbIRepository.Location = new System.Drawing.Point(37, 66);
+            this.cbIRepository.Name = "cbIRepository";
+            this.cbIRepository.Size = new System.Drawing.Size(79, 17);
+            this.cbIRepository.TabIndex = 0;
+            this.cbIRepository.Text = "IRepository";
+            this.cbIRepository.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // cbRepository
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(16, 20);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(37, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "All";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cbRepository.AutoSize = true;
+            this.cbRepository.Location = new System.Drawing.Point(37, 43);
+            this.cbRepository.Name = "cbRepository";
+            this.cbRepository.Size = new System.Drawing.Size(76, 17);
+            this.cbRepository.TabIndex = 0;
+            this.cbRepository.Text = "Repository";
+            this.cbRepository.UseVisualStyleBackColor = true;
+            // 
+            // cbAll
+            // 
+            this.cbAll.AutoSize = true;
+            this.cbAll.Location = new System.Drawing.Point(16, 20);
+            this.cbAll.Name = "cbAll";
+            this.cbAll.Size = new System.Drawing.Size(37, 17);
+            this.cbAll.TabIndex = 0;
+            this.cbAll.Text = "All";
+            this.cbAll.UseVisualStyleBackColor = true;
+            this.cbAll.CheckedChanged += new System.EventHandler(this.cbAll_CheckedChanged);
+            this.cbAll.CheckStateChanged += new System.EventHandler(this.cbAll_CheckStateChanged);
             // 
             // btnCustom
             // 
-            this.btnCustom.Enabled = false;
-            this.btnCustom.Location = new System.Drawing.Point(86, 296);
+            this.btnCustom.Location = new System.Drawing.Point(86, 266);
             this.btnCustom.Name = "btnCustom";
             this.btnCustom.Size = new System.Drawing.Size(85, 26);
             this.btnCustom.TabIndex = 2;
@@ -656,12 +670,23 @@ namespace ProgrammerTools
             this.label20.TabIndex = 1;
             this.label20.Text = "save your time , save your effort";
             // 
+            // cbSaveConfig
+            // 
+            this.cbSaveConfig.AutoSize = true;
+            this.cbSaveConfig.Location = new System.Drawing.Point(879, 415);
+            this.cbSaveConfig.Name = "cbSaveConfig";
+            this.cbSaveConfig.Size = new System.Drawing.Size(133, 17);
+            this.cbSaveConfig.TabIndex = 0;
+            this.cbSaveConfig.Text = "Save My Configuration";
+            this.cbSaveConfig.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1068, 524);
-            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.cbSaveConfig);
+            this.Controls.Add(this.gpCheckBoxs);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -697,8 +722,8 @@ namespace ProgrammerTools
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
+            this.gpCheckBoxs.ResumeLayout(false);
+            this.gpCheckBoxs.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -752,17 +777,19 @@ namespace ProgrammerTools
         private TextBox textBox2;
         private Label label19;
         private TextBox textBox3;
-        private GroupBox groupBox6;
-        private CheckBox checkBox7;
-        private CheckBox checkBox6;
-        private CheckBox checkBox5;
-        private CheckBox checkBox4;
-        private CheckBox checkBox3;
-        private CheckBox checkBox2;
-        private CheckBox checkBox1;
-        private CheckBox checkBox8;
-        private CheckBox checkBox9;
+        private GroupBox gpCheckBoxs;
+        private CheckBox cbDTOs;
+        private CheckBox cbServices;
+        private CheckBox cbIUnitOfWork;
+        private CheckBox cbUnitOfWork;
+        private CheckBox cbIRepository;
+        private CheckBox cbRepository;
+        private CheckBox cbAll;
+        private CheckBox cbControllers;
+        private CheckBox cbMapDToToMdel;
         private Label label20;
         private Button btnCustom;
+        private CheckBox cbCustomFile;
+        private CheckBox cbSaveConfig;
     }
 }
