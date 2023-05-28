@@ -140,21 +140,9 @@ namespace ProgrammerTools
         public void CreateServiceIRepoFileByName(string modelName, string path)
         {
             string modelNameDTO = modelName + "DTO";
-            string RepositoryData = "using System; \n " +
-            "using System.Collections.Generic; \n" +
-            "using System.Threading.Tasks; \n" +
-            "using " + tbServiceDTOFolderName.Text + "; \n" +
-            "namespace " + tbServiceInterfaceFolderName.Text + "\n" +
-            "{" + "\n" +
-               "    public interface I" + modelName + "Service \n" +
-                "    {" + "\n" +
-                "        Task<" + modelNameDTO + "> Get" + modelName + "ByID(Guid ID); \n" +
-                "        Task<IEnumerable<" + modelNameDTO + ">> GetAll" + modelName + "(D); \n" +
+            string RepositoryData = $"using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\nusing StockApp.Service.DTO;\r\n\r\nnamespace StockApp.Service.Interfaces\r\n{{\r\n    public interface I{{0}}Service\r\n    {{\r\n        Task<{{0}}DTO> Get{{0}}ByID(Guid ID);\r\n        Task<IEnumerable<BranchDTO>> GetAll{{0}}();\r\n        Task<bool> Add{{0}}({{0}}DTO Model);\r\n        Task<bool> Update{{0}}({{0}}DTO Model);\r\n        Task<bool> Delete{{0}}(Guid {{0}}ID);\r\n    }}\r\n}}\r\n";
 
-                "    }" + "\n" +
-            "}";
-
-
+            RepositoryData = RepositoryData.Replace("{0}", modelName);
             // Create the file, or overwrite if the file exists. 
             using (FileStream fs = File.Create(path + "\\I" + modelName + "Repository.cs"))
             {
@@ -240,6 +228,8 @@ namespace ProgrammerTools
                 CreateIUnitOfWork(sFileNames, SelectedPath);
             if (cbCustomFile.Checked)
                 CreateCustomFileGroup(sFileNames, SelectedPath);
+            if (cbServices.Checked)
+                CreateCustomFileGroup(sFileNames, SelectedPath);
             if (cbSaveConfig.Checked)
                 CreateAppDbContext(sFileNames, SelectedPath);
 
@@ -309,6 +299,7 @@ namespace ProgrammerTools
             }
 
         }
+         
         private void CreateConfigFIle(string SelectedOutPut)
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
