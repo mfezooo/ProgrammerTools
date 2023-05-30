@@ -134,6 +134,11 @@ namespace StockApp.Service.DTO
             string line;
             while ((line = reader.ReadLine()) != null)
             {
+                if (line.Trim().StartsWith("using") || line.Trim().StartsWith("System"))
+                {
+                    // exit current iteration of loop based on condition
+                    continue;
+                }
                 //Do any edits to the line as needed
                 string editedLine = line.Replace(" Name ", " " + modelName + "Name");
                 DtoData += editedLine;
