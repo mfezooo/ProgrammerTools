@@ -115,6 +115,35 @@ namespace ProgrammerTools
                 fs.Write(info, 0, info.Length);
             }
         }
+        public void getDataFromModel(string modelName, string path)
+        {
+            string DtoData = @"
+using System.ComponentModel.DataAnnotations; 
+namespace StockApp.Service.DTO
+{
+     public class " + modelName + "DTO  \n" +
+     "{ \n";
+
+
+            string inputFile = @"C:\Users\Fezo\source\repos\AmrElGhonaimy\StockApplication\StockApp.Entities\Branch.cs";
+            StreamReader reader = new StreamReader(inputFile);
+
+            string outputFile = @"d:\" + modelName + "DTO.cs";
+            StreamWriter writer = new StreamWriter(outputFile, false);
+
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                //Do any edits to the line as needed
+                string editedLine = line.Replace(" Name ", " " + modelName + "Name");
+                DtoData += editedLine;
+                //Write the edited line to the output file
+            }
+            reader.Close();
+            writer.Write(DtoData);
+            writer.Close();
+
+        }
         public void CreateIRepoFileByName(string modelName, string path)
         {
             string RepositoryData =
@@ -228,6 +257,8 @@ namespace ProgrammerTools
                 CreateIUnitOfWork(sFileNames, SelectedPath);
             if (cbCustomFile.Checked)
                 CreateCustomFileGroup(sFileNames, SelectedPath);
+            if (cbDTOs.Checked)
+                getDataFromModel(sFileNames[0], SelectedPath);
             if (cbServices.Checked)
                 CreateCustomFileGroup(sFileNames, SelectedPath);
             if (cbSaveConfig.Checked)
@@ -235,7 +266,7 @@ namespace ProgrammerTools
 
 
             if (cbSaveConfig.Checked)
-            CreateConfigFIle(SelectedPath);
+                CreateConfigFIle(SelectedPath);
 
             MessageBox.Show("All Done Well");
             Process.Start("explorer.exe", SelectedPath);
@@ -300,7 +331,7 @@ namespace ProgrammerTools
             }
 
         }
-         
+
         private void CreateConfigFIle(string SelectedOutPut)
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -329,12 +360,12 @@ namespace ProgrammerTools
         private void CreateAppDbContext(List<string> sFilesNames, string path)
         {
             string RepositoryData = "// Start ApplicationDbContext \n";
-          
+
             foreach (var modelName in sFilesNames)
             {
                 char lastCharacter = modelName[modelName.Length - 1];
                 string s = lastCharacter == 'y' ? "ies" : "s";
-                string modelNamePlural = modelName.Remove(modelName.Length - 1)+ s;
+                string modelNamePlural = modelName.Remove(modelName.Length - 1) + s;
                 RepositoryData += "        public virtual DbSet<" + modelName + "> " + modelNamePlural + " { set; get; }  \n";
             }
             RepositoryData += "// End ApplicationDbContext \n";
