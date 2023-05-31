@@ -61,8 +61,9 @@ namespace ProgrammerTools
             this.tbRepositoryGenaric = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.tbServiceDTOFolderName = new System.Windows.Forms.TextBox();
+            this.tbDTONameSpace = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.tbServiceInterface = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -71,17 +72,14 @@ namespace ProgrammerTools
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tbControllerNameSpace = new System.Windows.Forms.TextBox();
             this.gpCheckBoxs = new System.Windows.Forms.GroupBox();
             this.cbCustomFile = new System.Windows.Forms.CheckBox();
             this.cbMapDToToMdel = new System.Windows.Forms.CheckBox();
             this.cbControllers = new System.Windows.Forms.CheckBox();
             this.cbDTOs = new System.Windows.Forms.CheckBox();
+            this.cbServiceInterface = new System.Windows.Forms.CheckBox();
             this.cbServices = new System.Windows.Forms.CheckBox();
             this.cbIUnitOfWork = new System.Windows.Forms.CheckBox();
             this.cbUnitOfWork = new System.Windows.Forms.CheckBox();
@@ -91,10 +89,6 @@ namespace ProgrammerTools
             this.btnCustom = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
             this.cbSaveConfig = new System.Windows.Forms.CheckBox();
-            this.tbDTONameSpace = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.cbServiceInterface = new System.Windows.Forms.CheckBox();
             this.rtUsingAdditonal = new System.Windows.Forms.RichTextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -367,35 +361,42 @@ namespace ProgrammerTools
             this.groupBox1.Controls.Add(this.tbDTONameSpace);
             this.groupBox1.Controls.Add(this.label22);
             this.groupBox1.Controls.Add(this.label21);
-            this.groupBox1.Controls.Add(this.label18);
-            this.groupBox1.Controls.Add(this.tbServiceDTOFolderName);
             this.groupBox1.Controls.Add(this.label17);
             this.groupBox1.Controls.Add(this.tbServiceInterface);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.tbServiceNameSpace);
             this.groupBox1.Location = new System.Drawing.Point(575, 118);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 226);
+            this.groupBox1.Size = new System.Drawing.Size(280, 174);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Services";
             // 
-            // label18
+            // tbDTONameSpace
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 180);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(93, 13);
-            this.label18.TabIndex = 1;
-            this.label18.Text = "DTO Folder Name";
+            this.tbDTONameSpace.Location = new System.Drawing.Point(9, 32);
+            this.tbDTONameSpace.Name = "tbDTONameSpace";
+            this.tbDTONameSpace.Size = new System.Drawing.Size(259, 20);
+            this.tbDTONameSpace.TabIndex = 0;
+            this.tbDTONameSpace.Text = "StockApp.Service.DTO";
             // 
-            // tbServiceDTOFolderName
+            // label22
             // 
-            this.tbServiceDTOFolderName.Location = new System.Drawing.Point(9, 197);
-            this.tbServiceDTOFolderName.Name = "tbServiceDTOFolderName";
-            this.tbServiceDTOFolderName.Size = new System.Drawing.Size(259, 20);
-            this.tbServiceDTOFolderName.TabIndex = 0;
-            this.tbServiceDTOFolderName.Text = "DTO";
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(8, 55);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(157, 13);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "_________________________";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(8, 16);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(91, 13);
+            this.label21.TabIndex = 1;
+            this.label21.Text = "DTO name space";
             // 
             // label17
             // 
@@ -474,69 +475,31 @@ namespace ProgrammerTools
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.label15);
-            this.groupBox5.Controls.Add(this.textBox1);
-            this.groupBox5.Controls.Add(this.label16);
-            this.groupBox5.Controls.Add(this.textBox2);
             this.groupBox5.Controls.Add(this.label19);
-            this.groupBox5.Controls.Add(this.textBox3);
-            this.groupBox5.Location = new System.Drawing.Point(575, 351);
+            this.groupBox5.Controls.Add(this.tbControllerNameSpace);
+            this.groupBox5.Location = new System.Drawing.Point(575, 298);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(280, 153);
+            this.groupBox5.Size = new System.Drawing.Size(280, 73);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Controllers";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 104);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(93, 13);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "DTO Folder Name";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(9, 121);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(259, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "DTO";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 64);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(156, 13);
-            this.label16.TabIndex = 1;
-            this.label16.Text = "Service Interfaces Folder Name";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(9, 81);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(259, 20);
-            this.textBox2.TabIndex = 0;
-            this.textBox2.Text = "Interfaces";
             // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(6, 24);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(110, 13);
+            this.label19.Size = new System.Drawing.Size(116, 13);
             this.label19.TabIndex = 1;
-            this.label19.Text = "Service Project Name";
+            this.label19.Text = "Controller Name Space";
             // 
-            // textBox3
+            // tbControllerNameSpace
             // 
-            this.textBox3.Location = new System.Drawing.Point(9, 41);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(259, 20);
-            this.textBox3.TabIndex = 0;
-            this.textBox3.Text = "TransPro.Service";
+            this.tbControllerNameSpace.Location = new System.Drawing.Point(9, 41);
+            this.tbControllerNameSpace.Name = "tbControllerNameSpace";
+            this.tbControllerNameSpace.Size = new System.Drawing.Size(259, 20);
+            this.tbControllerNameSpace.TabIndex = 0;
+            this.tbControllerNameSpace.Text = "StockApp.WebAPI.Controllers";
             // 
             // gpCheckBoxs
             // 
@@ -599,6 +562,16 @@ namespace ProgrammerTools
             this.cbDTOs.Text = "DTOs";
             this.cbDTOs.UseVisualStyleBackColor = true;
             this.cbDTOs.CheckedChanged += new System.EventHandler(this.cbDTOs_CheckedChanged);
+            // 
+            // cbServiceInterface
+            // 
+            this.cbServiceInterface.AutoSize = true;
+            this.cbServiceInterface.Location = new System.Drawing.Point(37, 153);
+            this.cbServiceInterface.Name = "cbServiceInterface";
+            this.cbServiceInterface.Size = new System.Drawing.Size(107, 17);
+            this.cbServiceInterface.TabIndex = 0;
+            this.cbServiceInterface.Text = "Service Interface";
+            this.cbServiceInterface.UseVisualStyleBackColor = true;
             // 
             // cbServices
             // 
@@ -690,42 +663,6 @@ namespace ProgrammerTools
             this.cbSaveConfig.TabIndex = 0;
             this.cbSaveConfig.Text = "Save My Configuration";
             this.cbSaveConfig.UseVisualStyleBackColor = true;
-            // 
-            // tbDTONameSpace
-            // 
-            this.tbDTONameSpace.Location = new System.Drawing.Point(9, 32);
-            this.tbDTONameSpace.Name = "tbDTONameSpace";
-            this.tbDTONameSpace.Size = new System.Drawing.Size(259, 20);
-            this.tbDTONameSpace.TabIndex = 0;
-            this.tbDTONameSpace.Text = "StockApp.Service.DTO";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(8, 16);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(91, 13);
-            this.label21.TabIndex = 1;
-            this.label21.Text = "DTO name space";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(8, 55);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(157, 13);
-            this.label22.TabIndex = 1;
-            this.label22.Text = "_________________________";
-            // 
-            // cbServiceInterface
-            // 
-            this.cbServiceInterface.AutoSize = true;
-            this.cbServiceInterface.Location = new System.Drawing.Point(37, 153);
-            this.cbServiceInterface.Name = "cbServiceInterface";
-            this.cbServiceInterface.Size = new System.Drawing.Size(107, 17);
-            this.cbServiceInterface.TabIndex = 0;
-            this.cbServiceInterface.Text = "Service Interface";
-            this.cbServiceInterface.UseVisualStyleBackColor = true;
             // 
             // rtUsingAdditonal
             // 
@@ -832,18 +769,12 @@ namespace ProgrammerTools
         private TextBox tbServiceInterface;
         private Label label14;
         private TextBox tbServiceNameSpace;
-        private Label label18;
-        private TextBox tbServiceDTOFolderName;
         private GroupBox groupBox2;
         private GroupBox groupBox3;
         private GroupBox groupBox4;
         private GroupBox groupBox5;
-        private Label label15;
-        private TextBox textBox1;
-        private Label label16;
-        private TextBox textBox2;
         private Label label19;
-        private TextBox textBox3;
+        private TextBox tbControllerNameSpace;
         private GroupBox gpCheckBoxs;
         private CheckBox cbDTOs;
         private CheckBox cbServices;

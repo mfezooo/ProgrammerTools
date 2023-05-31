@@ -418,6 +418,10 @@ namespace ProgrammerTools
                 CreateServiceInterfaceGroup(sFileNames, SelectedPath);
             if (cbServices.Checked)
                 CreateServiceGroup(sFileNames, SelectedPath);
+            if (cbMapDToToMdel.Checked)
+                CreateMapperGroup(sFileNames, SelectedPath);
+            if (cbControllers.Checked)
+                CreateControllersGroup(sFileNames, SelectedPath);
             if (cbRepository.Checked)
                 CreateAppDbContext(sFileNames, SelectedPath);
 
@@ -429,40 +433,140 @@ namespace ProgrammerTools
             Process.Start("explorer.exe", SelectedPath);
 
         }
+        private void CreateControllersGroup(List<string> sFilesNames, string path)
+        {
+            path += "\\" + "ApiControllers";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            //create IRepository
+            foreach (var modelName in sFileNames)
+            { CreateControllers(modelName, path); }
+        }
+        public void CreateControllers(string modelName, string path)
+        {
+            StringBuilder data = new StringBuilder();
+            data.AppendLine("using Microsoft.AspNetCore.Mvc;");
+            data.AppendLine("using " + tbDTONameSpace.Text + ";");
+            data.AppendLine("using " + tbServiceInterface.Text + ";");
+            data.AppendLine("using StockApp.WebAPI.Controllers.Base;");   
+            data.AppendLine("");
+            data.AppendLine("namespace " + tbControllerNameSpace.Text);
+            data.AppendLine("{");
+            data.AppendLine("    public class " + modelName + "Controller : BaseController");
+            data.AppendLine("    {");
+            data.AppendLine("    private readonly I"+modelName+"Service _Service;");
 
+            data.AppendLine("        public " + modelName + "Controller(I"+modelName+"Service service)");
+            data.AppendLine("        {");
+            data.AppendLine("            _Service = service;");
+            data.AppendLine("        }");
+            //Add Methoud
+            data.AppendLine("        [HttpGet(\"{ID}\")]");
+            data.AppendLine("        public async Task<IActionResult> Get"+ modelName + "ByID(Guid ID)");
+            data.AppendLine("        {");
+            data.AppendLine("            var Result = await _Service.Get"+modelName+"ByID(ID);");
+            data.AppendLine("            return Ok(Result);"); 
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpGet]");
+            data.AppendLine("        public async Task<IActionResult> GetAll"+modelName+"()");
+            data.AppendLine("        {");
+            data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
+            data.AppendLine("            return Ok(Result);");
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpPost]");
+            data.AppendLine("        public async Task<IActionResult> Add" + modelName + "("+ modelName + "DTO model)");
+            data.AppendLine("        {");
+            data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
+            data.AppendLine("            if (Result == true)");
+            data.AppendLine("            {");
+            data.AppendLine("                return Ok();");
+            data.AppendLine("            }");
+            data.AppendLine("            else");
+            data.AppendLine("            {");
+            data.AppendLine("                return BadRequest();");
+            data.AppendLine("            }");
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpPut]");
+            data.AppendLine("        public async Task<IActionResult> Update" + modelName + "(" + modelName + "DTO model)");
+            data.AppendLine("        {");
+            data.AppendLine("            var Result = await _Service.Update" + modelName + "(model);");
+            data.AppendLine("            if (Result == true)");
+            data.AppendLine("            {");
+            data.AppendLine("                return Ok();");
+            data.AppendLine("            }");
+            data.AppendLine("            else");
+            data.AppendLine("            {");
+            data.AppendLine("                return BadRequest();");
+            data.AppendLine("            }");
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpDelete(\"{ID}\")]");
+            data.AppendLine("        public async Task<IActionResult> Delete" + modelName + "(Guid ID)");
+            data.AppendLine("        {");
+            data.AppendLine("            var Result = await _Service.Delete" + modelName + "(ID);");
+            data.AppendLine("            if (Result == true)");
+            data.AppendLine("            {");
+            data.AppendLine("                return Ok();");
+            data.AppendLine("            }");
+            data.AppendLine("            else");
+            data.AppendLine("            {");
+            data.AppendLine("                return BadRequest();");
+            data.AppendLine("            }");
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine(""); 
+            data.AppendLine("    }");
+            data.AppendLine("}");
+             
+            string cFileName = path + "\\" + modelName + "Controller.cs";
+            StreamWriter writer = new StreamWriter(cFileName, false);
+            writer.Write(data.ToString());
+            writer.Close();
+
+
+        }
         private void CreateMapperGroup(List<string> sFilesNames, string path)
         {
             path += "\\" + "Mapper";
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
-            string mapperData = "";
+            StringBuilder data = new StringBuilder();
+            StringBuilder ctorMethods = new StringBuilder();
+            ctorMethods.AppendLine("        //Mapper Ctor - MapperConfig() Part Start");
+            data.AppendLine("        //Methods Start");
             foreach (var modelName in sFileNames)
-            { CreateMapper(modelName, path); }
+            {
+                ctorMethods.AppendLine("            " + modelName + "Mapper();");
+
+                data.AppendLine("        private void " + modelName + "Mapper()");
+                data.AppendLine("        {");
+                data.AppendLine("            CreateMap<" + modelName + "DTO, " + modelName + ">()");
+                data.AppendLine("               .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src." + modelName + "ID))");
+                data.AppendLine("               .ReverseMap();");
+                data.AppendLine("        }");
+                data.AppendLine("");
+
+            }
+            ctorMethods.AppendLine("        //Mapper Ctor - MapperConfig() Part End");
+            ctorMethods.AppendLine(" ");
+            data.AppendLine("        //Methods End");
+            ctorMethods.Append(data.ToString());
             // Create the file, or overwrite if the file exists. 
             using (FileStream fs = File.Create(path + "mapperFunctions.txt"))
             {
-                byte[] info = new UTF8Encoding(true).GetBytes(data.ToString());
+                byte[] info = new UTF8Encoding(true).GetBytes(ctorMethods.ToString());
                 // Add some information to the file.
                 fs.Write(info, 0, info.Length);
             }
         }
-        public void CreateMapper(string modelName, string path)
-        {
-            StringBuilder data = new StringBuilder();
-            data.AppendLine("//Methods");
-            data.AppendLine("        private void "+modelName+"Mapper()"); 
-            data.AppendLine("        {"); 
-            data.AppendLine("            CreateMap<"+modelName+"DTO, "+modelName+">()"); 
-            data.AppendLine("               .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src."+modelName+"ID))"); 
-            data.AppendLine("               .ReverseMap();"); 
-            data.AppendLine("        }"); 
-            data.AppendLine(""); 
-
-
-           
-
-
-        }
+ 
 
         private void CreateCustomFileGroup(List<string> sFilesNames, string path)
         {
