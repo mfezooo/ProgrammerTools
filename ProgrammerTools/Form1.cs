@@ -429,6 +429,41 @@ namespace ProgrammerTools
             Process.Start("explorer.exe", SelectedPath);
 
         }
+
+        private void CreateMapperGroup(List<string> sFilesNames, string path)
+        {
+            path += "\\" + "Mapper";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            //create IRepository
+            string mapperData = "";
+            foreach (var modelName in sFileNames)
+            { CreateMapper(modelName, path); }
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "mapperFunctions.txt"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(data.ToString());
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void CreateMapper(string modelName, string path)
+        {
+            StringBuilder data = new StringBuilder();
+            data.AppendLine("//Methods");
+            data.AppendLine("        private void "+modelName+"Mapper()"); 
+            data.AppendLine("        {"); 
+            data.AppendLine("            CreateMap<"+modelName+"DTO, "+modelName+">()"); 
+            data.AppendLine("               .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src."+modelName+"ID))"); 
+            data.AppendLine("               .ReverseMap();"); 
+            data.AppendLine("        }"); 
+            data.AppendLine(""); 
+
+
+           
+
+
+        }
+
         private void CreateCustomFileGroup(List<string> sFilesNames, string path)
         {
             path += "\\" + "CustomFiles";
