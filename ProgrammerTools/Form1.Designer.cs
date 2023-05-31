@@ -64,9 +64,9 @@ namespace ProgrammerTools
             this.label18 = new System.Windows.Forms.Label();
             this.tbServiceDTOFolderName = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.tbServiceInterfaceFolderName = new System.Windows.Forms.TextBox();
+            this.tbServiceInterface = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.tbServiceProjName = new System.Windows.Forms.TextBox();
+            this.tbServiceNameSpace = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -91,6 +91,12 @@ namespace ProgrammerTools
             this.btnCustom = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
             this.cbSaveConfig = new System.Windows.Forms.CheckBox();
+            this.tbDTONameSpace = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.cbServiceInterface = new System.Windows.Forms.CheckBox();
+            this.rtUsingAdditonal = new System.Windows.Forms.RichTextBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -358,15 +364,18 @@ namespace ProgrammerTools
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tbDTONameSpace);
+            this.groupBox1.Controls.Add(this.label22);
+            this.groupBox1.Controls.Add(this.label21);
             this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.tbServiceDTOFolderName);
             this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.tbServiceInterfaceFolderName);
+            this.groupBox1.Controls.Add(this.tbServiceInterface);
             this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.tbServiceProjName);
+            this.groupBox1.Controls.Add(this.tbServiceNameSpace);
             this.groupBox1.Location = new System.Drawing.Point(575, 118);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 153);
+            this.groupBox1.Size = new System.Drawing.Size(280, 226);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Services";
@@ -374,7 +383,7 @@ namespace ProgrammerTools
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 104);
+            this.label18.Location = new System.Drawing.Point(6, 180);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(93, 13);
             this.label18.TabIndex = 1;
@@ -382,7 +391,7 @@ namespace ProgrammerTools
             // 
             // tbServiceDTOFolderName
             // 
-            this.tbServiceDTOFolderName.Location = new System.Drawing.Point(9, 121);
+            this.tbServiceDTOFolderName.Location = new System.Drawing.Point(9, 197);
             this.tbServiceDTOFolderName.Name = "tbServiceDTOFolderName";
             this.tbServiceDTOFolderName.Size = new System.Drawing.Size(259, 20);
             this.tbServiceDTOFolderName.TabIndex = 0;
@@ -391,36 +400,36 @@ namespace ProgrammerTools
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 64);
+            this.label17.Location = new System.Drawing.Point(8, 73);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(156, 13);
+            this.label17.Size = new System.Drawing.Size(148, 13);
             this.label17.TabIndex = 1;
-            this.label17.Text = "Service Interfaces Folder Name";
+            this.label17.Text = "Service Interface Namespace";
             // 
-            // tbServiceInterfaceFolderName
+            // tbServiceInterface
             // 
-            this.tbServiceInterfaceFolderName.Location = new System.Drawing.Point(9, 81);
-            this.tbServiceInterfaceFolderName.Name = "tbServiceInterfaceFolderName";
-            this.tbServiceInterfaceFolderName.Size = new System.Drawing.Size(259, 20);
-            this.tbServiceInterfaceFolderName.TabIndex = 0;
-            this.tbServiceInterfaceFolderName.Text = "Interfaces";
+            this.tbServiceInterface.Location = new System.Drawing.Point(9, 89);
+            this.tbServiceInterface.Name = "tbServiceInterface";
+            this.tbServiceInterface.Size = new System.Drawing.Size(259, 20);
+            this.tbServiceInterface.TabIndex = 0;
+            this.tbServiceInterface.Text = "StockApp.Service.Interfaces";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 24);
+            this.label14.Location = new System.Drawing.Point(6, 120);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(110, 13);
+            this.label14.Size = new System.Drawing.Size(105, 13);
             this.label14.TabIndex = 1;
-            this.label14.Text = "Service Project Name";
+            this.label14.Text = "Service NameSpace";
             // 
-            // tbServiceProjName
+            // tbServiceNameSpace
             // 
-            this.tbServiceProjName.Location = new System.Drawing.Point(9, 41);
-            this.tbServiceProjName.Name = "tbServiceProjName";
-            this.tbServiceProjName.Size = new System.Drawing.Size(259, 20);
-            this.tbServiceProjName.TabIndex = 0;
-            this.tbServiceProjName.Text = "TransPro.Service";
+            this.tbServiceNameSpace.Location = new System.Drawing.Point(9, 137);
+            this.tbServiceNameSpace.Name = "tbServiceNameSpace";
+            this.tbServiceNameSpace.Size = new System.Drawing.Size(259, 20);
+            this.tbServiceNameSpace.TabIndex = 0;
+            this.tbServiceNameSpace.Text = "StockApp.Service.Services";
             // 
             // groupBox2
             // 
@@ -471,7 +480,7 @@ namespace ProgrammerTools
             this.groupBox5.Controls.Add(this.textBox2);
             this.groupBox5.Controls.Add(this.label19);
             this.groupBox5.Controls.Add(this.textBox3);
-            this.groupBox5.Location = new System.Drawing.Point(575, 277);
+            this.groupBox5.Location = new System.Drawing.Point(575, 351);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(280, 153);
             this.groupBox5.TabIndex = 8;
@@ -535,6 +544,7 @@ namespace ProgrammerTools
             this.gpCheckBoxs.Controls.Add(this.cbMapDToToMdel);
             this.gpCheckBoxs.Controls.Add(this.cbControllers);
             this.gpCheckBoxs.Controls.Add(this.cbDTOs);
+            this.gpCheckBoxs.Controls.Add(this.cbServiceInterface);
             this.gpCheckBoxs.Controls.Add(this.cbServices);
             this.gpCheckBoxs.Controls.Add(this.cbIUnitOfWork);
             this.gpCheckBoxs.Controls.Add(this.cbUnitOfWork);
@@ -552,7 +562,7 @@ namespace ProgrammerTools
             // cbCustomFile
             // 
             this.cbCustomFile.AutoSize = true;
-            this.cbCustomFile.Location = new System.Drawing.Point(37, 227);
+            this.cbCustomFile.Location = new System.Drawing.Point(37, 242);
             this.cbCustomFile.Name = "cbCustomFile";
             this.cbCustomFile.Size = new System.Drawing.Size(80, 17);
             this.cbCustomFile.TabIndex = 0;
@@ -562,7 +572,7 @@ namespace ProgrammerTools
             // cbMapDToToMdel
             // 
             this.cbMapDToToMdel.AutoSize = true;
-            this.cbMapDToToMdel.Location = new System.Drawing.Point(37, 204);
+            this.cbMapDToToMdel.Location = new System.Drawing.Point(37, 219);
             this.cbMapDToToMdel.Name = "cbMapDToToMdel";
             this.cbMapDToToMdel.Size = new System.Drawing.Size(122, 17);
             this.cbMapDToToMdel.TabIndex = 0;
@@ -572,7 +582,7 @@ namespace ProgrammerTools
             // cbControllers
             // 
             this.cbControllers.AutoSize = true;
-            this.cbControllers.Location = new System.Drawing.Point(37, 181);
+            this.cbControllers.Location = new System.Drawing.Point(37, 196);
             this.cbControllers.Name = "cbControllers";
             this.cbControllers.Size = new System.Drawing.Size(75, 17);
             this.cbControllers.TabIndex = 0;
@@ -582,17 +592,18 @@ namespace ProgrammerTools
             // cbDTOs
             // 
             this.cbDTOs.AutoSize = true;
-            this.cbDTOs.Location = new System.Drawing.Point(37, 158);
+            this.cbDTOs.Location = new System.Drawing.Point(37, 135);
             this.cbDTOs.Name = "cbDTOs";
             this.cbDTOs.Size = new System.Drawing.Size(54, 17);
             this.cbDTOs.TabIndex = 0;
             this.cbDTOs.Text = "DTOs";
             this.cbDTOs.UseVisualStyleBackColor = true;
+            this.cbDTOs.CheckedChanged += new System.EventHandler(this.cbDTOs_CheckedChanged);
             // 
             // cbServices
             // 
             this.cbServices.AutoSize = true;
-            this.cbServices.Location = new System.Drawing.Point(37, 135);
+            this.cbServices.Location = new System.Drawing.Point(37, 173);
             this.cbServices.Name = "cbServices";
             this.cbServices.Size = new System.Drawing.Size(67, 17);
             this.cbServices.TabIndex = 0;
@@ -680,12 +691,68 @@ namespace ProgrammerTools
             this.cbSaveConfig.Text = "Save My Configuration";
             this.cbSaveConfig.UseVisualStyleBackColor = true;
             // 
+            // tbDTONameSpace
+            // 
+            this.tbDTONameSpace.Location = new System.Drawing.Point(9, 32);
+            this.tbDTONameSpace.Name = "tbDTONameSpace";
+            this.tbDTONameSpace.Size = new System.Drawing.Size(259, 20);
+            this.tbDTONameSpace.TabIndex = 0;
+            this.tbDTONameSpace.Text = "StockApp.Service.DTO";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(8, 16);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(91, 13);
+            this.label21.TabIndex = 1;
+            this.label21.Text = "DTO name space";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(8, 55);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(157, 13);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "_________________________";
+            // 
+            // cbServiceInterface
+            // 
+            this.cbServiceInterface.AutoSize = true;
+            this.cbServiceInterface.Location = new System.Drawing.Point(37, 153);
+            this.cbServiceInterface.Name = "cbServiceInterface";
+            this.cbServiceInterface.Size = new System.Drawing.Size(107, 17);
+            this.cbServiceInterface.TabIndex = 0;
+            this.cbServiceInterface.Text = "Service Interface";
+            this.cbServiceInterface.UseVisualStyleBackColor = true;
+            // 
+            // rtUsingAdditonal
+            // 
+            this.rtUsingAdditonal.Location = new System.Drawing.Point(586, 54);
+            this.rtUsingAdditonal.Name = "rtUsingAdditonal";
+            this.rtUsingAdditonal.Size = new System.Drawing.Size(269, 58);
+            this.rtUsingAdditonal.TabIndex = 13;
+            this.rtUsingAdditonal.Text = "using StockApp.DataAccess.UnitOfWork;\nusing StockApp.Service.Services.Base;\nusing" +
+    " StockApp.Entities.business;";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(583, 37);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(146, 13);
+            this.label23.TabIndex = 1;
+            this.label23.Text = "Using [Addtional to Services] ";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1068, 524);
+            this.Controls.Add(this.rtUsingAdditonal);
             this.Controls.Add(this.cbSaveConfig);
+            this.Controls.Add(this.label23);
             this.Controls.Add(this.gpCheckBoxs);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -762,9 +829,9 @@ namespace ProgrammerTools
         private Label label3;
         private GroupBox groupBox1;
         private Label label17;
-        private TextBox tbServiceInterfaceFolderName;
+        private TextBox tbServiceInterface;
         private Label label14;
-        private TextBox tbServiceProjName;
+        private TextBox tbServiceNameSpace;
         private Label label18;
         private TextBox tbServiceDTOFolderName;
         private GroupBox groupBox2;
@@ -791,5 +858,11 @@ namespace ProgrammerTools
         private Button btnCustom;
         private CheckBox cbCustomFile;
         private CheckBox cbSaveConfig;
+        private TextBox tbDTONameSpace;
+        private Label label21;
+        private Label label22;
+        private CheckBox cbServiceInterface;
+        private RichTextBox rtUsingAdditonal;
+        private Label label23;
     }
 }
