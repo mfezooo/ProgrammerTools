@@ -154,10 +154,10 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             //Delete Methoud
-            data.AppendLine("        public async Task<bool> Delete" + modelName + "(Guid " + modelName + "ID)");
+            data.AppendLine("        public async Task<bool> Delete" + modelName + "(int " + modelName + "ID)");
             data.AppendLine("        {");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName+"Repository.FirstOrDefult(q => q.ID == "+modelName+"ID);");
-            data.AppendLine("            Entity.IsDeleted = true;");
+            data.AppendLine("            var Entity = await _unitOfWork." + modelName+"Repository.FirstOrDefult(q => q.Id == "+modelName+"ID);");
+            data.AppendLine("            Entity.IsDelete = true;");
             data.AppendLine("            _unitOfWork.Complete();");
             data.AppendLine("            //Message = \"تم الحذف بنجاح\";");
             data.AppendLine("            return true;");
@@ -167,15 +167,15 @@ namespace ProgrammerTools
             //GetAll  Methoud
             data.AppendLine("        public async Task<IEnumerable<" + modelName+"DTO>> GetAll"+ modelName + "()");
             data.AppendLine("         {");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName+"Repository.Find(c => c.IsDeleted == false);");
+            data.AppendLine("            var Entity = await _unitOfWork." + modelName+ "Repository.Find(c => c.IsDelete == false);");
             data.AppendLine("            var EntityList = _mapper.Map<IEnumerable<" + modelName+"DTO>>(Entity);");
             data.AppendLine("            return EntityList;"); 
             data.AppendLine("        }");
             data.AppendLine("");
             //GetbyId  Methoud
-            data.AppendLine("        public async Task<" + modelName+"DTO> Get"+modelName+"ByID(Guid ID)");
+            data.AppendLine("        public async Task<" + modelName+"DTO> Get"+modelName+"ByID(int ID)");
             data.AppendLine("        {");
-            data.AppendLine("            var Entity = await _unitOfWork."+modelName+"Repository.Find(c => c.IsDeleted == false && c.ID == ID);");
+            data.AppendLine("            var Entity = await _unitOfWork."+modelName+ "Repository.Find(c => c.IsDelete == false && c.Id == ID);");
             data.AppendLine("            return _mapper.Map<"+modelName+"DTO>(Entity);"); 
             data.AppendLine("        }");
             data.AppendLine("");
@@ -223,11 +223,11 @@ namespace ProgrammerTools
             data.AppendLine("{");
             data.AppendLine("    public interface I" + modelName + "Service");
             data.AppendLine("    {");
-            data.AppendLine("        Task<" + modelName + "DTO> Get" + modelName + "ByID(Guid ID);");
+            data.AppendLine("        Task<" + modelName + "DTO> Get" + modelName + "ByID(int ID);");
             data.AppendLine("        Task<IEnumerable<" + modelName + "DTO>> GetAll" + modelName + "();");
             data.AppendLine("        Task<bool> Add" + modelName + "(" + modelName + "DTO Model);");
             data.AppendLine("        Task<bool> Update" + modelName + "(" + modelName + "DTO Model);");
-            data.AppendLine("        Task<bool> Delete" + modelName + "(Guid " + modelName + "ID);");
+            data.AppendLine("        Task<bool> Delete" + modelName + "(int " + modelName + "ID);");
             data.AppendLine("    }");
             data.AppendLine("}");
 
@@ -259,7 +259,7 @@ namespace ProgrammerTools
             dataForDTO.AppendLine("{");
             dataForDTO.AppendLine("    public class " + modelName + "DTO");
             dataForDTO.AppendLine("    {");
-            dataForDTO.AppendLine("        public Guid "+ modelName + "ID { get; set; }");
+            dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
             StreamReader reader = new StreamReader(sFilePath);
@@ -277,7 +277,9 @@ namespace ProgrammerTools
                     line.Trim().ToLower().StartsWith("public partial class") ||
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
-                    line.Trim().ToLower().StartsWith("namespace")
+                    line.Trim().ToLower().StartsWith("namespace")||
+                    line.Trim().ToLower().Contains("()")||
+                    line.Trim().ToLower().Contains("HashSet<")
                     )
                 {
                     continue;
@@ -323,7 +325,7 @@ namespace ProgrammerTools
         public void CreateServiceIRepoFileByName(string modelName, string path)
         {
             string modelNameDTO = modelName + "DTO";
-            string RepositoryData = $"using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\nusing StockApp.Service.DTO;\r\n\r\nnamespace StockApp.Service.Interfaces\r\n{{\r\n    public interface I{{0}}Service\r\n    {{\r\n        Task<{{0}}DTO> Get{{0}}ByID(Guid ID);\r\n        Task<IEnumerable<BranchDTO>> GetAll{{0}}();\r\n        Task<bool> Add{{0}}({{0}}DTO Model);\r\n        Task<bool> Update{{0}}({{0}}DTO Model);\r\n        Task<bool> Delete{{0}}(Guid {{0}}ID);\r\n    }}\r\n}}\r\n";
+            string RepositoryData = $"using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\nusing StockApp.Service.DTO;\r\n\r\nnamespace StockApp.Service.Interfaces\r\n{{\r\n    public interface I{{0}}Service\r\n    {{\r\n        Task<{{0}}DTO> Get{{0}}ByID(int ID);\r\n        Task<IEnumerable<BranchDTO>> GetAll{{0}}();\r\n        Task<bool> Add{{0}}({{0}}DTO Model);\r\n        Task<bool> Update{{0}}({{0}}DTO Model);\r\n        Task<bool> Delete{{0}}(int {{0}}ID);\r\n    }}\r\n}}\r\n";
 
             RepositoryData = RepositoryData.Replace("{0}", modelName);
             // Create the file, or overwrite if the file exists. 
@@ -461,7 +463,7 @@ namespace ProgrammerTools
             data.AppendLine("        }");
             //Add Methoud
             data.AppendLine("        [HttpGet(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Get"+ modelName + "ByID(Guid ID)");
+            data.AppendLine("        public async Task<IActionResult> Get"+ modelName + "ByID(int ID)");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.Get"+modelName+"ByID(ID);");
             data.AppendLine("            return Ok(Result);"); 
@@ -507,7 +509,7 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             data.AppendLine("        [HttpDelete(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Delete" + modelName + "(Guid ID)");
+            data.AppendLine("        public async Task<IActionResult> Delete" + modelName + "(int ID)");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.Delete" + modelName + "(ID);");
             data.AppendLine("            if (Result == true)");
@@ -548,7 +550,7 @@ namespace ProgrammerTools
                 data.AppendLine("        private void " + modelName + "Mapper()");
                 data.AppendLine("        {");
                 data.AppendLine("            CreateMap<" + modelName + "DTO, " + modelName + ">()");
-                data.AppendLine("               .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src." + modelName + "ID))");
+                data.AppendLine("               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src." + modelName + "ID))");
                 data.AppendLine("               .ReverseMap();");
                 data.AppendLine("        }");
                 data.AppendLine("");
