@@ -159,7 +159,7 @@ namespace ProgrammerTools
             data.AppendLine("            var Entity = await _unitOfWork." + modelName+"Repository.FirstOrDefult(q => q.Id == "+modelName+"ID);");
             data.AppendLine("            Entity.IsDelete = true;");
             data.AppendLine("            _unitOfWork.Complete();");
-            data.AppendLine("            //Message = \"تم الحذف بنجاح\";");
+            data.AppendLine("            //Message = \"\"تم الحذف بنجاح\";");
             data.AppendLine("            return true;");
             data.AppendLine("        }");
             data.AppendLine("");
@@ -186,7 +186,7 @@ namespace ProgrammerTools
             data.AppendLine("            var Entity = await _unitOfWork."+modelName+"Repository.Get(Model."+modelName+"ID);");
             data.AppendLine("            _mapper.Map(Model, Entity);");
             data.AppendLine("            _unitOfWork.Complete();");
-            data.AppendLine("            //Message = \"تم التعديل بنجاح\";");
+            data.AppendLine("            //Message = \"\"تم التعديل بنجاح\";");
             data.AppendLine("            return true;");
             data.AppendLine("        }");
             data.AppendLine(""); 
@@ -424,9 +424,10 @@ namespace ProgrammerTools
                 CreateMapperGroup(sFileNames, SelectedPath);
             if (cbControllers.Checked)
                 CreateControllersGroup(sFileNames, SelectedPath);
+            if (cbControllerMVC.Checked)
+                CreateControllersMVCGroup(sFileNames, SelectedPath);
             if (cbRepository.Checked)
                 CreateAppDbContext(sFileNames, SelectedPath);
-
 
             if (cbSaveConfig.Checked)
                 CreateConfigFIle(SelectedPath);
@@ -442,6 +443,100 @@ namespace ProgrammerTools
             //create IRepository
             foreach (var modelName in sFileNames)
             { CreateControllers(modelName, path); }
+        }
+        private void CreateControllersMVCGroup(List<string> sFilesNames, string path)
+        {
+            path += "\\" + "ControllersMVC";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            //create IRepository
+            foreach (var modelName in sFileNames)
+            { CreateControllersMVC(modelName, path); }
+        }
+        public void CreateControllersMVC(string modelName, string path)
+        {
+            StringBuilder data = new StringBuilder();
+            data.AppendLine("using Microsoft.AspNetCore.Mvc;");
+            data.AppendLine("using " + tbDTONameSpace.Text + ";");
+            data.AppendLine("using " + tbServiceInterface.Text + ";"); 
+            data.AppendLine("");
+            data.AppendLine("namespace " + tbControllerNameSpace.Text);
+            data.AppendLine("{");
+            data.AppendLine("    public class " + modelName + "Controller : Controller");
+            data.AppendLine("    {");
+            data.AppendLine("    private readonly I" + modelName + "Service _Service;");
+
+            data.AppendLine("        public " + modelName + "Controller(I" + modelName + "Service service)");
+            data.AppendLine("        {");
+            data.AppendLine("            _Service = service;");
+            data.AppendLine("        }");
+            //Add Methoud
+            data.AppendLine("        [HttpGet(\"{ID}\")]");
+            data.AppendLine("        public async Task<RequestResult> Get" + modelName + "ByID(int ID)");
+            data.AppendLine("        {");
+            data.AppendLine("            var Result = await _Service.Get" + modelName + "ByID(ID);");
+            data.AppendLine("            return new RequestResult { IsSuccess = true, Count = 1, Obj = new { Result } }; ");
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpGet]");
+            data.AppendLine("        public async Task<RequestResult> GetAll" + modelName + "()");
+            data.AppendLine("        {");
+            data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
+            data.AppendLine("            return new RequestResult { IsSuccess = true, Obj = new {  Result }, Count = Result.Count() };");
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpPost]");
+            data.AppendLine("        public async Task<RequestResult> Add" + modelName + "(" + modelName + "DTO model)");
+            data.AppendLine("        {");
+            data.AppendLine("            if (model == null)");
+            data.AppendLine("            return new RequestResult { IsSuccess = false, Message = \""+"Empty"+"\"};");
+            data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
+            data.AppendLine("            if (Result)");
+            data.AppendLine("                return new RequestResult { IsSuccess = true, Count = 1, Obj = new { model } };");
+            data.AppendLine("            else"); 
+            data.AppendLine("                return new RequestResult { IsSuccess = false, Message = \""+"Error in Creation"+ "\" };"); 
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpPut]");
+            data.AppendLine("        public async Task<RequestResult> Update" + modelName + "(" + modelName + "DTO model)");
+            data.AppendLine("        {");
+            data.AppendLine("            if (model == null)");
+            data.AppendLine("            return new RequestResult { IsSuccess = false, Message = \""+"Empty"+ "\" };");
+
+            data.AppendLine("            var Result = await _Service.Update" + modelName + "(model);");
+            data.AppendLine("            if (Result)"); 
+            data.AppendLine("                return new RequestResult { IsSuccess = true, Count = 1, Obj = new { model } };"); 
+            data.AppendLine("            else"); 
+            data.AppendLine("                 return new RequestResult { IsSuccess = false, Message = \""+"Error in Update"+"\" };"); 
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("        [HttpDelete(\"{ID}\")]");
+            data.AppendLine("        public async Task<RequestResult> Delete" + modelName + "(int ID)");
+            data.AppendLine("        {");
+            data.AppendLine("            var entity = await _Service.GetCodeCurrencyByID(ID);");
+            data.AppendLine("             if (entity == null)");
+            data.AppendLine("                return new RequestResult { IsSuccess = false, Message = \""+"Not Exist "+ "\"};");
+            data.AppendLine("            var Result = await _Service.Delete" + modelName + "(ID);");
+            data.AppendLine("            if (Result)");
+            data.AppendLine("                return new RequestResult { IsSuccess = true, Count = 1, Obj = new { entity } };");
+            data.AppendLine("            else");
+            data.AppendLine("                 return new RequestResult { IsSuccess = false, Message = \"" + "Error in Delete" + "\" };");
+            data.AppendLine("        }");
+            data.AppendLine("");
+
+            data.AppendLine("");
+            data.AppendLine("    }");
+            data.AppendLine("}");
+
+            string cFileName = path + "\\" + modelName + "Controller.cs";
+            StreamWriter writer = new StreamWriter(cFileName, false);
+            writer.Write(data.ToString());
+            writer.Close();
+
+
         }
         public void CreateControllers(string modelName, string path)
         {
@@ -623,10 +718,17 @@ namespace ProgrammerTools
                 tbDbContextNameSpace.Text = keyValuePairs["DBContextNameSpace"] != null ? keyValuePairs["DBContextNameSpace"] : "";
                 tbDbContext.Text = keyValuePairs["DBContextName"] != null ? keyValuePairs["DBContextName"] : "";
                 tbdbContextInstance.Text = keyValuePairs["dbContextInstanceName"] != null ? keyValuePairs["dbContextInstanceName"] : "";
+
+                tbRepositoryGenaric.Text = keyValuePairs["RepositoryGenaric"] != null ? keyValuePairs["RepositoryGenaric"] : "";
+                tbDTONameSpace.Text = keyValuePairs["DTONameSpace"] != null ? keyValuePairs["DTONameSpace"] : "";
+                tbControllerNameSpace.Text = keyValuePairs["ControllerNameSpace"] != null ? keyValuePairs["ControllerNameSpace"] : "";
+                tbServiceInterface.Text = keyValuePairs["ServiceInterface"] != null ? keyValuePairs["ServiceInterface"] : "";
+                tbServiceNameSpace.Text = keyValuePairs["ServiceNameSpace"] != null ? keyValuePairs["ServiceNameSpace"] : "";
+                 
             }
             catch (Exception ex)
             {
-                throw;
+                MessageBox.Show("delete data.txt from application folder \n" + ex.Message );
             }
 
         }
@@ -642,6 +744,12 @@ namespace ProgrammerTools
             keyValuePairs.Add("DBContextNameSpace", tbDbContextNameSpace.Text);
             keyValuePairs.Add("DBContextName", tbDbContext.Text);
             keyValuePairs.Add("dbContextInstanceName", tbdbContextInstance.Text);
+
+            keyValuePairs.Add("RepositoryGenaric", tbRepositoryGenaric.Text);
+            keyValuePairs.Add("DTONameSpace", tbDTONameSpace.Text);
+            keyValuePairs.Add("ControllerNameSpace", tbControllerNameSpace.Text); 
+            keyValuePairs.Add("ServiceInterface", tbServiceInterface.Text); 
+            keyValuePairs.Add("ServiceNameSpace", tbServiceNameSpace.Text);  
 
             string fileName = path + "//" + "data.txt";
             char delimiter = '=';
