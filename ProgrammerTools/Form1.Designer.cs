@@ -75,6 +75,7 @@ namespace ProgrammerTools
             this.label19 = new System.Windows.Forms.Label();
             this.tbControllerNameSpace = new System.Windows.Forms.TextBox();
             this.gpCheckBoxs = new System.Windows.Forms.GroupBox();
+            this.cbControllerMVC = new System.Windows.Forms.CheckBox();
             this.cbCustomFile = new System.Windows.Forms.CheckBox();
             this.cbMapDToToMdel = new System.Windows.Forms.CheckBox();
             this.cbControllers = new System.Windows.Forms.CheckBox();
@@ -91,7 +92,8 @@ namespace ProgrammerTools
             this.cbSaveConfig = new System.Windows.Forms.CheckBox();
             this.rtUsingAdditonal = new System.Windows.Forms.RichTextBox();
             this.label23 = new System.Windows.Forms.Label();
-            this.cbControllerMVC = new System.Windows.Forms.CheckBox();
+            this.tbInhirit = new System.Windows.Forms.TextBox();
+            this.cbBaseClass = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -103,7 +105,7 @@ namespace ProgrammerTools
             // tbSelectedPath
             // 
             this.tbSelectedPath.Location = new System.Drawing.Point(361, 97);
-            this.tbSelectedPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbSelectedPath.Margin = new System.Windows.Forms.Padding(4);
             this.tbSelectedPath.Name = "tbSelectedPath";
             this.tbSelectedPath.Size = new System.Drawing.Size(265, 22);
             this.tbSelectedPath.TabIndex = 0;
@@ -121,9 +123,9 @@ namespace ProgrammerTools
             // btnSelectModels
             // 
             this.btnSelectModels.Location = new System.Drawing.Point(33, 145);
-            this.btnSelectModels.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSelectModels.Margin = new System.Windows.Forms.Padding(4);
             this.btnSelectModels.Name = "btnSelectModels";
-            this.btnSelectModels.Size = new System.Drawing.Size(275, 25);
+            this.btnSelectModels.Size = new System.Drawing.Size(273, 25);
             this.btnSelectModels.TabIndex = 2;
             this.btnSelectModels.Text = "Select Models";
             this.btnSelectModels.UseVisualStyleBackColor = true;
@@ -134,7 +136,7 @@ namespace ProgrammerTools
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 16;
             this.listBox1.Location = new System.Drawing.Point(33, 175);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(4);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(273, 404);
             this.listBox1.TabIndex = 3;
@@ -142,7 +144,7 @@ namespace ProgrammerTools
             // btnRemove
             // 
             this.btnRemove.Location = new System.Drawing.Point(193, 598);
-            this.btnRemove.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemove.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(115, 25);
             this.btnRemove.TabIndex = 2;
@@ -163,7 +165,7 @@ namespace ProgrammerTools
             // btnSelectRepoPath
             // 
             this.btnSelectRepoPath.Location = new System.Drawing.Point(636, 98);
-            this.btnSelectRepoPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSelectRepoPath.Margin = new System.Windows.Forms.Padding(4);
             this.btnSelectRepoPath.Name = "btnSelectRepoPath";
             this.btnSelectRepoPath.Size = new System.Drawing.Size(103, 25);
             this.btnSelectRepoPath.TabIndex = 2;
@@ -174,7 +176,7 @@ namespace ProgrammerTools
             // btnCreate
             // 
             this.btnCreate.Location = new System.Drawing.Point(1172, 539);
-            this.btnCreate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCreate.Margin = new System.Windows.Forms.Padding(4);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(236, 60);
             this.btnCreate.TabIndex = 2;
@@ -185,7 +187,7 @@ namespace ProgrammerTools
             // tbRepoNameSpace
             // 
             this.tbRepoNameSpace.Location = new System.Drawing.Point(8, 41);
-            this.tbRepoNameSpace.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbRepoNameSpace.Margin = new System.Windows.Forms.Padding(4);
             this.tbRepoNameSpace.Name = "tbRepoNameSpace";
             this.tbRepoNameSpace.Size = new System.Drawing.Size(344, 22);
             this.tbRepoNameSpace.TabIndex = 0;
@@ -204,7 +206,7 @@ namespace ProgrammerTools
             // tbDomainModels
             // 
             this.tbDomainModels.Location = new System.Drawing.Point(8, 44);
-            this.tbDomainModels.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbDomainModels.Margin = new System.Windows.Forms.Padding(4);
             this.tbDomainModels.Name = "tbDomainModels";
             this.tbDomainModels.Size = new System.Drawing.Size(344, 22);
             this.tbDomainModels.TabIndex = 0;
@@ -223,7 +225,7 @@ namespace ProgrammerTools
             // tbDomainInterface
             // 
             this.tbDomainInterface.Location = new System.Drawing.Point(8, 91);
-            this.tbDomainInterface.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbDomainInterface.Margin = new System.Windows.Forms.Padding(4);
             this.tbDomainInterface.Name = "tbDomainInterface";
             this.tbDomainInterface.Size = new System.Drawing.Size(344, 22);
             this.tbDomainInterface.TabIndex = 0;
@@ -242,7 +244,7 @@ namespace ProgrammerTools
             // tbDbContext
             // 
             this.tbDbContext.Location = new System.Drawing.Point(12, 101);
-            this.tbDbContext.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbDbContext.Margin = new System.Windows.Forms.Padding(4);
             this.tbDbContext.Name = "tbDbContext";
             this.tbDbContext.Size = new System.Drawing.Size(344, 22);
             this.tbDbContext.TabIndex = 0;
@@ -261,7 +263,7 @@ namespace ProgrammerTools
             // tbDbContextNameSpace
             // 
             this.tbDbContextNameSpace.Location = new System.Drawing.Point(12, 50);
-            this.tbDbContextNameSpace.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbDbContextNameSpace.Margin = new System.Windows.Forms.Padding(4);
             this.tbDbContextNameSpace.Name = "tbDbContextNameSpace";
             this.tbDbContextNameSpace.Size = new System.Drawing.Size(344, 22);
             this.tbDbContextNameSpace.TabIndex = 0;
@@ -291,7 +293,7 @@ namespace ProgrammerTools
             // tbModelName
             // 
             this.tbModelName.Location = new System.Drawing.Point(33, 98);
-            this.tbModelName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbModelName.Margin = new System.Windows.Forms.Padding(4);
             this.tbModelName.Name = "tbModelName";
             this.tbModelName.Size = new System.Drawing.Size(200, 22);
             this.tbModelName.TabIndex = 0;
@@ -309,7 +311,7 @@ namespace ProgrammerTools
             // btnAddNewModel
             // 
             this.btnAddNewModel.Location = new System.Drawing.Point(241, 98);
-            this.btnAddNewModel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddNewModel.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddNewModel.Name = "btnAddNewModel";
             this.btnAddNewModel.Size = new System.Drawing.Size(67, 25);
             this.btnAddNewModel.TabIndex = 2;
@@ -330,7 +332,7 @@ namespace ProgrammerTools
             // btnRemoveAll
             // 
             this.btnRemoveAll.Location = new System.Drawing.Point(37, 598);
-            this.btnRemoveAll.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRemoveAll.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveAll.Name = "btnRemoveAll";
             this.btnRemoveAll.Size = new System.Drawing.Size(116, 25);
             this.btnRemoveAll.TabIndex = 2;
@@ -352,7 +354,7 @@ namespace ProgrammerTools
             // tbdbContextInstance
             // 
             this.tbdbContextInstance.Location = new System.Drawing.Point(12, 151);
-            this.tbdbContextInstance.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbdbContextInstance.Margin = new System.Windows.Forms.Padding(4);
             this.tbdbContextInstance.Name = "tbdbContextInstance";
             this.tbdbContextInstance.Size = new System.Drawing.Size(344, 22);
             this.tbdbContextInstance.TabIndex = 0;
@@ -371,7 +373,7 @@ namespace ProgrammerTools
             // tbRepositoryGenaric
             // 
             this.tbRepositoryGenaric.Location = new System.Drawing.Point(8, 97);
-            this.tbRepositoryGenaric.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbRepositoryGenaric.Margin = new System.Windows.Forms.Padding(4);
             this.tbRepositoryGenaric.Name = "tbRepositoryGenaric";
             this.tbRepositoryGenaric.Size = new System.Drawing.Size(344, 22);
             this.tbRepositoryGenaric.TabIndex = 0;
@@ -397,9 +399,9 @@ namespace ProgrammerTools
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.tbServiceNameSpace);
             this.groupBox1.Location = new System.Drawing.Point(767, 145);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(373, 214);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
@@ -408,7 +410,7 @@ namespace ProgrammerTools
             // tbDTONameSpace
             // 
             this.tbDTONameSpace.Location = new System.Drawing.Point(12, 39);
-            this.tbDTONameSpace.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbDTONameSpace.Margin = new System.Windows.Forms.Padding(4);
             this.tbDTONameSpace.Name = "tbDTONameSpace";
             this.tbDTONameSpace.Size = new System.Drawing.Size(344, 22);
             this.tbDTONameSpace.TabIndex = 0;
@@ -447,7 +449,7 @@ namespace ProgrammerTools
             // tbServiceInterface
             // 
             this.tbServiceInterface.Location = new System.Drawing.Point(12, 110);
-            this.tbServiceInterface.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbServiceInterface.Margin = new System.Windows.Forms.Padding(4);
             this.tbServiceInterface.Name = "tbServiceInterface";
             this.tbServiceInterface.Size = new System.Drawing.Size(344, 22);
             this.tbServiceInterface.TabIndex = 0;
@@ -466,7 +468,7 @@ namespace ProgrammerTools
             // tbServiceNameSpace
             // 
             this.tbServiceNameSpace.Location = new System.Drawing.Point(12, 169);
-            this.tbServiceNameSpace.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbServiceNameSpace.Margin = new System.Windows.Forms.Padding(4);
             this.tbServiceNameSpace.Name = "tbServiceNameSpace";
             this.tbServiceNameSpace.Size = new System.Drawing.Size(344, 22);
             this.tbServiceNameSpace.TabIndex = 0;
@@ -481,9 +483,9 @@ namespace ProgrammerTools
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Location = new System.Drawing.Point(365, 145);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(373, 188);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
@@ -496,9 +498,9 @@ namespace ProgrammerTools
             this.groupBox3.Controls.Add(this.tbDomainInterface);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Location = new System.Drawing.Point(365, 341);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox3.Size = new System.Drawing.Size(373, 129);
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
@@ -511,9 +513,9 @@ namespace ProgrammerTools
             this.groupBox4.Controls.Add(this.tbRepositoryGenaric);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Location = new System.Drawing.Point(365, 478);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox4.Size = new System.Drawing.Size(373, 142);
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
@@ -524,9 +526,9 @@ namespace ProgrammerTools
             this.groupBox5.Controls.Add(this.label19);
             this.groupBox5.Controls.Add(this.tbControllerNameSpace);
             this.groupBox5.Location = new System.Drawing.Point(767, 367);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox5.Size = new System.Drawing.Size(373, 90);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
@@ -545,7 +547,7 @@ namespace ProgrammerTools
             // tbControllerNameSpace
             // 
             this.tbControllerNameSpace.Location = new System.Drawing.Point(12, 50);
-            this.tbControllerNameSpace.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbControllerNameSpace.Margin = new System.Windows.Forms.Padding(4);
             this.tbControllerNameSpace.Name = "tbControllerNameSpace";
             this.tbControllerNameSpace.Size = new System.Drawing.Size(344, 22);
             this.tbControllerNameSpace.TabIndex = 0;
@@ -557,6 +559,7 @@ namespace ProgrammerTools
             this.gpCheckBoxs.Controls.Add(this.cbCustomFile);
             this.gpCheckBoxs.Controls.Add(this.cbMapDToToMdel);
             this.gpCheckBoxs.Controls.Add(this.cbControllers);
+            this.gpCheckBoxs.Controls.Add(this.cbBaseClass);
             this.gpCheckBoxs.Controls.Add(this.cbDTOs);
             this.gpCheckBoxs.Controls.Add(this.cbServiceInterface);
             this.gpCheckBoxs.Controls.Add(this.cbServices);
@@ -566,20 +569,32 @@ namespace ProgrammerTools
             this.gpCheckBoxs.Controls.Add(this.cbRepository);
             this.gpCheckBoxs.Controls.Add(this.cbAll);
             this.gpCheckBoxs.Controls.Add(this.btnCustom);
-            this.gpCheckBoxs.Location = new System.Drawing.Point(1172, 66);
-            this.gpCheckBoxs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gpCheckBoxs.Controls.Add(this.tbInhirit);
+            this.gpCheckBoxs.Location = new System.Drawing.Point(1172, 46);
+            this.gpCheckBoxs.Margin = new System.Windows.Forms.Padding(4);
             this.gpCheckBoxs.Name = "gpCheckBoxs";
-            this.gpCheckBoxs.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gpCheckBoxs.Size = new System.Drawing.Size(236, 434);
+            this.gpCheckBoxs.Padding = new System.Windows.Forms.Padding(4);
+            this.gpCheckBoxs.Size = new System.Drawing.Size(236, 454);
             this.gpCheckBoxs.TabIndex = 12;
             this.gpCheckBoxs.TabStop = false;
             this.gpCheckBoxs.Text = "Generate";
             // 
+            // cbControllerMVC
+            // 
+            this.cbControllerMVC.AutoSize = true;
+            this.cbControllerMVC.Location = new System.Drawing.Point(49, 356);
+            this.cbControllerMVC.Margin = new System.Windows.Forms.Padding(4);
+            this.cbControllerMVC.Name = "cbControllerMVC";
+            this.cbControllerMVC.Size = new System.Drawing.Size(118, 20);
+            this.cbControllerMVC.TabIndex = 0;
+            this.cbControllerMVC.Text = "MVC Controller";
+            this.cbControllerMVC.UseVisualStyleBackColor = true;
+            // 
             // cbCustomFile
             // 
             this.cbCustomFile.AutoSize = true;
-            this.cbCustomFile.Location = new System.Drawing.Point(49, 327);
-            this.cbCustomFile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbCustomFile.Location = new System.Drawing.Point(49, 385);
+            this.cbCustomFile.Margin = new System.Windows.Forms.Padding(4);
             this.cbCustomFile.Name = "cbCustomFile";
             this.cbCustomFile.Size = new System.Drawing.Size(99, 20);
             this.cbCustomFile.TabIndex = 0;
@@ -589,8 +604,8 @@ namespace ProgrammerTools
             // cbMapDToToMdel
             // 
             this.cbMapDToToMdel.AutoSize = true;
-            this.cbMapDToToMdel.Location = new System.Drawing.Point(49, 270);
-            this.cbMapDToToMdel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbMapDToToMdel.Location = new System.Drawing.Point(49, 328);
+            this.cbMapDToToMdel.Margin = new System.Windows.Forms.Padding(4);
             this.cbMapDToToMdel.Name = "cbMapDToToMdel";
             this.cbMapDToToMdel.Size = new System.Drawing.Size(150, 20);
             this.cbMapDToToMdel.TabIndex = 0;
@@ -600,8 +615,8 @@ namespace ProgrammerTools
             // cbControllers
             // 
             this.cbControllers.AutoSize = true;
-            this.cbControllers.Location = new System.Drawing.Point(49, 241);
-            this.cbControllers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbControllers.Location = new System.Drawing.Point(49, 299);
+            this.cbControllers.Margin = new System.Windows.Forms.Padding(4);
             this.cbControllers.Name = "cbControllers";
             this.cbControllers.Size = new System.Drawing.Size(117, 20);
             this.cbControllers.TabIndex = 0;
@@ -612,7 +627,7 @@ namespace ProgrammerTools
             // 
             this.cbDTOs.AutoSize = true;
             this.cbDTOs.Location = new System.Drawing.Point(49, 166);
-            this.cbDTOs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbDTOs.Margin = new System.Windows.Forms.Padding(4);
             this.cbDTOs.Name = "cbDTOs";
             this.cbDTOs.Size = new System.Drawing.Size(65, 20);
             this.cbDTOs.TabIndex = 0;
@@ -623,8 +638,8 @@ namespace ProgrammerTools
             // cbServiceInterface
             // 
             this.cbServiceInterface.AutoSize = true;
-            this.cbServiceInterface.Location = new System.Drawing.Point(49, 188);
-            this.cbServiceInterface.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbServiceInterface.Location = new System.Drawing.Point(49, 246);
+            this.cbServiceInterface.Margin = new System.Windows.Forms.Padding(4);
             this.cbServiceInterface.Name = "cbServiceInterface";
             this.cbServiceInterface.Size = new System.Drawing.Size(129, 20);
             this.cbServiceInterface.TabIndex = 0;
@@ -634,8 +649,8 @@ namespace ProgrammerTools
             // cbServices
             // 
             this.cbServices.AutoSize = true;
-            this.cbServices.Location = new System.Drawing.Point(49, 213);
-            this.cbServices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbServices.Location = new System.Drawing.Point(49, 271);
+            this.cbServices.Margin = new System.Windows.Forms.Padding(4);
             this.cbServices.Name = "cbServices";
             this.cbServices.Size = new System.Drawing.Size(82, 20);
             this.cbServices.TabIndex = 0;
@@ -646,7 +661,7 @@ namespace ProgrammerTools
             // 
             this.cbIUnitOfWork.AutoSize = true;
             this.cbIUnitOfWork.Location = new System.Drawing.Point(49, 138);
-            this.cbIUnitOfWork.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbIUnitOfWork.Margin = new System.Windows.Forms.Padding(4);
             this.cbIUnitOfWork.Name = "cbIUnitOfWork";
             this.cbIUnitOfWork.Size = new System.Drawing.Size(96, 20);
             this.cbIUnitOfWork.TabIndex = 0;
@@ -657,7 +672,7 @@ namespace ProgrammerTools
             // 
             this.cbUnitOfWork.AutoSize = true;
             this.cbUnitOfWork.Location = new System.Drawing.Point(49, 110);
-            this.cbUnitOfWork.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbUnitOfWork.Margin = new System.Windows.Forms.Padding(4);
             this.cbUnitOfWork.Name = "cbUnitOfWork";
             this.cbUnitOfWork.Size = new System.Drawing.Size(105, 20);
             this.cbUnitOfWork.TabIndex = 0;
@@ -668,7 +683,7 @@ namespace ProgrammerTools
             // 
             this.cbIRepository.AutoSize = true;
             this.cbIRepository.Location = new System.Drawing.Point(49, 81);
-            this.cbIRepository.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbIRepository.Margin = new System.Windows.Forms.Padding(4);
             this.cbIRepository.Name = "cbIRepository";
             this.cbIRepository.Size = new System.Drawing.Size(98, 20);
             this.cbIRepository.TabIndex = 0;
@@ -679,7 +694,7 @@ namespace ProgrammerTools
             // 
             this.cbRepository.AutoSize = true;
             this.cbRepository.Location = new System.Drawing.Point(49, 53);
-            this.cbRepository.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbRepository.Margin = new System.Windows.Forms.Padding(4);
             this.cbRepository.Name = "cbRepository";
             this.cbRepository.Size = new System.Drawing.Size(95, 20);
             this.cbRepository.TabIndex = 0;
@@ -690,7 +705,7 @@ namespace ProgrammerTools
             // 
             this.cbAll.AutoSize = true;
             this.cbAll.Location = new System.Drawing.Point(21, 25);
-            this.cbAll.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbAll.Margin = new System.Windows.Forms.Padding(4);
             this.cbAll.Name = "cbAll";
             this.cbAll.Size = new System.Drawing.Size(44, 20);
             this.cbAll.TabIndex = 0;
@@ -701,8 +716,8 @@ namespace ProgrammerTools
             // 
             // btnCustom
             // 
-            this.btnCustom.Location = new System.Drawing.Point(107, 394);
-            this.btnCustom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCustom.Location = new System.Drawing.Point(117, 422);
+            this.btnCustom.Margin = new System.Windows.Forms.Padding(4);
             this.btnCustom.Name = "btnCustom";
             this.btnCustom.Size = new System.Drawing.Size(113, 32);
             this.btnCustom.TabIndex = 2;
@@ -724,7 +739,7 @@ namespace ProgrammerTools
             // 
             this.cbSaveConfig.AutoSize = true;
             this.cbSaveConfig.Location = new System.Drawing.Point(1172, 511);
-            this.cbSaveConfig.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbSaveConfig.Margin = new System.Windows.Forms.Padding(4);
             this.cbSaveConfig.Name = "cbSaveConfig";
             this.cbSaveConfig.Size = new System.Drawing.Size(163, 20);
             this.cbSaveConfig.TabIndex = 0;
@@ -734,7 +749,7 @@ namespace ProgrammerTools
             // rtUsingAdditonal
             // 
             this.rtUsingAdditonal.Location = new System.Drawing.Point(781, 66);
-            this.rtUsingAdditonal.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtUsingAdditonal.Margin = new System.Windows.Forms.Padding(4);
             this.rtUsingAdditonal.Name = "rtUsingAdditonal";
             this.rtUsingAdditonal.Size = new System.Drawing.Size(357, 70);
             this.rtUsingAdditonal.TabIndex = 13;
@@ -751,16 +766,27 @@ namespace ProgrammerTools
             this.label23.TabIndex = 1;
             this.label23.Text = "Using [Addtional to Services] ";
             // 
-            // cbControllerMVC
+            // tbInhirit
             // 
-            this.cbControllerMVC.AutoSize = true;
-            this.cbControllerMVC.Location = new System.Drawing.Point(49, 298);
-            this.cbControllerMVC.Margin = new System.Windows.Forms.Padding(4);
-            this.cbControllerMVC.Name = "cbControllerMVC";
-            this.cbControllerMVC.Size = new System.Drawing.Size(118, 20);
-            this.cbControllerMVC.TabIndex = 0;
-            this.cbControllerMVC.Text = "MVC Controller";
-            this.cbControllerMVC.UseVisualStyleBackColor = true;
+            this.tbInhirit.Enabled = false;
+            this.tbInhirit.Location = new System.Drawing.Point(70, 211);
+            this.tbInhirit.Margin = new System.Windows.Forms.Padding(4);
+            this.tbInhirit.Name = "tbInhirit";
+            this.tbInhirit.Size = new System.Drawing.Size(149, 22);
+            this.tbInhirit.TabIndex = 0;
+            this.tbInhirit.Text = "BaseClassDTO";
+            // 
+            // cbBaseClass
+            // 
+            this.cbBaseClass.AutoSize = true;
+            this.cbBaseClass.Location = new System.Drawing.Point(70, 188);
+            this.cbBaseClass.Margin = new System.Windows.Forms.Padding(4);
+            this.cbBaseClass.Name = "cbBaseClass";
+            this.cbBaseClass.Size = new System.Drawing.Size(64, 20);
+            this.cbBaseClass.TabIndex = 0;
+            this.cbBaseClass.Text = "Inherit";
+            this.cbBaseClass.UseVisualStyleBackColor = true;
+            this.cbBaseClass.CheckedChanged += new System.EventHandler(this.cbBaseClass_CheckedChanged);
             // 
             // Form1
             // 
@@ -793,7 +819,7 @@ namespace ProgrammerTools
             this.Controls.Add(this.tbModelName);
             this.Controls.Add(this.tbSelectedPath);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Developer Helper";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -877,5 +903,7 @@ namespace ProgrammerTools
         private RichTextBox rtUsingAdditonal;
         private Label label23;
         private CheckBox cbControllerMVC;
+        private TextBox tbInhirit;
+        private CheckBox cbBaseClass;
     }
 }

@@ -244,20 +244,23 @@ namespace ProgrammerTools
         }
         private void CreateDTOGroup(List<string> sFilesNames, string path)
         {
-
-            path += "\\" + "DTOs";
+            if (cbBaseClass.Checked)
+                baseClass = " : "+ tbInhirit.Text;
+                path += "\\" + "DTOs";
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
             foreach (var modelName in sFileNames)
             { getDataFromModel(modelName, sDirectory, path); }
         }
+        string baseClass=string.Empty;
         public void getDataFromModel(string modelName, string FilePath, string outPutPath)
         {
+
             StringBuilder dataForDTO = new StringBuilder();
             dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
             dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class " + modelName + "DTO");
+            dataForDTO.AppendLine("    public class " + modelName + "DTO"+baseClass);
             dataForDTO.AppendLine("    {");
             dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
@@ -954,7 +957,12 @@ namespace ProgrammerTools
 
         private void cbDTOs_CheckedChanged(object sender, EventArgs e)
         {
+          
+        }
 
+        private void cbBaseClass_CheckedChanged(object sender, EventArgs e)
+        {
+            tbInhirit.Enabled = cbBaseClass.Checked;
         }
     }
 }
