@@ -474,7 +474,7 @@ namespace ProgrammerTools
             data.AppendLine("        }");
             //Add Methoud
             data.AppendLine("        [HttpGet(\"{ID}\")]");
-            data.AppendLine("        public async Task<RequestResult> Get" + modelName + "ByID(int ID)");
+            data.AppendLine("        public async Task<RequestResult> ByID(int ID)");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.Get" + modelName + "ByID(ID);");
             data.AppendLine("            return new RequestResult { IsSuccess = true, Count = 1, Obj = new { Result } }; ");
@@ -482,7 +482,7 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             data.AppendLine("        [HttpGet]");
-            data.AppendLine("        public async Task<RequestResult> GetAll" + modelName + "()");
+            data.AppendLine("        public async Task<RequestResult> All()");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
             data.AppendLine("            return new RequestResult { IsSuccess = true, Obj = new {  Result }, Count = Result.Count() };");
@@ -490,7 +490,7 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             data.AppendLine("        [HttpPost]");
-            data.AppendLine("        public async Task<RequestResult> Add" + modelName + "(" + modelName + "DTO model)");
+            data.AppendLine("        public async Task<RequestResult> Create(" + modelName + "DTO model)");
             data.AppendLine("        {");
             data.AppendLine("            if (model == null)");
             data.AppendLine("            return new RequestResult { IsSuccess = false, Message = \""+"Empty"+"\"};");
@@ -503,7 +503,7 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             data.AppendLine("        [HttpPut]");
-            data.AppendLine("        public async Task<RequestResult> Update" + modelName + "(" + modelName + "DTO model)");
+            data.AppendLine("        public async Task<RequestResult> Update(" + modelName + "DTO model)");
             data.AppendLine("        {");
             data.AppendLine("            if (model == null)");
             data.AppendLine("            return new RequestResult { IsSuccess = false, Message = \""+"Empty"+ "\" };");
@@ -517,9 +517,9 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             data.AppendLine("        [HttpDelete(\"{ID}\")]");
-            data.AppendLine("        public async Task<RequestResult> Delete" + modelName + "(int ID)");
+            data.AppendLine("        public async Task<RequestResult> Delete(int ID)");
             data.AppendLine("        {");
-            data.AppendLine("            var entity = await _Service.GetCodeCurrencyByID(ID);");
+            data.AppendLine("            var entity = await _Service.Get"+modelName+"ByID(ID);");
             data.AppendLine("             if (entity == null)");
             data.AppendLine("                return new RequestResult { IsSuccess = false, Message = \""+"Not Exist "+ "\"};");
             data.AppendLine("            var Result = await _Service.Delete" + modelName + "(ID);");
