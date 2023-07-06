@@ -473,7 +473,7 @@ namespace ProgrammerTools
             data.AppendLine("            _Service = service;");
             data.AppendLine("        }");
             //Add Methoud
-            data.AppendLine("        [HttpGet(\"{ID}\")]");
+            data.AppendLine("        [HttpGet]");
             data.AppendLine("        public async Task<RequestResult> ByID(int ID)");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.Get" + modelName + "ByID(ID);");
@@ -516,7 +516,7 @@ namespace ProgrammerTools
             data.AppendLine("        }");
             data.AppendLine("");
 
-            data.AppendLine("        [HttpDelete(\"{ID}\")]");
+            data.AppendLine("        [HttpDelete]");
             data.AppendLine("        public async Task<RequestResult> Delete(int ID)");
             data.AppendLine("        {");
             data.AppendLine("            var entity = await _Service.Get"+modelName+"ByID(ID);");
