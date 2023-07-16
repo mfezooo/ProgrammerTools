@@ -9,7 +9,7 @@ using System.Reflection.Emit;
 using System.Diagnostics;
 using System.Reflection;
 using System.Xml.Serialization;
-
+using System.ComponentModel;
 
 namespace ProgrammerTools
 {
@@ -156,7 +156,7 @@ namespace ProgrammerTools
             //Delete Methoud
             data.AppendLine("        public async Task<bool> Delete" + modelName + "(Guid " + modelName + "ID)");
             data.AppendLine("        {");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName+"Repository.FirstOrDefult(q => q.ID == "+modelName+"ID);");
+            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.FirstOrDefult(q => q.ID == " + modelName + "ID);");
             data.AppendLine("            Entity.IsDeleted = true;");
             data.AppendLine("            _unitOfWork.Complete();");
             data.AppendLine("            //Message = \"تم الحذف بنجاح\";");
@@ -165,36 +165,36 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             //GetAll  Methoud
-            data.AppendLine("        public async Task<IEnumerable<" + modelName+"DTO>> GetAll"+ modelName + "()");
+            data.AppendLine("        public async Task<IEnumerable<" + modelName + "DTO>> GetAll" + modelName + "()");
             data.AppendLine("         {");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName+"Repository.Find(c => c.IsDeleted == false);");
-            data.AppendLine("            var EntityList = _mapper.Map<IEnumerable<" + modelName+"DTO>>(Entity);");
-            data.AppendLine("            return EntityList;"); 
+            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.Find(c => c.IsDeleted == false);");
+            data.AppendLine("            var EntityList = _mapper.Map<IEnumerable<" + modelName + "DTO>>(Entity);");
+            data.AppendLine("            return EntityList;");
             data.AppendLine("        }");
             data.AppendLine("");
             //GetbyId  Methoud
-            data.AppendLine("        public async Task<" + modelName+"DTO> Get"+modelName+"ByID(Guid ID)");
+            data.AppendLine("        public async Task<" + modelName + "DTO> Get" + modelName + "ByID(Guid ID)");
             data.AppendLine("        {");
-            data.AppendLine("            var Entity = await _unitOfWork."+modelName+"Repository.Find(c => c.IsDeleted == false && c.ID == ID);");
-            data.AppendLine("            return _mapper.Map<"+modelName+"DTO>(Entity);"); 
+            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.Find(c => c.IsDeleted == false && c.ID == ID);");
+            data.AppendLine("            return _mapper.Map<" + modelName + "DTO>(Entity);");
             data.AppendLine("        }");
             data.AppendLine("");
 
             //UpdateBranch  Methoud
-            data.AppendLine("        public async Task<bool> Update" + modelName+"("+modelName+"DTO Model)");
+            data.AppendLine("        public async Task<bool> Update" + modelName + "(" + modelName + "DTO Model)");
             data.AppendLine("        {");
-            data.AppendLine("            var Entity = await _unitOfWork."+modelName+"Repository.Get(Model."+modelName+"ID);");
+            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.Get(Model." + modelName + "ID);");
             data.AppendLine("            _mapper.Map(Model, Entity);");
             data.AppendLine("            _unitOfWork.Complete();");
             data.AppendLine("            //Message = \"تم التعديل بنجاح\";");
             data.AppendLine("            return true;");
             data.AppendLine("        }");
-            data.AppendLine(""); 
+            data.AppendLine("");
 
             data.AppendLine("    }");
             data.AppendLine("}");
 
-             
+
             //using (FileStream fs = File.Create(path + "\\" + modelName + "Service.cs"))
             //{
             //    byte[] info = new UTF8Encoding(true).GetBytes(data.ToString()); 
@@ -259,7 +259,7 @@ namespace ProgrammerTools
             dataForDTO.AppendLine("{");
             dataForDTO.AppendLine("    public class " + modelName + "DTO");
             dataForDTO.AppendLine("    {");
-            dataForDTO.AppendLine("        public Guid "+ modelName + "ID { get; set; }");
+            dataForDTO.AppendLine("        public Guid " + modelName + "ID { get; set; }");
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
             StreamReader reader = new StreamReader(sFilePath);
@@ -393,6 +393,7 @@ namespace ProgrammerTools
         }
         private void btnCreate_Click(object sender, EventArgs e)
         {
+            //getCurrentProccess();
             if (!check())
                 return;
 
@@ -433,6 +434,42 @@ namespace ProgrammerTools
             Process.Start("explorer.exe", SelectedPath);
 
         }
+        private void getCurrentProccess()
+        {
+            string txt = "";
+
+            Process[] processes = Process.GetProcesses();
+            foreach (Process process in processes)
+            {
+                txt += "Process Name: " + process.ProcessName;
+                txt += "Process ID: " + process.Id;
+                txt += "-------------------------------------";
+                txt += "Modules:";
+                foreach (ProcessModule module in process.Modules)
+                {
+
+                    try
+                    {
+                        txt += "    Name:  " + module.ModuleName;
+                        txt += "    File Name:  " + module.FileName;
+                        txt += "    Memory Size: " + module.ModuleMemorySize;
+                        txt += "-------------------------------------";
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+
+                }
+            }
+            MessageBox.Show(txt);
+        }
+
+
+
+
+
+
         private void CreateControllersGroup(List<string> sFilesNames, string path)
         {
             path += "\\" + "ApiControllers";
@@ -447,29 +484,29 @@ namespace ProgrammerTools
             data.AppendLine("using Microsoft.AspNetCore.Mvc;");
             data.AppendLine("using " + tbDTONameSpace.Text + ";");
             data.AppendLine("using " + tbServiceInterface.Text + ";");
-            data.AppendLine("using StockApp.WebAPI.Controllers.Base;");   
+            data.AppendLine("using StockApp.WebAPI.Controllers.Base;");
             data.AppendLine("");
             data.AppendLine("namespace " + tbControllerNameSpace.Text);
             data.AppendLine("{");
             data.AppendLine("    public class " + modelName + "Controller : BaseController");
             data.AppendLine("    {");
-            data.AppendLine("    private readonly I"+modelName+"Service _Service;");
+            data.AppendLine("    private readonly I" + modelName + "Service _Service;");
 
-            data.AppendLine("        public " + modelName + "Controller(I"+modelName+"Service service)");
+            data.AppendLine("        public " + modelName + "Controller(I" + modelName + "Service service)");
             data.AppendLine("        {");
             data.AppendLine("            _Service = service;");
             data.AppendLine("        }");
             //Add Methoud
             data.AppendLine("        [HttpGet(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Get"+ modelName + "ByID(Guid ID)");
+            data.AppendLine("        public async Task<IActionResult> Get" + modelName + "ByID(Guid ID)");
             data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Get"+modelName+"ByID(ID);");
-            data.AppendLine("            return Ok(Result);"); 
+            data.AppendLine("            var Result = await _Service.Get" + modelName + "ByID(ID);");
+            data.AppendLine("            return Ok(Result);");
             data.AppendLine("        }");
             data.AppendLine("");
 
             data.AppendLine("        [HttpGet]");
-            data.AppendLine("        public async Task<IActionResult> GetAll"+modelName+"()");
+            data.AppendLine("        public async Task<IActionResult> GetAll" + modelName + "()");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
             data.AppendLine("            return Ok(Result);");
@@ -477,7 +514,7 @@ namespace ProgrammerTools
             data.AppendLine("");
 
             data.AppendLine("        [HttpPost]");
-            data.AppendLine("        public async Task<IActionResult> Add" + modelName + "("+ modelName + "DTO model)");
+            data.AppendLine("        public async Task<IActionResult> Add" + modelName + "(" + modelName + "DTO model)");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
             data.AppendLine("            if (Result == true)");
@@ -521,10 +558,10 @@ namespace ProgrammerTools
             data.AppendLine("        }");
             data.AppendLine("");
 
-            data.AppendLine(""); 
+            data.AppendLine("");
             data.AppendLine("    }");
             data.AppendLine("}");
-             
+
             string cFileName = path + "\\" + modelName + "Controller.cs";
             StreamWriter writer = new StreamWriter(cFileName, false);
             writer.Write(data.ToString());
@@ -566,7 +603,7 @@ namespace ProgrammerTools
                 fs.Write(info, 0, info.Length);
             }
         }
- 
+
 
         private void CreateCustomFileGroup(List<string> sFilesNames, string path)
         {
