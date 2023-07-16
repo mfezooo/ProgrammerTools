@@ -1,0 +1,12 @@
+outputPath=C:\Users\Fezo\Desktop\Generated\3
+RepositoryNameSpace=WeTechTour.DataAccess.Interfaces
+InterfaceNameSpace=WeTechTour.DataAccess.Repositories
+ModelsNameSpace=WeTech.Entities
+DBContextNameSpace=WeTechTour.DataAccess.Context
+DBContextName=DbContext
+dbContextInstanceName=_Context
+RepositoryGenaric=WeTech.Infrastructure
+DTONameSpace=WeTechTour.Service.DTO
+ControllerNameSpace=WeTech.Web.Controllers
+ServiceInterface=WeTechTour.Service.Interfaces
+ServiceNameSpace=WeTechTour.Service.Services
