@@ -433,15 +433,13 @@ namespace ProgrammerTools
         {
 
             StringBuilder dataForDTO = new StringBuilder();
-            dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
-            dataForDTO.AppendLine("using WeTech.Service.Common;");
+            dataForDTO.AppendLine("ing Volo.Abp.Application.Dtos;"); 
             dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
+            dataForDTO.AppendLine("namespace Wetech.Tourism.Lookup" );
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class Create" + modelName + "DTO");
+            dataForDTO.AppendLine("    public class AddEdit" + modelName + "DTO :EntityDto<int>");
             dataForDTO.AppendLine("    {"); 
-            string sFilePath = sDirectory + "\\" + modelName + ".cs";
-
+            string sFilePath = sDirectory + "\\" + modelName + ".cs"; 
             StreamReader reader = new StreamReader(sFilePath);
 
             string line;
@@ -464,15 +462,12 @@ namespace ProgrammerTools
                 {
                     continue;
                 }
-
-                //Do any edits to the line as needed
-                string editedLine = line.Replace(" Name ", " " + modelName + "Name");
-                dataForDTO.AppendLine(editedLine);
-                //Write the edited line to the output file
+                 
+                //string editedLine = line.Replace(" Name ", " " + modelName + "Name");
+                //dataForDTO.AppendLine(editedLine); 
             }
             reader.Close();
-            dataForDTO.AppendLine("        public bool IsActive { get; set; } = true;");
-            dataForDTO.AppendLine("        public int CreatedBy { get; set; }");
+          
             dataForDTO.AppendLine("    }");
             dataForDTO.AppendLine("}");
 
@@ -639,10 +634,7 @@ namespace ProgrammerTools
 
             sFileNames = new List<string>();
             GetFileNames();
-            string SelectedPath = tbSelectedPath.Text;
-
-
-
+            string SelectedPath = tbSelectedPath.Text; 
             if (cbRepository.Checked)
                 CreateRepositoryGroup(sFileNames, SelectedPath);
             if (cbIRepository.Checked)
