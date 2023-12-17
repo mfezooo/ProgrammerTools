@@ -125,9 +125,9 @@ namespace ProgrammerTools
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
             foreach (var modelName in sFileNames)
-            { CreateService(modelName, path); }
+            { CreateServiceOld(modelName, path); }
         }
-        public void CreateService(string modelName, string path)
+        public void CreateServiceOld(string modelName, string path)
         {
             StringBuilder data = new StringBuilder();
             data.AppendLine("using AutoMapper;");
@@ -305,33 +305,78 @@ namespace ProgrammerTools
             foreach (var modelName in sFileNames)
             { CreateServiceInterface(modelName, path); }
         }
-        public void CreateServiceInterface(string modelName, string path)
+        public void AbpCreatePagedAndSortedDto(string modelName, string path)
         {
             StringBuilder data = new StringBuilder();
-            data.AppendLine("using " + tbDTONameSpace.Text + ";");
-            data.AppendLine("namespace " + tbServiceInterface.Text);
+            data.AppendLine("using Volo.Abp.Application.Dtos;"); 
+            data.AppendLine("");
+            data.AppendLine("namespace Wetech.Tourism");
             data.AppendLine("{");
-            data.AppendLine("    public interface I" + modelName + "Service");
+            data.AppendLine("    public class "+modelName+"PagedAndSortedResultRequestDto : PagedAndSortedResultRequestDto");
             data.AppendLine("    {");
-            data.AppendLine("        Task<" + modelName + "DTO> Get" + modelName + "ByID(string ID);");
-            data.AppendLine("        Task<Update" + modelName + "DTO> Get" + modelName + "ByIDToUpdate(string ID);");
-            data.AppendLine("        Task<IEnumerable<" + modelName + "DTO>> GetAll" + modelName + "();");
-            data.AppendLine("        Task<bool> Add" + modelName + "(Create" + modelName + "DTO Model);");
-            data.AppendLine("        Task<bool> Update" + modelName + "(Update" + modelName + "DTO Model);");
-            data.AppendLine("        Task<bool> Delete" + modelName + "(string " + modelName + "ID);");
+            data.AppendLine("        public string? Filter { get; set; }");
             data.AppendLine("    }");
             data.AppendLine("}");
 
-
+            path += "\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             // Create the file, or overwrite if the file exists. 
-            using (FileStream fs = File.Create(path + "\\I" + modelName + "Service.cs"))
+            using (FileStream fs = File.Create(path + "\\I" + modelName + "PagedAndSortedResultRequestDto.cs"))
             {
                 byte[] info = new UTF8Encoding(true).GetBytes(data.ToString());
                 // Add some information to the file.
                 fs.Write(info, 0, info.Length);
             }
+        }
+        public void AbpCreateServiceInterface(string modelName, string path)
+        {
+            StringBuilder data = new StringBuilder();
+            data.AppendLine("using Volo.Abp.Application.Services;");
+            data.AppendLine("using Wetech.Tourism.Lookup;");
+            data.AppendLine("");
+            data.AppendLine("namespace Wetech.Tourism");
+            data.AppendLine("{");
+            data.AppendLine("    public interface I" + modelName + "AppService : " + "ICrudAppService<" + modelName + "Dto, int, " + modelName + "PagedAndSortedResultRequestDto, AddEdit" + modelName + "Dto>");
+            data.AppendLine("    {");
+            data.AppendLine("    }");
+            data.AppendLine("}");
 
+            path += "\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\I" + modelName + "AppService.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(data.ToString());
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void AbpCreateService(string modelName, string path)
+        {
+            StringBuilder data = new StringBuilder();
+            data.AppendLine("using Volo.Abp.Application.Services;");
+            data.AppendLine("using Volo.Abp.Domain.Repositories;");
+            data.AppendLine("using Wetech.Tourism.Lookup");
+            data.AppendLine("");
+            data.AppendLine("namespace Wetech.Tourism");
+            data.AppendLine("{");
+            data.AppendLine("    public class " + modelName + "AppService : CrudAppService<" + modelName + ", "+modelName+"Dto, int, "+modelName+"PagedAndSortedResultRequestDto, AddEdit"+modelName+"Dto>, I"+modelName+"AppService");
+            data.AppendLine("    {");
+            data.AppendLine("        public " + modelName + "AppService(IRepository<" + modelName + ", int> repository) : base(repository)");
+            data.AppendLine("    {");
+            data.AppendLine("    }");
+            data.AppendLine("    }");
+            data.AppendLine("}");
 
+            path += "\\Service\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\" + modelName + "AppService.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(data.ToString());
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
         }
         //public void CreateServiceInterface(string modelName, string path)
         //{
@@ -363,31 +408,32 @@ namespace ProgrammerTools
         private void CreateDTOGroup(List<string> sFilesNames, string path)
         {
             if (cbBaseClass.Checked)
-                baseClass = " : "+ tbInhirit.Text;
-                path += "\\" + "DTOs";
+                baseClass = " : " + tbInhirit.Text;
+            path += "\\" + "DTOs";
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
             foreach (var modelName in sFileNames)
             {
-                getDataFromModel(modelName, sDirectory, path);
-                getDataFromModelToCreateDTO(modelName, sDirectory, path);
-                getDataFromModelToUpdateDTO(modelName, sDirectory, path); 
-            
+                AbpGetDataFromModel(modelName, sDirectory, path);
+                AbpGetDataFromModelDTOAddEdit(modelName, sDirectory, path);
+                AbpCreateServiceInterface(modelName, path);
+                AbpCreateService(modelName, path);
+                AbpCreatePagedAndSortedDto(modelName, path);
             }
         }
-        string baseClass=string.Empty;
-        public void getDataFromModel(string modelName, string FilePath, string outPutPath)
+        string baseClass = ": EntityDto<int>";
+        string DtoUsing = "using Volo.Abp.Application.Dtos;";
+        string DtoNameSpace = "Wetech.Tourism.Lookup";
+        public void AbpGetDataFromModel(string modelName, string FilePath, string outPutPath)
         {
 
             StringBuilder dataForDTO = new StringBuilder();
-            dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
-            dataForDTO.AppendLine("using WeTech.Service.Common;");
+            dataForDTO.AppendLine(DtoUsing);
             dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
+            dataForDTO.AppendLine("namespace " + DtoNameSpace);
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class " + modelName + "DTO"+baseClass);
+            dataForDTO.AppendLine("    public class " + modelName + "Dto" + baseClass);
             dataForDTO.AppendLine("    {");
-            dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
             StreamReader reader = new StreamReader(sFilePath);
@@ -405,25 +451,89 @@ namespace ProgrammerTools
                     line.Trim().ToLower().StartsWith("public partial class") ||
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
-                    line.Trim().ToLower().StartsWith("namespace")||
-                    line.Trim().ToLower().Contains("()")||
-                    line.Trim().ToLower().Contains("HashSet<")
+                    line.Trim().ToLower().StartsWith("namespace") ||
+                    line.Trim().ToLower().Contains("()") ||
+                    line.Trim().ToLower().Contains("HashSet<") ||
+                    line.Trim().ToLower().Contains("int id {") ||
+                    line.Trim().ToLower().Contains("isdelete") ||
+                    line.Trim().ToLower().Contains("createdby") ||
+                    line.Trim().ToLower().Contains("createdon") ||
+                    line.Trim().ToLower().Contains("updatedby") ||
+                    line.Trim().ToLower().Contains("lastmodifieddate")||
+                    line.Trim().ToLower().Contains("\\\\")
                     )
                 {
                     continue;
                 }
 
-                //Do any edits to the line as needed
-                string editedLine = line.Replace(" Name ", " " + modelName + "Name");
+                string editedLine = line.Replace("protected", " ");
                 dataForDTO.AppendLine(editedLine);
-                //Write the edited line to the output file
             }
             reader.Close();
-            dataForDTO.AppendLine(" public string? EncId { get { return EncryptDecrypt.Encrypt("+ modelName+"ID.ToString()); } }");
+            //dataForDTO.AppendLine(" public string? EncId { get { return EncryptDecrypt.Encrypt("+ modelName+"ID.ToString()); } }");
             dataForDTO.AppendLine("    }");
             dataForDTO.AppendLine("}");
 
-            string cFileName = outPutPath + "\\" + modelName + "DTO.cs";
+            outPutPath += "\\" + modelName;
+            if (!System.IO.Directory.Exists(outPutPath)) System.IO.Directory.CreateDirectory(outPutPath);
+            string cFileName = outPutPath + "\\" + modelName + "Dto.cs";
+            StreamWriter writer = new StreamWriter(cFileName, false);
+            writer.Write(dataForDTO.ToString());
+            writer.Close();
+
+        }
+        public void AbpGetDataFromModelDTOAddEdit(string modelName, string FilePath, string outPutPath)
+        {
+
+            StringBuilder dataForDTO = new StringBuilder();
+            dataForDTO.AppendLine(DtoUsing);
+            dataForDTO.AppendLine("");
+            dataForDTO.AppendLine("namespace " + DtoNameSpace);
+            dataForDTO.AppendLine("{");
+            dataForDTO.AppendLine("    public class AddEdit" + modelName + "Dto" + baseClass);
+            dataForDTO.AppendLine("    {");
+            string sFilePath = sDirectory + "\\" + modelName + ".cs";
+
+            StreamReader reader = new StreamReader(sFilePath);
+
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (
+                          string.IsNullOrWhiteSpace(line) ||
+                    line.Trim().ToLower().StartsWith("using") ||
+                    line.Trim().ToLower().StartsWith("system") ||
+                    line.Trim().ToLower().StartsWith("{") ||
+                    line.Trim().ToLower().StartsWith("}") ||
+                    line.Trim().ToLower().StartsWith("public class") ||
+                    line.Trim().ToLower().StartsWith("public partial class") ||
+                    line.Trim().ToLower().StartsWith("[foreignkey") ||
+                    line.Trim().ToLower().StartsWith("public virtual ") ||
+                    line.Trim().ToLower().StartsWith("namespace") ||
+                    line.Trim().ToLower().Contains("()") ||
+                    line.Trim().ToLower().Contains("HashSet<") ||
+                    line.Trim().ToLower().Contains("int id {") ||
+                    line.Trim().ToLower().Contains("isdelete") ||
+                    line.Trim().ToLower().Contains("createdby") ||
+                    line.Trim().ToLower().Contains("createdon") ||
+                    line.Trim().ToLower().Contains("updatedby") ||
+                    line.Trim().ToLower().Contains("lastmodifieddate")
+                    )
+                {
+                    continue;
+                }
+
+                string editedLine = line.Replace("protected", " ");
+                dataForDTO.AppendLine(editedLine);
+            }
+            reader.Close();
+            //dataForDTO.AppendLine(" public string? EncId { get { return EncryptDecrypt.Encrypt("+ modelName+"ID.ToString()); } }");
+            dataForDTO.AppendLine("    }");
+            dataForDTO.AppendLine("}");
+
+            outPutPath += "\\" + modelName;
+            if (!System.IO.Directory.Exists(outPutPath)) System.IO.Directory.CreateDirectory(outPutPath);
+            string cFileName = outPutPath + "\\AddEdit" + modelName + "Dto.cs";
             StreamWriter writer = new StreamWriter(cFileName, false);
             writer.Write(dataForDTO.ToString());
             writer.Close();
@@ -433,13 +543,13 @@ namespace ProgrammerTools
         {
 
             StringBuilder dataForDTO = new StringBuilder();
-            dataForDTO.AppendLine("ing Volo.Abp.Application.Dtos;"); 
+            dataForDTO.AppendLine("ing Volo.Abp.Application.Dtos;");
             dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace Wetech.Tourism.Lookup" );
+            dataForDTO.AppendLine("namespace Wetech.Tourism.Lookup");
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class AddEdit" + modelName + "DTO :EntityDto<int>");
-            dataForDTO.AppendLine("    {"); 
-            string sFilePath = sDirectory + "\\" + modelName + ".cs"; 
+            dataForDTO.AppendLine("    public class AddEdit" + modelName + "Dto :EntityDto<int>");
+            dataForDTO.AppendLine("    {");
+            string sFilePath = sDirectory + "\\" + modelName + ".cs";
             StreamReader reader = new StreamReader(sFilePath);
 
             string line;
@@ -462,16 +572,16 @@ namespace ProgrammerTools
                 {
                     continue;
                 }
-                 
+
                 //string editedLine = line.Replace(" Name ", " " + modelName + "Name");
                 //dataForDTO.AppendLine(editedLine); 
             }
             reader.Close();
-          
+
             dataForDTO.AppendLine("    }");
             dataForDTO.AppendLine("}");
 
-            string cFileName = outPutPath + "\\" +"Create"+ modelName + "DTO.cs";
+            string cFileName = outPutPath + "\\" + "Create" + modelName + "Dto.cs";
             StreamWriter writer = new StreamWriter(cFileName, false);
             writer.Write(dataForDTO.ToString());
             writer.Close();
@@ -486,7 +596,7 @@ namespace ProgrammerTools
             dataForDTO.AppendLine("");
             dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class Update" + modelName + "DTO");
+            dataForDTO.AppendLine("    public class Update" + modelName + "Dto");
             dataForDTO.AppendLine("    {");
             dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
@@ -527,7 +637,7 @@ namespace ProgrammerTools
             dataForDTO.AppendLine("    }");
             dataForDTO.AppendLine("}");
 
-            string cFileName = outPutPath + "\\" + "Update" + modelName + "DTO.cs";
+            string cFileName = outPutPath + "\\" + "Update" + modelName + "Dto.cs";
             StreamWriter writer = new StreamWriter(cFileName, false);
             writer.Write(dataForDTO.ToString());
             writer.Close();
@@ -634,31 +744,34 @@ namespace ProgrammerTools
 
             sFileNames = new List<string>();
             GetFileNames();
-            string SelectedPath = tbSelectedPath.Text; 
-            if (cbRepository.Checked)
-                CreateRepositoryGroup(sFileNames, SelectedPath);
-            if (cbIRepository.Checked)
-                CreateIRepositoryGroup(sFileNames, SelectedPath);
-            if (cbUnitOfWork.Checked)
-                CreateUnitOfWork(sFileNames, SelectedPath);
-            if (cbIUnitOfWork.Checked)
-                CreateIUnitOfWork(sFileNames, SelectedPath);
-            if (cbCustomFile.Checked)
-                CreateCustomFileGroup(sFileNames, SelectedPath);
+            string SelectedPath = tbSelectedPath.Text;
             if (cbDTOs.Checked)
                 CreateDTOGroup(sFileNames, SelectedPath);
-            if (cbServiceInterface.Checked)
-                CreateServiceInterfaceGroup(sFileNames, SelectedPath);
-            if (cbServices.Checked)
-                CreateServiceGroup(sFileNames, SelectedPath);
-            if (cbMapDToToMdel.Checked)
-                CreateMapperGroup(sFileNames, SelectedPath);
-            if (cbControllers.Checked)
-                CreateControllersGroup(sFileNames, SelectedPath);
-            if (cbControllerMVC.Checked)
-                CreateControllersMVCGroup(sFileNames, SelectedPath);
-            if (cbRepository.Checked)
-                CreateAppDbContext(sFileNames, SelectedPath);
+
+
+            //if (cbRepository.Checked)
+            //    CreateRepositoryGroup(sFileNames, SelectedPath);
+            //if (cbIRepository.Checked)
+            //    CreateIRepositoryGroup(sFileNames, SelectedPath);
+            //if (cbUnitOfWork.Checked)
+            //    CreateUnitOfWork(sFileNames, SelectedPath);
+            //if (cbIUnitOfWork.Checked)
+            //    CreateIUnitOfWork(sFileNames, SelectedPath);
+            //if (cbCustomFile.Checked)
+            //    CreateCustomFileGroup(sFileNames, SelectedPath);
+
+            //if (cbServiceInterface.Checked)
+            //    CreateServiceInterfaceGroup(sFileNames, SelectedPath);
+            //if (cbServices.Checked)
+            //    CreateServiceGroup(sFileNames, SelectedPath);
+            //if (cbMapDToToMdel.Checked)
+            //    CreateMapperGroup(sFileNames, SelectedPath);
+            //if (cbControllers.Checked)
+            //    CreateControllersGroup(sFileNames, SelectedPath);
+            //if (cbControllerMVC.Checked)
+            //    CreateControllersMVCGroup(sFileNames, SelectedPath);
+            //if (cbRepository.Checked)
+            //    CreateAppDbContext(sFileNames, SelectedPath);
 
             if (cbSaveConfig.Checked)
                 CreateConfigFIle(SelectedPath);
@@ -725,7 +838,7 @@ namespace ProgrammerTools
             data.AppendLine("using Microsoft.AspNetCore.Mvc;");
             data.AppendLine("using Microsoft.Extensions.Localization;");
             data.AppendLine("using " + tbDTONameSpace.Text + ";");
-            data.AppendLine("using " + tbServiceInterface.Text + ";"); 
+            data.AppendLine("using " + tbServiceInterface.Text + ";");
             data.AppendLine("");
             data.AppendLine("namespace " + tbControllerNameSpace.Text);
             data.AppendLine("{");
@@ -743,7 +856,7 @@ namespace ProgrammerTools
             //Index
             data.AppendLine("        public IActionResult Index()");
             data.AppendLine("        {");
-            data.AppendLine("              return View();"); 
+            data.AppendLine("              return View();");
             data.AppendLine("        }");
             data.AppendLine("");
             //Create
@@ -755,13 +868,13 @@ namespace ProgrammerTools
             //Edit
             data.AppendLine("        public IActionResult Edit(string EncId)");
             data.AppendLine("        {");
-            data.AppendLine("            var entity = _Service.Get"+ modelName + "ByIDToUpdate(EncId).Result;");
+            data.AppendLine("            var entity = _Service.Get" + modelName + "ByIDToUpdate(EncId).Result;");
             data.AppendLine("            return View(entity);");
             data.AppendLine("        }");
             data.AppendLine("");
 
             //Add Methoud
-            data.AppendLine("        #region Methouds"); 
+            data.AppendLine("        #region Methouds");
 
             data.AppendLine("        [HttpGet]");
             data.AppendLine("        public async Task<IActionResult> GetAll()");
@@ -774,17 +887,17 @@ namespace ProgrammerTools
             data.AppendLine("        [HttpPost]");
             data.AppendLine("        public async Task<IActionResult> Create(Create" + modelName + "DTO model)");
             data.AppendLine("        {");
-            data.AppendLine("             model.CreatedBy = 8;"); 
+            data.AppendLine("             model.CreatedBy = 8;");
             data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
             data.AppendLine("            if (Result)");
-            data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });"); 
-            data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });"); 
+            data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });");
+            data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });");
             data.AppendLine("        }");
             data.AppendLine("");
 
             data.AppendLine("        [HttpPost]");
             data.AppendLine("        public async Task<IActionResult> Update([FromForm]Update" + modelName + "DTO model)");
-            data.AppendLine("        {"); 
+            data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.Update" + modelName + "(model);");
             data.AppendLine("            if (Result)");
             data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });");
@@ -834,7 +947,7 @@ namespace ProgrammerTools
             data.AppendLine("        }");
             //Add Methoud
             data.AppendLine("        [HttpGet(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Get"+ modelName + "ByID(int ID)");
+            data.AppendLine("        public async Task<IActionResult> Get" + modelName + "ByID(int ID)");
             data.AppendLine("        {");
             data.AppendLine("            var Result = await _Service.Get" + modelName + "ByID(ID);");
             data.AppendLine("            return Ok(Result);");
@@ -924,8 +1037,8 @@ namespace ProgrammerTools
                 data.AppendLine("               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src." + modelName + "ID))");
                 data.AppendLine("               .ReverseMap();");
                 data.AppendLine("            CreateMap<Create" + modelName + "DTO, " + modelName + ">();");
-                data.AppendLine("            CreateMap<" + modelName +",Update" + modelName + "DTO>()");
-                data.AppendLine("               .ForMember(dest => dest."+ modelName + "ID, opt => opt.MapFrom(src => src.Id ))");
+                data.AppendLine("            CreateMap<" + modelName + ",Update" + modelName + "DTO>()");
+                data.AppendLine("               .ForMember(dest => dest." + modelName + "ID, opt => opt.MapFrom(src => src.Id ))");
                 data.AppendLine("               .ReverseMap();");
                 data.AppendLine("        }");
                 data.AppendLine("");
@@ -1004,11 +1117,11 @@ namespace ProgrammerTools
                 tbControllerNameSpace.Text = keyValuePairs["ControllerNameSpace"] != null ? keyValuePairs["ControllerNameSpace"] : "";
                 tbServiceInterface.Text = keyValuePairs["ServiceInterface"] != null ? keyValuePairs["ServiceInterface"] : "";
                 tbServiceNameSpace.Text = keyValuePairs["ServiceNameSpace"] != null ? keyValuePairs["ServiceNameSpace"] : "";
-                 
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show("delete data.txt from application folder \n" + ex.Message );
+                MessageBox.Show("delete data.txt from application folder \n" + ex.Message);
             }
 
         }
@@ -1027,9 +1140,9 @@ namespace ProgrammerTools
 
             keyValuePairs.Add("RepositoryGenaric", tbRepositoryGenaric.Text);
             keyValuePairs.Add("DTONameSpace", tbDTONameSpace.Text);
-            keyValuePairs.Add("ControllerNameSpace", tbControllerNameSpace.Text); 
-            keyValuePairs.Add("ServiceInterface", tbServiceInterface.Text); 
-            keyValuePairs.Add("ServiceNameSpace", tbServiceNameSpace.Text);  
+            keyValuePairs.Add("ControllerNameSpace", tbControllerNameSpace.Text);
+            keyValuePairs.Add("ServiceInterface", tbServiceInterface.Text);
+            keyValuePairs.Add("ServiceNameSpace", tbServiceNameSpace.Text);
 
             string fileName = path + "//" + "data.txt";
             char delimiter = '=';
@@ -1234,7 +1347,7 @@ namespace ProgrammerTools
 
         private void cbDTOs_CheckedChanged(object sender, EventArgs e)
         {
-          
+
         }
 
         private void cbBaseClass_CheckedChanged(object sender, EventArgs e)
