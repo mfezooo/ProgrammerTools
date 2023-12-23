@@ -303,7 +303,7 @@ namespace ProgrammerTools
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
             foreach (var modelName in sFileNames)
-            { CreateServiceInterface(modelName, path); }
+            { AbpCreateServiceInterface(modelName, path); }
         }
         public void AbpCreatePagedAndSortedDto(string modelName, string path)
         {
@@ -356,7 +356,7 @@ namespace ProgrammerTools
             StringBuilder data = new StringBuilder();
             data.AppendLine("using Volo.Abp.Application.Services;");
             data.AppendLine("using Volo.Abp.Domain.Repositories;");
-            data.AppendLine("using Wetech.Tourism.Lookup");
+            data.AppendLine("using Wetech.Tourism.Lookup;");
             data.AppendLine("");
             data.AppendLine("namespace Wetech.Tourism");
             data.AppendLine("{");
