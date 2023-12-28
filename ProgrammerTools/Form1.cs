@@ -336,7 +336,7 @@ namespace ProgrammerTools
             data.AppendLine("");
             data.AppendLine("namespace Wetech.Tourism");
             data.AppendLine("{");
-            data.AppendLine("    public interface I" + modelName + "AppService : " + "ICrudAppService<" + modelName + "Dto, int, " + modelName + "PagedAndSortedResultRequestDto, AddEdit" + modelName + "Dto>");
+            data.AppendLine("    public interface I" + modelName + "AppService : " + "ICrudAppService<" + modelName + "Dto, int, " + modelName + "PagedAndSortedResultRequestDto, Add" + modelName + "Dto,Edit" + modelName + "Dto>");
             data.AppendLine("    {");
             data.AppendLine("    }");
             data.AppendLine("}");
@@ -360,7 +360,7 @@ namespace ProgrammerTools
             data.AppendLine("");
             data.AppendLine("namespace Wetech.Tourism");
             data.AppendLine("{");
-            data.AppendLine("    public class " + modelName + "AppService : CrudAppService<" + modelName + ", "+modelName+"Dto, int, "+modelName+"PagedAndSortedResultRequestDto, AddEdit"+modelName+"Dto>, I"+modelName+"AppService");
+            data.AppendLine("    public class " + modelName + "AppService : CrudAppService<" + modelName + ", "+modelName+"Dto, int, "+modelName+"PagedAndSortedResultRequestDto, Add"+modelName+"Dto, Edit"+modelName+"Dto >, I"+modelName+"AppService");
             data.AppendLine("    {");
             data.AppendLine("        public " + modelName + "AppService(IRepository<" + modelName + ", int> repository) : base(repository)");
             data.AppendLine("    {");
@@ -415,7 +415,8 @@ namespace ProgrammerTools
             foreach (var modelName in sFileNames)
             {
                 AbpGetDataFromModel(modelName, sDirectory, path);
-                AbpGetDataFromModelDTOAddEdit(modelName, sDirectory, path);
+                AbpGetDataFromModelDTOAdd(modelName, sDirectory, path);
+                AbpGetDataFromModelDTOEdit(modelName, sDirectory, path);
                 AbpCreateServiceInterface(modelName, path);
                 AbpCreateService(modelName, path);
                 AbpCreatePagedAndSortedDto(modelName, path);
@@ -482,7 +483,7 @@ namespace ProgrammerTools
             writer.Close();
 
         }
-        public void AbpGetDataFromModelDTOAddEdit(string modelName, string FilePath, string outPutPath)
+        public void AbpGetDataFromModelDTOAdd(string modelName, string FilePath, string outPutPath)
         {
 
             StringBuilder dataForDTO = new StringBuilder();
@@ -490,7 +491,7 @@ namespace ProgrammerTools
             dataForDTO.AppendLine("");
             dataForDTO.AppendLine("namespace " + DtoNameSpace);
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class AddEdit" + modelName + "Dto" + baseClass);
+            dataForDTO.AppendLine("    public class Add" + modelName + "Dto"  );
             dataForDTO.AppendLine("    {");
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
@@ -533,7 +534,64 @@ namespace ProgrammerTools
 
             outPutPath += "\\" + modelName;
             if (!System.IO.Directory.Exists(outPutPath)) System.IO.Directory.CreateDirectory(outPutPath);
-            string cFileName = outPutPath + "\\AddEdit" + modelName + "Dto.cs";
+            string cFileName = outPutPath + "\\Add" + modelName + "Dto.cs";
+            StreamWriter writer = new StreamWriter(cFileName, false);
+            writer.Write(dataForDTO.ToString());
+            writer.Close();
+
+        }
+        public void AbpGetDataFromModelDTOEdit(string modelName, string FilePath, string outPutPath)
+        {
+
+            StringBuilder dataForDTO = new StringBuilder();
+            dataForDTO.AppendLine(DtoUsing);
+            dataForDTO.AppendLine("");
+            dataForDTO.AppendLine("namespace " + DtoNameSpace);
+            dataForDTO.AppendLine("{");
+            dataForDTO.AppendLine("    public class Edit" + modelName + "Dto" + baseClass);
+            dataForDTO.AppendLine("    {");
+            string sFilePath = sDirectory + "\\" + modelName + ".cs";
+
+            StreamReader reader = new StreamReader(sFilePath);
+
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (
+                          string.IsNullOrWhiteSpace(line) ||
+                    line.Trim().ToLower().StartsWith("using") ||
+                    line.Trim().ToLower().StartsWith("system") ||
+                    line.Trim().ToLower().StartsWith("{") ||
+                    line.Trim().ToLower().StartsWith("}") ||
+                    line.Trim().ToLower().StartsWith("public class") ||
+                    line.Trim().ToLower().StartsWith("public partial class") ||
+                    line.Trim().ToLower().StartsWith("[foreignkey") ||
+                    line.Trim().ToLower().StartsWith("public virtual ") ||
+                    line.Trim().ToLower().StartsWith("namespace") ||
+                    line.Trim().ToLower().Contains("()") ||
+                    line.Trim().ToLower().Contains("HashSet<") ||
+                    line.Trim().ToLower().Contains("int id {") ||
+                    line.Trim().ToLower().Contains("isdelete") ||
+                    line.Trim().ToLower().Contains("createdby") ||
+                    line.Trim().ToLower().Contains("createdon") ||
+                    line.Trim().ToLower().Contains("updatedby") ||
+                    line.Trim().ToLower().Contains("lastmodifieddate")
+                    )
+                {
+                    continue;
+                }
+
+                string editedLine = line.Replace("protected", " ");
+                dataForDTO.AppendLine(editedLine);
+            }
+            reader.Close();
+            //dataForDTO.AppendLine(" public string? EncId { get { return EncryptDecrypt.Encrypt("+ modelName+"ID.ToString()); } }");
+            dataForDTO.AppendLine("    }");
+            dataForDTO.AppendLine("}");
+
+            outPutPath += "\\" + modelName;
+            if (!System.IO.Directory.Exists(outPutPath)) System.IO.Directory.CreateDirectory(outPutPath);
+            string cFileName = outPutPath + "\\Edit" + modelName + "Dto.cs";
             StreamWriter writer = new StreamWriter(cFileName, false);
             writer.Write(dataForDTO.ToString());
             writer.Close();
