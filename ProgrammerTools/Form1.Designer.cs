@@ -482,7 +482,7 @@ namespace ProgrammerTools
             this.groupBox5.Controls.Add(this.tbControllerNameSpace);
             this.groupBox5.Location = new System.Drawing.Point(575, 298);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(280, 73);
+            this.groupBox5.Size = new System.Drawing.Size(280, 84);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Controllers";
