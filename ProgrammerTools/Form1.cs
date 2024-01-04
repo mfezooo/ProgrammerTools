@@ -375,6 +375,18 @@ namespace ProgrammerTools
 
             }
         }
+        private void CreateViewGroup(List<string> sFilesNames, string path)
+        {
+
+            path += "\\" + "Views";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            //create IRepository
+            foreach (var modelName in sFileNames)
+            {
+                CreateViewMVC(modelName, sDirectory, path);
+
+            }
+        }
         string baseClass = string.Empty;
         public void getDataFromModel(string modelName, string FilePath, string outPutPath)
         {
@@ -641,7 +653,7 @@ namespace ProgrammerTools
             sFileNames = new List<string>();
             GetFileNames();
             string SelectedPath = tbSelectedPath.Text;
-
+            CreateViewGroup(sFileNames, SelectedPath);
             if (cbRepository.Checked)
                 CreateRepositoryGroup(sFileNames, SelectedPath);
             if (cbIRepository.Checked)
@@ -654,6 +666,8 @@ namespace ProgrammerTools
                 CreateCustomFileGroup(sFileNames, SelectedPath);
             if (cbDTOs.Checked)
                 CreateDTOGroup(sFileNames, SelectedPath);
+
+
             if (cbServiceInterface.Checked)
                 CreateServiceInterfaceGroup(sFileNames, SelectedPath);
             if (cbServices.Checked)
@@ -674,13 +688,17 @@ namespace ProgrammerTools
             Process.Start("explorer.exe", SelectedPath);
 
         }
-        public string getInputs(string sFilePath)
+        public void CreateViewMVC(string modelName, string FilePath, string outPutPath)
         {
-
-            StringBuilder dataForDTO = new StringBuilder(); 
+            StringBuilder dataForDTO = new StringBuilder();
+            string sFilePath = sDirectory + "\\" + modelName + ".cs";
+            string viewModelName = @"@model GositsDGP.Models.WebModel.ViewModel.Coding."+modelName+"VM;";
+            dataForDTO.AppendLine(viewModelName);
+            dataForDTO.AppendLine(@"<form method='post' id='frmCreate'>");
+            dataForDTO.AppendLine(@"<div class='row'>");
+            
             StreamReader reader = new StreamReader(sFilePath);
-         
-            string inputs = "";
+
             string line;
             while ((line = reader.ReadLine()) != null)
             {
@@ -701,120 +719,70 @@ namespace ProgrammerTools
                 {
                     continue;
                 }
-                string[] lineArray = line.Split(' ');
-                string type = lineArray[1];
-                string name = lineArray[2] ;
-                
-                //string editedLine = line.Replace(" Name ", " " + modelName + "Name");
-                //dataForDTO.AppendLine(editedLine); 
+                string cInput = getInputByProperty(line.Trim());
+                dataForDTO.AppendLine(cInput);
             }
             reader.Close();
-       
-            return inputs;
-
-        }
-        public void CreateViewMVC(string modelName, string path)
-        {
-
-            var pre = @"
-        <div class=""col"">
-            <div class=""form-group"">
-                <label for=""nameInput"">Idco1</label>
-                <input type=""text"" class=""form-control"" id=""Idco1"" aria-describedby=""emailHelp"" name=""Idco1"" placeholder=""Enter Name"" required>
-                <small id=""emailHelp"" class=""form-text text-muted"">Please input Idco1.  </small>
-            </div>
-        </div>";
-
-            //string inputs = 
-            StringBuilder data = new StringBuilder();
-            data.Append("using Microsoft.AspNetCore.Mvc;");
-            data.AppendLine("using " + tbDTONameSpace.Text + ";");
-            data.AppendLine("using " + tbServiceInterface.Text + ";");
-            //data.AppendLine("using StockApp.WebAPI.Controllers.Base;");
-            data.AppendLine("");
-            data.AppendLine("namespace " + tbControllerNameSpace.Text);
-            data.AppendLine("{");
-            data.AppendLine("    public class " + modelName + "Controller : BaseController");
-            data.AppendLine("    {");
-            data.AppendLine("    private readonly I" + modelName + "Service _Service;");
-
-            data.AppendLine("        public " + modelName + "Controller(I" + modelName + "Service service)");
-            data.AppendLine("        {");
-            data.AppendLine("            _Service = service;");
-            data.AppendLine("        }");
-            //Add Methoud
-            data.AppendLine("        [HttpGet(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Get" + modelName + "ByID(int ID)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Get" + modelName + "ByID(ID);");
-            data.AppendLine("            return Ok(Result);");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpGet]");
-            data.AppendLine("        public async Task<IActionResult> GetAll" + modelName + "()");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
-            data.AppendLine("            return Ok(Result);");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpPost]");
-            data.AppendLine("        public async Task<IActionResult> Add" + modelName + "(" + modelName + "DTO model)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
-            data.AppendLine("            if (Result == true)");
-            data.AppendLine("            {");
-            data.AppendLine("                return Ok();");
-            data.AppendLine("            }");
-            data.AppendLine("            else");
-            data.AppendLine("            {");
-            data.AppendLine("                return BadRequest();");
-            data.AppendLine("            }");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpPut]");
-            data.AppendLine("        public async Task<IActionResult> Update" + modelName + "(" + modelName + "DTO model)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Update" + modelName + "(model);");
-            data.AppendLine("            if (Result == true)");
-            data.AppendLine("            {");
-            data.AppendLine("                return Ok();");
-            data.AppendLine("            }");
-            data.AppendLine("            else");
-            data.AppendLine("            {");
-            data.AppendLine("                return BadRequest();");
-            data.AppendLine("            }");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpDelete(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Delete" + modelName + "(int ID)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Delete" + modelName + "(ID);");
-            data.AppendLine("            if (Result == true)");
-            data.AppendLine("            {");
-            data.AppendLine("                return Ok();");
-            data.AppendLine("            }");
-            data.AppendLine("            else");
-            data.AppendLine("            {");
-            data.AppendLine("                return BadRequest();");
-            data.AppendLine("            }");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("");
-            data.AppendLine("    }");
-            data.AppendLine("}");
-
-            string cFileName = path + "\\" + modelName + "Controller.cs";
+            dataForDTO.AppendLine(@" </div>");
+            dataForDTO.AppendLine(@"</form>");
+            string scriptPath = @"@section Scripts {<script src='~/js/areas/admin/code/" + modelName + ".js'></script>}";
+            dataForDTO.AppendLine(scriptPath);
+            outPutPath += "\\" + modelName;
+            if (!System.IO.Directory.Exists(outPutPath)) System.IO.Directory.CreateDirectory(outPutPath);
+            string cFileName = outPutPath + "\\" + "Index.cshtml";
             StreamWriter writer = new StreamWriter(cFileName, false);
-            writer.Write(data.ToString());
+            writer.Write(dataForDTO.ToString());
             writer.Close();
 
+        }
+        public static string inputText = @" <div class='col'>
+            <div class='form-group'>
+                <label for='PropertyName'>PropertyName</label>
+                <input type='PropertyType' class='form-control' id='PropertyName' aria-describedby='PropertyName' name='PropertyName' placeholder='Enter PropertyName' required>
+                <small id='PropertyName' class='form-text text-muted'>Please input PropertyName.  </small>
+            </div>
+        </div>";
+        public static string inputSelect = @" <div class='col'>
+            <div class='form-group'>
+                <label for='PropertyName'> PropertyName </label>
+                <select name='PropertyName' class='form-control' asp-items='@(new SelectList(Model.PropertyNameList, ""Value"", ""Text""))'></select> 
+                <small id='PropertyName' class='form-text text-muted'>  </small>
+            </div>
+        </div>";
+        private string getInputByProperty(string line)
+        {
+            var propertyArr = line.Split(' ');
+            string propertyType = propertyArr[1];
+            string propertyName = propertyArr[2];
+            string inputType = getInputType(propertyType);
+            string input = inputText.Replace("PropertyName", propertyName).Replace("PropertyType", inputType);
+            if (propertyName.EndsWith("Id"))
+                input = inputSelect.Replace("PropertyName", propertyName);
+
+            return input;
+        }
+        private string getInputType(string type)
+        {
+            switch (type.ToLower())
+            {
+                case "int":
+                    return "Number";
+                case "int?":
+                    return "Number";
+                case "long":
+                    return "Number";
+                case "decimal":
+                    return "Number";
+                case "string":
+                    return "Text";
+                case "string?":
+                    return "Text";
+                default:
+                    return "Text";
+            }
 
         }
+
         private void getCurrentProccess()
         {
             string txt = "";
