@@ -95,6 +95,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DGPConfiguration.txt" />
     <Content Include="SavedData\data.txt" />
     <Content Include="tools.ico" />
   </ItemGroup>
