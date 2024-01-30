@@ -95,6 +95,7 @@ namespace ProgrammerTools
             this.cbSaveConfig = new System.Windows.Forms.CheckBox();
             this.rtUsingAdditonal = new System.Windows.Forms.RichTextBox();
             this.label23 = new System.Windows.Forms.Label();
+            this.cbView = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -529,6 +530,7 @@ namespace ProgrammerTools
             this.gpCheckBoxs.Controls.Add(this.cbIUnitOfWork);
             this.gpCheckBoxs.Controls.Add(this.cbUnitOfWork);
             this.gpCheckBoxs.Controls.Add(this.cbIRepository);
+            this.gpCheckBoxs.Controls.Add(this.cbView);
             this.gpCheckBoxs.Controls.Add(this.cbRepository);
             this.gpCheckBoxs.Controls.Add(this.cbAll);
             this.gpCheckBoxs.Controls.Add(this.btnCustom);
@@ -676,7 +678,7 @@ namespace ProgrammerTools
             // 
             // btnCustom
             // 
-            this.btnCustom.Location = new System.Drawing.Point(88, 343);
+            this.btnCustom.Location = new System.Drawing.Point(86, 337);
             this.btnCustom.Name = "btnCustom";
             this.btnCustom.Size = new System.Drawing.Size(85, 26);
             this.btnCustom.TabIndex = 2;
@@ -730,6 +732,16 @@ namespace ProgrammerTools
             this.label23.Size = new System.Drawing.Size(146, 13);
             this.label23.TabIndex = 1;
             this.label23.Text = "Using [Addtional to Services] ";
+            // 
+            // cbView
+            // 
+            this.cbView.AutoSize = true;
+            this.cbView.Location = new System.Drawing.Point(59, 23);
+            this.cbView.Name = "cbView";
+            this.cbView.Size = new System.Drawing.Size(83, 17);
+            this.cbView.TabIndex = 0;
+            this.cbView.Text = "Create View";
+            this.cbView.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -848,5 +860,6 @@ namespace ProgrammerTools
         private TextBox tbInhirit;
         private CheckBox cbBaseClass;
         private CheckBox isPrivateSet;
+        private CheckBox cbView;
     }
 }

@@ -407,7 +407,8 @@ namespace ProgrammerTools
             string SelectedPath = tbSelectedPath.Text;
 
 
-
+            if (true)
+                CreateViewGroup(sFileNames, SelectedPath);
             if (cbRepository.Checked)
                 CreateRepositoryGroup(sFileNames, SelectedPath);
             if (cbIRepository.Checked)
@@ -1002,6 +1003,101 @@ namespace ProgrammerTools
         private void cbBaseClass_CheckedChanged(object sender, EventArgs e)
         {
             tbInhirit.Enabled = cbBaseClass.Checked;
+        }
+      
+        public void CreateViewMVC(string modelName, string FilePath, string outPutPath)
+        {
+            StringBuilder dataForDTO = new StringBuilder();
+            string sFilePath = sDirectory + "\\" + modelName + ".cs";
+            string viewModelName = @"@model GositsDGP.Models.WebModel.ViewModel.Coding." + modelName + "VM;";
+            dataForDTO.AppendLine(viewModelName);
+            dataForDTO.AppendLine(@"<form method='post' id='frmCreate'>");
+            dataForDTO.AppendLine(@"<div class='row'>");
+
+            StreamReader reader = new StreamReader(sFilePath);
+
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (
+                    string.IsNullOrWhiteSpace(line) ||
+                    line.Trim().ToLower().StartsWith("using") ||
+                    line.Trim().ToLower().StartsWith("system") ||
+                    line.Trim().ToLower().StartsWith("{") ||
+                    line.Trim().ToLower().StartsWith("}") ||
+                    line.Trim().ToLower().StartsWith("public class") ||
+                    line.Trim().ToLower().StartsWith("public partial class") ||
+                    line.Trim().ToLower().StartsWith("[foreignkey") ||
+                    line.Trim().ToLower().StartsWith("public virtual ") ||
+                    line.Trim().ToLower().StartsWith("namespace") ||
+                    line.Trim().ToLower().Contains("()") ||
+                    line.Trim().ToLower().Contains("HashSet<")
+                    )
+                {
+                    continue;
+                }
+                string cInput = getInputByProperty(line.Trim());
+                dataForDTO.AppendLine(cInput);
+            }
+            reader.Close();
+            dataForDTO.AppendLine(@" </div>");
+            dataForDTO.AppendLine(@"</form>");
+            string scriptPath = @"@section Scripts {<script src='~/js/areas/admin/code/" + modelName + ".js'></script>}";
+            dataForDTO.AppendLine(scriptPath);
+            outPutPath += "\\" + modelName;
+            if (!System.IO.Directory.Exists(outPutPath)) System.IO.Directory.CreateDirectory(outPutPath);
+            string cFileName = outPutPath + "\\" + "Index.cshtml";
+            StreamWriter writer = new StreamWriter(cFileName, false);
+            writer.Write(dataForDTO.ToString());
+            writer.Close();
+
+        }
+        public static string inputText = @" <div class='col'>
+         <div class='form-group'>
+             <label for='PropertyName'>PropertyName</label>
+             <input type='PropertyType' class='form-control' id='PropertyName' aria-describedby='PropertyName' name='PropertyName' placeholder='Enter PropertyName' required>
+             <small id='PropertyName' class='form-text text-muted'>Please input PropertyName.  </small>
+         </div>
+     </div>";
+        public static string inputSelect = @" <div class='col'>
+         <div class='form-group'>
+             <label for='PropertyName'> PropertyName </label>
+             <select name='PropertyName' class='form-control' asp-items='@(new SelectList(Model.PropertyNameList, ""Value"", ""Text""))'></select> 
+             <small id='PropertyName' class='form-text text-muted'>  </small>
+         </div>
+     </div>";
+        private string getInputByProperty(string line)
+        {
+            var propertyArr = line.Split(' ');
+            string propertyType = propertyArr[1];
+            string propertyName = propertyArr[2];
+            string inputType = getInputType(propertyType);
+            string input = inputText.Replace("PropertyName", propertyName).Replace("PropertyType", inputType);
+            if (propertyName.EndsWith("Id"))
+                input = inputSelect.Replace("PropertyName", propertyName);
+
+            return input;
+        }
+        private string getInputType(string type)
+        {
+            switch (type.ToLower())
+            {
+                case "int":
+                    return "Number";
+                case "int?":
+                    return "Number";
+                case "long":
+                    return "Number";
+                case "decimal":
+                    return "Number";
+                case "string":
+                    return "Text";
+                case "string?":
+                    return "Text";
+                default:
+                    return "Text";
+            }
+
         }
     }
 }
