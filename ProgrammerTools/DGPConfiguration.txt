@@ -1,0 +1,12 @@
+outputPath=C:\Users\mfayez\Desktop\Generated
+RepositoryNameSpace=GositsDGP.DataAccess.Repository
+InterfaceNameSpace=GositsDGP.DataAccess.Repository.IRepository
+ModelsNameSpace=GositsDGP.Models.WebModel
+DBContextNameSpace=GositsDGP.DataAccess
+DBContextName=ApplicationDbContext
+dbContextInstanceName=dbContext
+RepositoryGenaric=GositsDGP.DataAccess.Repository.IRepository
+DTONameSpace=
+ControllerNameSpace=GositsDGP.Web.Areas.Admin.Controllers
+ServiceInterface=
+ServiceNameSpace=StockApp.Service.Services

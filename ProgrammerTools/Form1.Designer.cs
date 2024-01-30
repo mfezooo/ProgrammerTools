@@ -69,6 +69,7 @@ namespace ProgrammerTools
             this.label14 = new System.Windows.Forms.Label();
             this.tbServiceNameSpace = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.isPrivateSet = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -329,7 +330,7 @@ namespace ProgrammerTools
             // 
             this.tbdbContextInstance.Location = new System.Drawing.Point(9, 123);
             this.tbdbContextInstance.Name = "tbdbContextInstance";
-            this.tbdbContextInstance.Size = new System.Drawing.Size(259, 20);
+            this.tbdbContextInstance.Size = new System.Drawing.Size(164, 20);
             this.tbdbContextInstance.TabIndex = 0;
             this.tbdbContextInstance.Text = "_Context";
             // 
@@ -438,6 +439,7 @@ namespace ProgrammerTools
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.isPrivateSet);
             this.groupBox2.Controls.Add(this.tbDbContext);
             this.groupBox2.Controls.Add(this.tbdbContextInstance);
             this.groupBox2.Controls.Add(this.tbDbContextNameSpace);
@@ -449,6 +451,16 @@ namespace ProgrammerTools
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "DB Context";
+            // 
+            // isPrivateSet
+            // 
+            this.isPrivateSet.AutoSize = true;
+            this.isPrivateSet.Location = new System.Drawing.Point(179, 123);
+            this.isPrivateSet.Name = "isPrivateSet";
+            this.isPrivateSet.Size = new System.Drawing.Size(89, 17);
+            this.isPrivateSet.TabIndex = 0;
+            this.isPrivateSet.Text = "{ private set;}";
+            this.isPrivateSet.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -709,7 +721,6 @@ namespace ProgrammerTools
             this.rtUsingAdditonal.Text = "using WeTech.Service.Interfaces;\nusing WeTech.DataAccess.UnitOfWork;\nusing WeTech" +
     ".Service.Services.Base;\nusing WeTech.Entities;\nusing WeTech.Service.DTO; \nusing " +
     "WeTech.Service.Common;";
-            this.rtUsingAdditonal.TextChanged += new System.EventHandler(this.rtUsingAdditonal_TextChanged);
             // 
             // label23
             // 
@@ -836,5 +847,6 @@ namespace ProgrammerTools
         private CheckBox cbControllerMVC;
         private TextBox tbInhirit;
         private CheckBox cbBaseClass;
+        private CheckBox isPrivateSet;
     }
 }
