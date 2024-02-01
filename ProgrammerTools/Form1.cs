@@ -441,6 +441,18 @@ namespace ProgrammerTools
             Process.Start("explorer.exe", SelectedPath);
 
         }
+        private void CreateViewGroup(List<string> sFilesNames, string path)
+        {
+
+            path += "\\" + "Views";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            //create IRepository
+            foreach (var modelName in sFileNames)
+            {
+                CreateViewMVC(modelName, sDirectory, path);
+
+            }
+        }
         private void getCurrentProccess()
         {
             string txt = "";
@@ -1004,12 +1016,12 @@ namespace ProgrammerTools
         {
             tbInhirit.Enabled = cbBaseClass.Checked;
         }
-      
+
         public void CreateViewMVC(string modelName, string FilePath, string outPutPath)
         {
             StringBuilder dataForDTO = new StringBuilder();
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
-            string viewModelName = @"@model GositsDGP.Models.WebModel.ViewModel.Coding." + modelName + "VM;";
+            string viewModelName = @"@model GositsDGP.Models.WebModel.ViewModel." + modelName + "VM;";
             dataForDTO.AppendLine(viewModelName);
             dataForDTO.AppendLine(@"<form method='post' id='frmCreate'>");
             dataForDTO.AppendLine(@"<div class='row'>");
@@ -1041,7 +1053,11 @@ namespace ProgrammerTools
             }
             reader.Close();
             dataForDTO.AppendLine(@" </div>");
+            dataForDTO.AppendLine(@" <div>");
+            dataForDTO.AppendLine(@"  <button type=""submit"" class=""btn btn-primary"">Submit</button>");
+            dataForDTO.AppendLine(@" </div>");
             dataForDTO.AppendLine(@"</form>");
+            dataForDTO.Append(getDataTable(modelName));
             string scriptPath = @"@section Scripts {<script src='~/js/areas/admin/code/" + modelName + ".js'></script>}";
             dataForDTO.AppendLine(scriptPath);
             outPutPath += "\\" + modelName;
@@ -1069,6 +1085,8 @@ namespace ProgrammerTools
         private string getInputByProperty(string line)
         {
             var propertyArr = line.Split(' ');
+            if (propertyArr.Length < 2)
+                return "";
             string propertyType = propertyArr[1];
             string propertyName = propertyArr[2];
             string inputType = getInputType(propertyType);
@@ -1078,6 +1096,35 @@ namespace ProgrammerTools
 
             return input;
         }
+        private string getDataTable(string modelName)
+        {
+            string dataTable = $@"
+<div class=""border p-3 mt-4"" style=""width:100%; overflow-x:scroll;"">
+    <div class=""row pt-4"">
+        <div class=""col-6"">
+            <h2 class=""text-primary""> {modelName}</h2>
+        </div>
+    </div>
+    <br />
+
+    <table id=""tblData"" class=""table table-bordered table-striped"" style=""width:100%"">
+        <thead>
+            <tr>
+                  <th>
+                    Id
+                </th> 
+                <th>
+                    Name
+                </th> 
+            </tr>
+        </thead>
+    </table>
+</div>
+";
+            return dataTable;
+        }
+
+
         private string getInputType(string type)
         {
             switch (type.ToLower())
@@ -1094,6 +1141,10 @@ namespace ProgrammerTools
                     return "Text";
                 case "string?":
                     return "Text";
+                case "datetime":
+                    return "Date";
+                case "datetime?":
+                    return "Date";
                 default:
                     return "Text";
             }
