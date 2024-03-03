@@ -556,6 +556,9 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().StartsWith("[") ||
+                    line.Trim().ToLower().StartsWith("public void") ||
+
+                    line.Trim().ToLower().Contains("LastUpdatedOn") ||
                     line.Trim().ToLower().Contains("()") ||
                     line.Trim().ToLower().Contains("HashSet<") ||
                     line.Trim().ToLower().Contains("int id {") ||
@@ -614,6 +617,8 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("[") ||
+                    line.Trim().ToLower().StartsWith("public void") ||
+                    line.Trim().ToLower().Contains("LastUpdatedOn") ||
 
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().Contains("()") ||
@@ -674,6 +679,7 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().StartsWith("[") ||
+                    line.Trim().ToLower().StartsWith("public void") ||
 
                     line.Trim().ToLower().Contains("()") ||
                     line.Trim().ToLower().Contains("HashSet<") ||
@@ -681,6 +687,7 @@ namespace {projectName}
                     line.Trim().ToLower().Contains("isdelete") ||
                     line.Trim().ToLower().Contains("createdby") ||
                     line.Trim().ToLower().Contains("createdon") ||
+                    line.Trim().ToLower().Contains("LastUpdatedOn") ||
                     line.Trim().ToLower().Contains("updatedby") ||
                     line.Trim().ToLower().Contains("lastmodifieddate")
                     )
