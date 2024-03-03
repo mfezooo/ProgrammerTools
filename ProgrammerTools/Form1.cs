@@ -94,129 +94,9 @@ namespace ProgrammerTools
                 sFileNames.Add(Path.GetFileNameWithoutExtension(listBox1.GetItemText(fName)));
             }
         }
-        public void CreateRepoFileByName(string modelName, string path)
-        {
-            string nameSpace = tbDomainInterface.Text;
-            string RepositoryData =
-            "using Microsoft.EntityFrameworkCore; \n" +
-            "using " + tbRepoNameSpace.Text + "; \n" +
-            "using " + tbDomainModels.Text + "; \n" +
-            "using " + tbRepositoryGenaric.Text + "; \n" +
-            "namespace " + nameSpace + "\n" +
-            "{" + "\n" +
-               "    public class " + modelName + "Repository : Repository<" + modelName + ">, I" + modelName + "Repository" + "\n" +
-                "    {" + "\n" +
-                   "        public " + modelName + "Repository(" + "DbContext" + " " + tbdbContextInstance.Text + " ) : base(" + tbdbContextInstance.Text + ") \n" +
-                    "        {" + "\n" +
-                    "        }" + "\n" +
-                "    }" + "\n" +
-            "}";
-
-            using (FileStream fs = File.Create(path + "\\" + modelName + "Repository.cs"))
-            {
-                byte[] info = new UTF8Encoding(true).GetBytes(RepositoryData);
-                // Add some information to the file.
-                fs.Write(info, 0, info.Length);
-            }
-        }
-        private void CreateServiceGroup(List<string> sFilesNames, string path)
-        {
-            path += "\\" + "Service";
-            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
-            //create IRepository
-            foreach (var modelName in sFileNames)
-            { CreateService(modelName, path); }
-        }
-        public void CreateService(string modelName, string path)
-        {
-            StringBuilder data = new StringBuilder();
-            data.AppendLine("using AutoMapper;");
-            //data.AppendLine("using " + tbDTONameSpace.Text + ";");
-            //data.AppendLine("using " + tbServiceInterface.Text + ";");
-            data.Append(rtUsingAdditonal.Text);
-            data.AppendLine("");
-            data.AppendLine("");
-            data.AppendLine("namespace " + tbServiceNameSpace.Text);
-            data.AppendLine("{");
-            data.AppendLine("    public class " + modelName + "Service : BaseService, I" + modelName + "Service");
-            data.AppendLine("    {");
-            data.AppendLine("        public " + modelName + "Service(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)");
-            data.AppendLine("        {");
-            data.AppendLine("        }");
-            //Add Methoud
-            data.AppendLine("        public async Task<bool> Add" + modelName + "(Create" + modelName + "DTO Model)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Entity = _mapper.Map<" + modelName + ">(Model);");
-            data.AppendLine("            _unitOfWork." + modelName + "Repository.Add(Entity);");
-            data.AppendLine("            _unitOfWork.Complete();");
-            data.AppendLine("            return true;");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            //Delete Methoud
-            data.AppendLine("        public async Task<bool> Delete" + modelName + "(string " + modelName + "ID)");
-            data.AppendLine("        {");
-            data.AppendLine("            int id = int.Parse(EncryptDecrypt.Decrypt(" + modelName + "ID));");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.FirstOrDefult(q => q.Id == id);");
-            data.AppendLine("            Entity.IsDelete = true;");
-            data.AppendLine("            _unitOfWork.Complete();");
-            data.AppendLine("            //Message = \"\"تم الحذف بنجاح\";");
-            data.AppendLine("            return true;");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            //GetAll  Methoud
-            data.AppendLine("        public async Task<IEnumerable<" + modelName + "DTO>> GetAll" + modelName + "()");
-            data.AppendLine("         {");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.Find(c => c.IsDelete == false);");
-            data.AppendLine("            var EntityList = _mapper.Map<IEnumerable<" + modelName + "DTO>>(Entity);");
-            data.AppendLine("            return EntityList;");
-            data.AppendLine("        }");
-            data.AppendLine("");
-            //GetbyId  Methoud
-            data.AppendLine("        public async Task<" + modelName + "DTO> Get" + modelName + "ByID(string ID)");
-            data.AppendLine("        {");
-            data.AppendLine("            int id = int.Parse(EncryptDecrypt.Decrypt(ID));");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.Find(c => c.IsDelete == false && c.Id == id);");
-            data.AppendLine("            return _mapper.Map<" + modelName + "DTO>(Entity);");
-            data.AppendLine("        }");
-            data.AppendLine("");
-            //GetbyIdToUpdate  Methoud
-            data.AppendLine("        public async Task<Update" + modelName + "DTO> Get" + modelName + "ByIDToUpdate(string ID)");
-            data.AppendLine("        {");
-            data.AppendLine("            int id = int.Parse(EncryptDecrypt.Decrypt(ID));");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.FirstOrDefult(c => c.IsDelete == false && c.Id == id);");
-            data.AppendLine("            return _mapper.Map<Update" + modelName + "DTO>(Entity);");
-            data.AppendLine("        }");
-            data.AppendLine("");
-            //UpdateBranch  Methoud
-            data.AppendLine("        public async Task<bool> Update" + modelName + "(Update" + modelName + "DTO Model)");
-            data.AppendLine("        {");
-            data.AppendLine("            int id = int.Parse(EncryptDecrypt.Decrypt(Model.EncId));");
-            data.AppendLine("            var Entity = await _unitOfWork." + modelName + "Repository.Get(id);");
-            data.AppendLine("            _mapper.Map(Model, Entity);");
-            data.AppendLine("            _unitOfWork.Complete();");
-            data.AppendLine("            //Message = \"\"تم التعديل بنجاح\";");
-            data.AppendLine("            return true;");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("    }");
-            data.AppendLine("}");
 
 
-            //using (FileStream fs = File.Create(path + "\\" + modelName + "Service.cs"))
-            //{
-            //    byte[] info = new UTF8Encoding(true).GetBytes(data.ToString()); 
-            //    fs.Write(info, 0, info.Length);
-            //}
-            string cFileName = path + "\\" + modelName + "Service.cs";
-            StreamWriter writer = new StreamWriter(cFileName, false);
-            writer.Write(data.ToString());
-            writer.Close();
 
-
-        }
         //public void CreateService(string modelName, string path)
         //{
         //    StringBuilder data = new StringBuilder();
@@ -307,29 +187,29 @@ namespace ProgrammerTools
         }
         public void CreateServiceInterface(string modelName, string path)
         {
-            StringBuilder data = new StringBuilder();
-            data.AppendLine("using " + tbDTONameSpace.Text + ";");
-            data.AppendLine("namespace " + tbServiceInterface.Text);
-            data.AppendLine("{");
-            data.AppendLine("    public interface I" + modelName + "Service");
-            data.AppendLine("    {");
-            data.AppendLine("        Task<" + modelName + "DTO> Get" + modelName + "ByID(string ID);");
-            data.AppendLine("        Task<Update" + modelName + "DTO> Get" + modelName + "ByIDToUpdate(string ID);");
-            data.AppendLine("        Task<IEnumerable<" + modelName + "DTO>> GetAll" + modelName + "();");
-            data.AppendLine("        Task<bool> Add" + modelName + "(Create" + modelName + "DTO Model);");
-            data.AppendLine("        Task<bool> Update" + modelName + "(Update" + modelName + "DTO Model);");
-            data.AppendLine("        Task<bool> Delete" + modelName + "(string " + modelName + "ID);");
-            data.AppendLine("    }");
-            data.AppendLine("}");
+            //StringBuilder data = new StringBuilder();
+            //data.AppendLine("using " + tbDTONameSpace.Text + ";");
+            //data.AppendLine("namespace " + tbServiceInterface.Text);
+            //data.AppendLine("{");
+            //data.AppendLine("    public interface I" + modelName + "Service");
+            //data.AppendLine("    {");
+            //data.AppendLine("        Task<" + modelName + "DTO> Get" + modelName + "ByID(string ID);");
+            //data.AppendLine("        Task<Update" + modelName + "DTO> Get" + modelName + "ByIDToUpdate(string ID);");
+            //data.AppendLine("        Task<IEnumerable<" + modelName + "DTO>> GetAll" + modelName + "();");
+            //data.AppendLine("        Task<bool> Add" + modelName + "(Create" + modelName + "DTO Model);");
+            //data.AppendLine("        Task<bool> Update" + modelName + "(Update" + modelName + "DTO Model);");
+            //data.AppendLine("        Task<bool> Delete" + modelName + "(string " + modelName + "ID);");
+            //data.AppendLine("    }");
+            //data.AppendLine("}");
 
 
-            // Create the file, or overwrite if the file exists. 
-            using (FileStream fs = File.Create(path + "\\I" + modelName + "Service.cs"))
-            {
-                byte[] info = new UTF8Encoding(true).GetBytes(data.ToString());
-                // Add some information to the file.
-                fs.Write(info, 0, info.Length);
-            }
+            //// Create the file, or overwrite if the file exists. 
+            //using (FileStream fs = File.Create(path + "\\I" + modelName + "Service.cs"))
+            //{
+            //    byte[] info = new UTF8Encoding(true).GetBytes(data.ToString());
+            //    // Add some information to the file.
+            //    fs.Write(info, 0, info.Length);
+            //}
 
 
         }
@@ -362,203 +242,203 @@ namespace ProgrammerTools
         //}
         private void CreateDTOGroup(List<string> sFilesNames, string path)
         {
-            if (cbBaseClass.Checked)
-                baseClass = " : "+ tbInhirit.Text;
-                path += "\\" + "DTOs";
-            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
-            //create IRepository
-            foreach (var modelName in sFileNames)
-            {
-                getDataFromModel(modelName, sDirectory, path);
-                getDataFromModelToCreateDTO(modelName, sDirectory, path);
-                getDataFromModelToUpdateDTO(modelName, sDirectory, path); 
-            
-            }
+            //if (cbBaseClass.Checked)
+            //    baseClass = " : "+ tbInhirit.Text;
+            //    path += "\\" + "DTOs";
+            //if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            ////create IRepository
+            //foreach (var modelName in sFileNames)
+            //{
+            //    getDataFromModel(modelName, sDirectory, path);
+            //    getDataFromModelToCreateDTO(modelName, sDirectory, path);
+            //    getDataFromModelToUpdateDTO(modelName, sDirectory, path); 
+
+            //}
         }
-        string baseClass=string.Empty;
+        string baseClass = string.Empty;
         public void getDataFromModel(string modelName, string FilePath, string outPutPath)
         {
 
-            StringBuilder dataForDTO = new StringBuilder();
-            dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
-            dataForDTO.AppendLine("using WeTech.Service.Common;");
-            dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
-            dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class " + modelName + "DTO"+baseClass);
-            dataForDTO.AppendLine("    {");
-            dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
-            string sFilePath = sDirectory + "\\" + modelName + ".cs";
+            //StringBuilder dataForDTO = new StringBuilder();
+            //dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
+            //dataForDTO.AppendLine("using WeTech.Service.Common;");
+            //dataForDTO.AppendLine("");
+            //dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
+            //dataForDTO.AppendLine("{");
+            //dataForDTO.AppendLine("    public class " + modelName + "DTO"+baseClass);
+            //dataForDTO.AppendLine("    {");
+            //dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
+            //string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
-            StreamReader reader = new StreamReader(sFilePath);
+            //StreamReader reader = new StreamReader(sFilePath);
 
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                if (
-                    string.IsNullOrWhiteSpace(line) ||
-                    line.Trim().ToLower().StartsWith("using") ||
-                    line.Trim().ToLower().StartsWith("system") ||
-                    line.Trim().ToLower().StartsWith("{") ||
-                    line.Trim().ToLower().StartsWith("}") ||
-                    line.Trim().ToLower().StartsWith("public class") ||
-                    line.Trim().ToLower().StartsWith("public partial class") ||
-                    line.Trim().ToLower().StartsWith("[foreignkey") ||
-                    line.Trim().ToLower().StartsWith("public virtual ") ||
-                    line.Trim().ToLower().StartsWith("namespace")||
-                    line.Trim().ToLower().Contains("()")||
-                    line.Trim().ToLower().Contains("HashSet<")
-                    )
-                {
-                    continue;
-                }
+            //string line;
+            //while ((line = reader.ReadLine()) != null)
+            //{
+            //    if (
+            //        string.IsNullOrWhiteSpace(line) ||
+            //        line.Trim().ToLower().StartsWith("using") ||
+            //        line.Trim().ToLower().StartsWith("system") ||
+            //        line.Trim().ToLower().StartsWith("{") ||
+            //        line.Trim().ToLower().StartsWith("}") ||
+            //        line.Trim().ToLower().StartsWith("public class") ||
+            //        line.Trim().ToLower().StartsWith("public partial class") ||
+            //        line.Trim().ToLower().StartsWith("[foreignkey") ||
+            //        line.Trim().ToLower().StartsWith("public virtual ") ||
+            //        line.Trim().ToLower().StartsWith("namespace")||
+            //        line.Trim().ToLower().Contains("()")||
+            //        line.Trim().ToLower().Contains("HashSet<")
+            //        )
+            //    {
+            //        continue;
+            //    }
 
-                //Do any edits to the line as needed
-                string editedLine = line.Replace(" Name ", " " + modelName + "Name");
-                dataForDTO.AppendLine(editedLine);
-                //Write the edited line to the output file
-            }
-            reader.Close();
-            dataForDTO.AppendLine(" public string? EncId { get { return EncryptDecrypt.Encrypt("+ modelName+"ID.ToString()); } }");
-            dataForDTO.AppendLine("    }");
-            dataForDTO.AppendLine("}");
+            //    //Do any edits to the line as needed
+            //    string editedLine = line.Replace(" Name ", " " + modelName + "Name");
+            //    dataForDTO.AppendLine(editedLine);
+            //    //Write the edited line to the output file
+            //}
+            //reader.Close();
+            //dataForDTO.AppendLine(" public string? EncId { get { return EncryptDecrypt.Encrypt("+ modelName+"ID.ToString()); } }");
+            //dataForDTO.AppendLine("    }");
+            //dataForDTO.AppendLine("}");
 
-            string cFileName = outPutPath + "\\" + modelName + "DTO.cs";
-            StreamWriter writer = new StreamWriter(cFileName, false);
-            writer.Write(dataForDTO.ToString());
-            writer.Close();
+            //string cFileName = outPutPath + "\\" + modelName + "DTO.cs";
+            //StreamWriter writer = new StreamWriter(cFileName, false);
+            //writer.Write(dataForDTO.ToString());
+            //writer.Close();
 
         }
         public void getDataFromModelToCreateDTO(string modelName, string FilePath, string outPutPath)
         {
 
-            StringBuilder dataForDTO = new StringBuilder();
-            dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
-            dataForDTO.AppendLine("using WeTech.Service.Common;");
-            dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
-            dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class Create" + modelName + "DTO");
-            dataForDTO.AppendLine("    {"); 
-            string sFilePath = sDirectory + "\\" + modelName + ".cs";
+            //StringBuilder dataForDTO = new StringBuilder();
+            //dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
+            //dataForDTO.AppendLine("using WeTech.Service.Common;");
+            //dataForDTO.AppendLine("");
+            //dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
+            //dataForDTO.AppendLine("{");
+            //dataForDTO.AppendLine("    public class Create" + modelName + "DTO");
+            //dataForDTO.AppendLine("    {"); 
+            //string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
-            StreamReader reader = new StreamReader(sFilePath);
+            //StreamReader reader = new StreamReader(sFilePath);
 
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                if (
-                    string.IsNullOrWhiteSpace(line) ||
-                    line.Trim().ToLower().StartsWith("using") ||
-                    line.Trim().ToLower().StartsWith("system") ||
-                    line.Trim().ToLower().StartsWith("{") ||
-                    line.Trim().ToLower().StartsWith("}") ||
-                    line.Trim().ToLower().StartsWith("public class") ||
-                    line.Trim().ToLower().StartsWith("public partial class") ||
-                    line.Trim().ToLower().StartsWith("[foreignkey") ||
-                    line.Trim().ToLower().StartsWith("public virtual ") ||
-                    line.Trim().ToLower().StartsWith("namespace") ||
-                    line.Trim().ToLower().Contains("()") ||
-                    line.Trim().ToLower().Contains("HashSet<")
-                    )
-                {
-                    continue;
-                }
+            //string line;
+            //while ((line = reader.ReadLine()) != null)
+            //{
+            //    if (
+            //        string.IsNullOrWhiteSpace(line) ||
+            //        line.Trim().ToLower().StartsWith("using") ||
+            //        line.Trim().ToLower().StartsWith("system") ||
+            //        line.Trim().ToLower().StartsWith("{") ||
+            //        line.Trim().ToLower().StartsWith("}") ||
+            //        line.Trim().ToLower().StartsWith("public class") ||
+            //        line.Trim().ToLower().StartsWith("public partial class") ||
+            //        line.Trim().ToLower().StartsWith("[foreignkey") ||
+            //        line.Trim().ToLower().StartsWith("public virtual ") ||
+            //        line.Trim().ToLower().StartsWith("namespace") ||
+            //        line.Trim().ToLower().Contains("()") ||
+            //        line.Trim().ToLower().Contains("HashSet<")
+            //        )
+            //    {
+            //        continue;
+            //    }
 
-                //Do any edits to the line as needed
-                string editedLine = line.Replace(" Name ", " " + modelName + "Name");
-                dataForDTO.AppendLine(editedLine);
-                //Write the edited line to the output file
-            }
-            reader.Close();
-            dataForDTO.AppendLine("        public bool IsActive { get; set; } = true;");
-            dataForDTO.AppendLine("        public int CreatedBy { get; set; }");
-            dataForDTO.AppendLine("    }");
-            dataForDTO.AppendLine("}");
+            //    //Do any edits to the line as needed
+            //    string editedLine = line.Replace(" Name ", " " + modelName + "Name");
+            //    dataForDTO.AppendLine(editedLine);
+            //    //Write the edited line to the output file
+            //}
+            //reader.Close();
+            //dataForDTO.AppendLine("        public bool IsActive { get; set; } = true;");
+            //dataForDTO.AppendLine("        public int CreatedBy { get; set; }");
+            //dataForDTO.AppendLine("    }");
+            //dataForDTO.AppendLine("}");
 
-            string cFileName = outPutPath + "\\" +"Create"+ modelName + "DTO.cs";
-            StreamWriter writer = new StreamWriter(cFileName, false);
-            writer.Write(dataForDTO.ToString());
-            writer.Close();
+            //string cFileName = outPutPath + "\\" +"Create"+ modelName + "DTO.cs";
+            //StreamWriter writer = new StreamWriter(cFileName, false);
+            //writer.Write(dataForDTO.ToString());
+            //writer.Close();
 
         }
         public void getDataFromModelToUpdateDTO(string modelName, string FilePath, string outPutPath)
         {
 
-            StringBuilder dataForDTO = new StringBuilder();
-            dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
-            dataForDTO.AppendLine("using WeTech.Service.Common;");
-            dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
-            dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class Update" + modelName + "DTO");
-            dataForDTO.AppendLine("    {");
-            dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
-            string sFilePath = sDirectory + "\\" + modelName + ".cs";
+            //StringBuilder dataForDTO = new StringBuilder();
+            //dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
+            //dataForDTO.AppendLine("using WeTech.Service.Common;");
+            //dataForDTO.AppendLine("");
+            //dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
+            //dataForDTO.AppendLine("{");
+            //dataForDTO.AppendLine("    public class Update" + modelName + "DTO");
+            //dataForDTO.AppendLine("    {");
+            //dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
+            //string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
-            StreamReader reader = new StreamReader(sFilePath);
+            //StreamReader reader = new StreamReader(sFilePath);
 
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                if (
-                    string.IsNullOrWhiteSpace(line) ||
-                    line.Trim().ToLower().StartsWith("using") ||
-                    line.Trim().ToLower().StartsWith("system") ||
-                    line.Trim().ToLower().StartsWith("{") ||
-                    line.Trim().ToLower().StartsWith("}") ||
-                    line.Trim().ToLower().StartsWith("public class") ||
-                    line.Trim().ToLower().StartsWith("public partial class") ||
-                    line.Trim().ToLower().StartsWith("[foreignkey") ||
-                    line.Trim().ToLower().StartsWith("public virtual ") ||
-                    line.Trim().ToLower().StartsWith("namespace") ||
-                    line.Trim().ToLower().Contains("()") ||
-                    line.Trim().ToLower().Contains("HashSet<")
-                    )
-                {
-                    continue;
-                }
+            //string line;
+            //while ((line = reader.ReadLine()) != null)
+            //{
+            //    if (
+            //        string.IsNullOrWhiteSpace(line) ||
+            //        line.Trim().ToLower().StartsWith("using") ||
+            //        line.Trim().ToLower().StartsWith("system") ||
+            //        line.Trim().ToLower().StartsWith("{") ||
+            //        line.Trim().ToLower().StartsWith("}") ||
+            //        line.Trim().ToLower().StartsWith("public class") ||
+            //        line.Trim().ToLower().StartsWith("public partial class") ||
+            //        line.Trim().ToLower().StartsWith("[foreignkey") ||
+            //        line.Trim().ToLower().StartsWith("public virtual ") ||
+            //        line.Trim().ToLower().StartsWith("namespace") ||
+            //        line.Trim().ToLower().Contains("()") ||
+            //        line.Trim().ToLower().Contains("HashSet<")
+            //        )
+            //    {
+            //        continue;
+            //    }
 
-                //Do any edits to the line as needed
-                string editedLine = line.Replace(" Name ", " " + modelName + "Name");
-                dataForDTO.AppendLine(editedLine);
-                //Write the edited line to the output file
-            }
-            reader.Close();
-            dataForDTO.AppendLine("        public bool IsActive { get; set; } = true;");
-            dataForDTO.AppendLine("        public int UpdatedBy { get; set; }");
-            dataForDTO.AppendLine("        public DateTime? LastUpdatedOn { get; set; }");
-            dataForDTO.AppendLine("        public string? EncId { get { return EncryptDecrypt.Encrypt(" + modelName + "ID.ToString()); } }");
-            dataForDTO.AppendLine("    }");
-            dataForDTO.AppendLine("}");
+            //    //Do any edits to the line as needed
+            //    string editedLine = line.Replace(" Name ", " " + modelName + "Name");
+            //    dataForDTO.AppendLine(editedLine);
+            //    //Write the edited line to the output file
+            //}
+            //reader.Close();
+            //dataForDTO.AppendLine("        public bool IsActive { get; set; } = true;");
+            //dataForDTO.AppendLine("        public int UpdatedBy { get; set; }");
+            //dataForDTO.AppendLine("        public DateTime? LastUpdatedOn { get; set; }");
+            //dataForDTO.AppendLine("        public string? EncId { get { return EncryptDecrypt.Encrypt(" + modelName + "ID.ToString()); } }");
+            //dataForDTO.AppendLine("    }");
+            //dataForDTO.AppendLine("}");
 
-            string cFileName = outPutPath + "\\" + "Update" + modelName + "DTO.cs";
-            StreamWriter writer = new StreamWriter(cFileName, false);
-            writer.Write(dataForDTO.ToString());
-            writer.Close();
+            //string cFileName = outPutPath + "\\" + "Update" + modelName + "DTO.cs";
+            //StreamWriter writer = new StreamWriter(cFileName, false);
+            //writer.Write(dataForDTO.ToString());
+            //writer.Close();
 
         }
         public void CreateIRepoFileByName(string modelName, string path)
         {
-            string RepositoryData =
-            "using " + tbDomainModels.Text + "; \n" +
-            "using " + tbRepositoryGenaric.Text + "; \n" +
-            "namespace " + tbRepoNameSpace.Text + "\n" +
-            "{" + "\n" +
-               "    public interface I" + modelName + "Repository : IRepository<" + modelName + "> \n" +
-                "    {" + "\n" +
-                " " +
-                "    }" + "\n" +
-            "}";
+            //string RepositoryData =
+            //"using " + tbDomainModels.Text + "; \n" +
+            //"using " + tbRepositoryGenaric.Text + "; \n" +
+            //"namespace " + tbRepoNameSpace.Text + "\n" +
+            //"{" + "\n" +
+            //   "    public interface I" + modelName + "Repository : IRepository<" + modelName + "> \n" +
+            //    "    {" + "\n" +
+            //    " " +
+            //    "    }" + "\n" +
+            //"}";
 
 
             // Create the file, or overwrite if the file exists. 
-            using (FileStream fs = File.Create(path + "\\I" + modelName + "Repository.cs"))
-            {
-                byte[] info = new UTF8Encoding(true).GetBytes(RepositoryData);
-                // Add some information to the file.
-                fs.Write(info, 0, info.Length);
-            }
+            //using (FileStream fs = File.Create(path + "\\I" + modelName + "Repository.cs"))
+            //{
+            //    byte[] info = new UTF8Encoding(true).GetBytes(RepositoryData);
+            //    // Add some information to the file.
+            //    fs.Write(info, 0, info.Length);
+            //}
         }
         public void CreateServiceIRepoFileByName(string modelName, string path)
         {
@@ -599,31 +479,31 @@ namespace ProgrammerTools
                 MessageBox.Show("select output file destination", "Error Message");
                 return false;
             }
-            if (string.IsNullOrEmpty(tbRepoNameSpace.Text))
-            {
-                MessageBox.Show("select Name Space ", "Error Message");
-                return false;
-            }
-            if (string.IsNullOrEmpty(tbDomainModels.Text))
-            {
-                MessageBox.Show("select Domain Models ", "Error Message");
-                return false;
-            }
-            if (string.IsNullOrEmpty(tbDomainInterface.Text))
-            {
-                MessageBox.Show("select Domain Interface ", "Error Message");
-                return false;
-            }
-            if (string.IsNullOrEmpty(tbDbContext.Text))
-            {
-                MessageBox.Show("select DbContext Name ", "Error Message");
-                return false;
-            }
-            if (cbCustomFile.Checked && string.IsNullOrEmpty(FileContent))
-            {
-                MessageBox.Show("Custom file has no Data. \n please click Custom button and set your data ", "Error Message");
-                return false;
-            }
+            //if (string.IsNullOrEmpty(tbRepoNameSpace.Text))
+            //{
+            //    MessageBox.Show("select Name Space ", "Error Message");
+            //    return false;
+            //}
+            //if (string.IsNullOrEmpty(tbDomainModels.Text))
+            //{
+            //    MessageBox.Show("select Domain Models ", "Error Message");
+            //    return false;
+            //}
+            //if (string.IsNullOrEmpty(tbDomainInterface.Text))
+            //{
+            //    MessageBox.Show("select Domain Interface ", "Error Message");
+            //    return false;
+            //}
+            //if (string.IsNullOrEmpty(tbDbContext.Text))
+            //{
+            //    MessageBox.Show("select DbContext Name ", "Error Message");
+            //    return false;
+            //}
+            //if (cbCustomFile.Checked && string.IsNullOrEmpty(FileContent))
+            //{
+            //    MessageBox.Show("Custom file has no Data. \n please click Custom button and set your data ", "Error Message");
+            //    return false;
+            //}
             if (listBox1.Items.Count < 1)
             {
                 MessageBox.Show("Please select models first or add its names", "Error Message");
@@ -633,6 +513,8 @@ namespace ProgrammerTools
         }
         private void btnCreate_Click(object sender, EventArgs e)
         {
+            var lasts = getManagerMethouds();
+
             //getCurrentProccess();
             if (!check())
                 return;
@@ -640,33 +522,8 @@ namespace ProgrammerTools
             sFileNames = new List<string>();
             GetFileNames();
             string SelectedPath = tbSelectedPath.Text;
-
-
-
-            if (cbRepository.Checked)
-                CreateRepositoryGroup(sFileNames, SelectedPath);
-            if (cbIRepository.Checked)
-                CreateIRepositoryGroup(sFileNames, SelectedPath);
-            if (cbUnitOfWork.Checked)
-                CreateUnitOfWork(sFileNames, SelectedPath);
-            if (cbIUnitOfWork.Checked)
-                CreateIUnitOfWork(sFileNames, SelectedPath);
-            if (cbCustomFile.Checked)
-                CreateCustomFileGroup(sFileNames, SelectedPath);
-            if (cbDTOs.Checked)
-                CreateDTOGroup(sFileNames, SelectedPath);
-            if (cbServiceInterface.Checked)
-                CreateServiceInterfaceGroup(sFileNames, SelectedPath);
-            if (cbServices.Checked)
-                CreateServiceGroup(sFileNames, SelectedPath);
-            if (cbMapDToToMdel.Checked)
-                CreateMapperGroup(sFileNames, SelectedPath);
-            if (cbControllers.Checked)
-                CreateControllersGroup(sFileNames, SelectedPath);
-            if (cbControllerMVC.Checked)
-                CreateControllersMVCGroup(sFileNames, SelectedPath);
-            if (cbRepository.Checked)
-                CreateAppDbContext(sFileNames, SelectedPath);
+            if (cbIsGenaric.Checked)
+                CreateGroup(sFileNames, SelectedPath);
 
             if (cbSaveConfig.Checked)
                 CreateConfigFIle(SelectedPath);
@@ -674,6 +531,333 @@ namespace ProgrammerTools
             MessageBox.Show("All Done Well");
             Process.Start("explorer.exe", SelectedPath);
 
+        }
+        private void CreateGroup(List<string> sFilesNames, string path)
+        {
+            path += "\\" + "Group";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            //create IRepository
+            foreach (var modelName in sFileNames)
+            {
+                path += "\\" + modelName;
+                if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+
+                var (commandList, queryList, returnTypes) = getManagerMethouds();
+                for (int i = 0; i < queryList.Count; i++)
+                {
+                    CreateSearchQuery(queryList[i], path, returnTypes[i],modelName);
+                    CreateSearchHandler(queryList[i], path, returnTypes[i],modelName);
+                }
+                for (int i = 0; i < commandList.Count; i++)
+                {
+                    CreateCommand(commandList[i], path, modelName);
+                    CreateHandler(commandList[i], path, modelName);
+                }
+               
+                CreateSearchFilter(modelName, path);
+
+                CreateIService(modelName, path);
+                CreateService(modelName, path);
+            }
+        }
+        public (List<string>, List<string>, List<string>) getManagerMethouds()
+        {
+            var methoudQuery = new List<string>();
+            var methoudQueryReturnType = new List<string>();
+            var methoudCommand = new List<string>();
+            string multilineString = RBManager.Text;
+            foreach (var item in RBManager.Lines)
+            {
+                var arrFuncWords = item.Trim().Split(new char[] { ' ' });
+                if (item.Trim().StartsWith("public void"))
+                {
+                    var funcName = arrFuncWords?[2].Split(new char[] { '(' })[0];
+                    if (funcName != "")
+                        methoudCommand.Add(funcName);
+                }
+                else if (item.Trim().StartsWith("public "))
+                {
+                    var funcName = arrFuncWords?[2].Split(new char[] { '(' })[0];
+                    var returnType = arrFuncWords[1];
+                    if (funcName != "" && funcName != ":")
+                    {
+                        methoudQuery.Add(funcName);
+                        methoudQueryReturnType.Add(returnType);
+                    }
+                }
+            }
+            return (methoudCommand, methoudQuery, methoudQueryReturnType);
+        }
+        public void CreateSearchHandler(string FuncName, string path, string returnType,string ModelName)
+        {
+            string multilineString = @"
+using Dapper;
+using MediatR;
+using SAPTEC.Framework.Common;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using SAPTEC.ERP.Infrastructure;
+
+namespace SAPTEC.ERP.Setup.Domain 
+{
+    public class {0}Handler : IRequestHandler<{0}Query, {1}>
+    {
+        public async Task<{1}> Handle({0}Query request, CancellationToken cancellationToken)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add(""@MerchantId"", request.Filter.MerchantId); 
+            parameters.Add(""@Id"", request.Filter.Id);
+            parameters.Add(""@Language"", request.Filter.LanguageId);
+            parameters.Add(""@PageNumber"", request.Filter.PageNumber);
+            parameters.Add(""@PageSize"", request.Filter.PageSize); 
+
+            parameters.AddTotalNumberParameter(); 
+
+            var list = await DapperHelper.ExecuteQueryListAsync<{2}>(SetupConstants.{2}.SP_{0}GetAll, parameters, cancellationToken);
+            int totalNumberOfResult = parameters.Get<int>(""@TotalNumberOfResult"");
+
+            return (list, totalNumberOfResult);
+        }
+    } 
+} 
+                ";
+            string interpolatedString = multilineString.Replace("{0}", FuncName);
+            interpolatedString = interpolatedString.Replace("{1}", returnType);
+            interpolatedString = interpolatedString.Replace("{2}", ModelName);
+            path += "\\" + "Query";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            using (FileStream fs = File.Create(path + "\\" + FuncName + "Handler.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(interpolatedString);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void CreateSearchQuery(string FuncName, string path, string returnType,string modelName)
+        {
+            string multilineString = @"
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SAPTEC.ERP.Setup.Domain 
+{
+    public class {0}Query : IRequest<{1}>
+    {
+        public {2}Filter Filter { get; set; }
+    }
+}
+
+                ";
+            string interpolatedString = multilineString.Replace("{0}", FuncName);
+            interpolatedString = interpolatedString.Replace("{1}", returnType);
+            interpolatedString = interpolatedString.Replace("{2}", modelName);
+
+            path += "\\" + "Query";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+
+            using (FileStream fs = File.Create(path + "\\" + FuncName + "Query.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(interpolatedString);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void CreateSearchFilter(string modelName, string path)
+        {
+            string multilineString = @"
+using SAPTEC.ERP.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SAPTEC.ERP.Setup.Domain 
+{
+    public class {0}SearchFilter :BaseFilter
+    {  
+        public int? MerchantId { get; set; } 
+        public int? Id { get; set; } 
+
+    }
+}
+                ";
+            string interpolatedString = multilineString.Replace("{0}", modelName);
+            using (FileStream fs = File.Create(path + "\\" + modelName + "SearchFilter.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(interpolatedString);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void CreateCommand(string FuncName, string path, string modelName)
+        {
+            string multilineString = @"
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SAPTEC.ERP.Setup.Domain 
+{
+    public class {0}Command : IRequest
+    {
+        public {0} Entity { get; set; }
+        public bool IsDeleted { get; set; }
+    }
+}";
+            string interpolatedString = multilineString.Replace("{0}", FuncName);
+            path += "\\" + "Command";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            using (FileStream fs = File.Create(path + "\\" + modelName + "Command.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(interpolatedString);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void CreateHandler(string FuncName, string path, string modelName)
+        {
+            string multilineString = @"
+using MediatR;
+using Newtonsoft.Json;
+using SAPTEC.ERP.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using static SAPTEC.ERP.Setup.Domain.SetupConstants;
+
+namespace SAPTEC.ERP.Setup.Domain 
+{
+    public class {0}Handler : IRequestHandler<{0}Command>
+    {
+        public async Task Handle({0}Command request, CancellationToken cancellationToken)
+        {
+            var genaricEntity = new GenericEntity();
+            genaricEntity.MasterTableName = TablesNames.{0};
+            genaricEntity.Id = request.Entity.Id; 
+            genaricEntity.MerchantId = request.Entity.MerchantId; 
+            genaricEntity.ProcessCode = request.IsDeleted ? DALConstants.SharedStoredProcedures.SP_GenericTableDelete : request.Entity.Id > 0 ? ProcessCode.{0}Update : ProcessCode.{0}Add;
+            genaricEntity.UserId = request.Entity.Id > 0 || request.IsDeleted ? request.Entity.ModifiedBy : request.Entity.CreatedBy;
+            if (!request.IsDeleted)
+            {
+                if (request.Entity.Id > 0)
+                {
+                    genaricEntity.MasterTableData = request.Entity.ConvertModel<{0}, Editable{0}>();
+                }
+                else
+                {
+                    genaricEntity.MasterTableData = JsonConvert.SerializeObject(request.Entity);
+                }
+            }
+
+            if (!request.IsDeleted)
+            {
+                await GenericCommandHandler.Save(genaricEntity);
+                request.Entity.Id = (int)genaricEntity.Id;
+            }
+            else
+            { 
+                await GenericCommandHandler.Delete(genaricEntity);
+            }
+
+            request.Entity.Flag = genaricEntity.Flag;
+        }
+    }
+}
+";
+            string interpolatedString = multilineString.Replace("{0}", FuncName);
+            path += "\\" + "Command";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            using (FileStream fs = File.Create(path + "\\" + modelName + "Handler.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(interpolatedString);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+
+        public void CreateIService(string modelName, string path)
+        {
+            string multilineString = @"
+using SAPTEC.ERP.Setup.Domain;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SAPTEC.ERP.Setup.Application 
+{
+    public interface I{0}Service
+    {
+        Task<(List<{0}>, int)> GetAll({0}SearchFilter filter);
+        Task Save({0} entity);
+        Task Delete({0} entity);
+    }
+}
+";
+            string interpolatedString = multilineString.Replace("{0}", modelName);
+            using (FileStream fs = File.Create(path + "\\I" + modelName + "Service.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(interpolatedString);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void CreateService(string modelName, string path)
+        {
+            string multilineString = @"
+using MediatR;
+using SAPTEC.ERP.Infrastructure;
+using SAPTEC.ERP.Setup.Domain;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SAPTEC.ERP.Setup.Application 
+{
+    public class {0}Service : I{0}Service
+    {
+        private readonly IMediator _mediator;
+
+        public {0}Service(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+        public async Task<(List<{0}>, int)> GetAll({0}SearchFilter filter)
+        {
+            var result = await _mediator.Send(new Search{0}Query { Filter = filter });
+            return result;
+        }
+        public async Task Save({0} entity)
+        {
+            await _mediator.Send(new {0}Command { Entity = entity });
+            entity.Flag.Language = entity.Language;
+            entity.Flag = await ValidationHelper.GetValidationMessage(entity.Flag);
+        }
+        public async Task Delete({0} entity)
+        {
+            await _mediator.Send(new {0}Command { Entity = entity, IsDeleted = true });
+            entity.Flag.Language = entity.Language;
+            entity.Flag = await ValidationHelper.GetValidationMessage(entity.Flag);
+        }
+    }
+}
+
+";
+            string interpolatedString = multilineString.Replace("{0}", modelName);
+            using (FileStream fs = File.Create(path + "\\" + modelName + "Service.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(interpolatedString);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
         }
         private void getCurrentProccess()
         {
@@ -705,12 +889,6 @@ namespace ProgrammerTools
             }
             MessageBox.Show(txt);
         }
-
-
-
-
-
-
         private void CreateControllersGroup(List<string> sFilesNames, string path)
         {
             path += "\\" + "ApiControllers";
@@ -729,188 +907,101 @@ namespace ProgrammerTools
         }
         public void CreateControllersMVC(string modelName, string path)
         {
-            StringBuilder data = new StringBuilder();
-            data.AppendLine("using Microsoft.AspNetCore.Mvc;");
-            data.AppendLine("using Microsoft.Extensions.Localization;");
-            data.AppendLine("using " + tbDTONameSpace.Text + ";");
-            data.AppendLine("using " + tbServiceInterface.Text + ";"); 
-            data.AppendLine("");
-            data.AppendLine("namespace " + tbControllerNameSpace.Text);
-            data.AppendLine("{");
-            data.AppendLine("    public class " + modelName + "Controller : Controller");
-            data.AppendLine("    {");
-            data.AppendLine("        private readonly I" + modelName + "Service _Service;");
-            data.AppendLine("        private readonly IStringLocalizer<HomeController> _loc;");
+            //StringBuilder data = new StringBuilder();
+            //data.AppendLine("using Microsoft.AspNetCore.Mvc;");
+            //data.AppendLine("using Microsoft.Extensions.Localization;");
+            //data.AppendLine("using " + tbDTONameSpace.Text + ";");
+            //data.AppendLine("using " + tbServiceInterface.Text + ";"); 
+            //data.AppendLine("");
+            //data.AppendLine("namespace " + tbControllerNameSpace.Text);
+            //data.AppendLine("{");
+            //data.AppendLine("    public class " + modelName + "Controller : Controller");
+            //data.AppendLine("    {");
+            //data.AppendLine("        private readonly I" + modelName + "Service _Service;");
+            //data.AppendLine("        private readonly IStringLocalizer<HomeController> _loc;");
 
-            data.AppendLine("        public " + modelName + "Controller(I" + modelName + "Service service, IStringLocalizer<HomeController> loc)");
-            data.AppendLine("        {");
-            data.AppendLine("            _Service = service;");
-            data.AppendLine("            _loc = loc;");
-            data.AppendLine("        }");
-            //Views 
-            //Index
-            data.AppendLine("        public IActionResult Index()");
-            data.AppendLine("        {");
-            data.AppendLine("              return View();"); 
-            data.AppendLine("        }");
-            data.AppendLine("");
-            //Create
-            data.AppendLine("        public IActionResult Create()");
-            data.AppendLine("        {");
-            data.AppendLine("              return View();");
-            data.AppendLine("        }");
-            data.AppendLine("");
-            //Edit
-            data.AppendLine("        public IActionResult Edit(string EncId)");
-            data.AppendLine("        {");
-            data.AppendLine("            var entity = _Service.Get"+ modelName + "ByIDToUpdate(EncId).Result;");
-            data.AppendLine("            return View(entity);");
-            data.AppendLine("        }");
-            data.AppendLine("");
+            //data.AppendLine("        public " + modelName + "Controller(I" + modelName + "Service service, IStringLocalizer<HomeController> loc)");
+            //data.AppendLine("        {");
+            //data.AppendLine("            _Service = service;");
+            //data.AppendLine("            _loc = loc;");
+            //data.AppendLine("        }");
+            ////Views 
+            ////Index
+            //data.AppendLine("        public IActionResult Index()");
+            //data.AppendLine("        {");
+            //data.AppendLine("              return View();"); 
+            //data.AppendLine("        }");
+            //data.AppendLine("");
+            ////Create
+            //data.AppendLine("        public IActionResult Create()");
+            //data.AppendLine("        {");
+            //data.AppendLine("              return View();");
+            //data.AppendLine("        }");
+            //data.AppendLine("");
+            ////Edit
+            //data.AppendLine("        public IActionResult Edit(string EncId)");
+            //data.AppendLine("        {");
+            //data.AppendLine("            var entity = _Service.Get"+ modelName + "ByIDToUpdate(EncId).Result;");
+            //data.AppendLine("            return View(entity);");
+            //data.AppendLine("        }");
+            //data.AppendLine("");
 
-            //Add Methoud
-            data.AppendLine("        #region Methouds"); 
+            ////Add Methoud
+            //data.AppendLine("        #region Methouds"); 
 
-            data.AppendLine("        [HttpGet]");
-            data.AppendLine("        public async Task<IActionResult> GetAll()");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
-            data.AppendLine("            return Json(new { data = Result }); ");
-            data.AppendLine("        }");
-            data.AppendLine("");
+            //data.AppendLine("        [HttpGet]");
+            //data.AppendLine("        public async Task<IActionResult> GetAll()");
+            //data.AppendLine("        {");
+            //data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
+            //data.AppendLine("            return Json(new { data = Result }); ");
+            //data.AppendLine("        }");
+            //data.AppendLine("");
 
-            data.AppendLine("        [HttpPost]");
-            data.AppendLine("        public async Task<IActionResult> Create(Create" + modelName + "DTO model)");
-            data.AppendLine("        {");
-            data.AppendLine("             model.CreatedBy = 8;"); 
-            data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
-            data.AppendLine("            if (Result)");
-            data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });"); 
-            data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });"); 
-            data.AppendLine("        }");
-            data.AppendLine("");
+            //data.AppendLine("        [HttpPost]");
+            //data.AppendLine("        public async Task<IActionResult> Create(Create" + modelName + "DTO model)");
+            //data.AppendLine("        {");
+            //data.AppendLine("             model.CreatedBy = 8;"); 
+            //data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
+            //data.AppendLine("            if (Result)");
+            //data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });"); 
+            //data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });"); 
+            //data.AppendLine("        }");
+            //data.AppendLine("");
 
-            data.AppendLine("        [HttpPost]");
-            data.AppendLine("        public async Task<IActionResult> Update([FromForm]Update" + modelName + "DTO model)");
-            data.AppendLine("        {"); 
-            data.AppendLine("            var Result = await _Service.Update" + modelName + "(model);");
-            data.AppendLine("            if (Result)");
-            data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });");
-            data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });");
-            data.AppendLine("        }");
-            data.AppendLine("");
+            //data.AppendLine("        [HttpPost]");
+            //data.AppendLine("        public async Task<IActionResult> Update([FromForm]Update" + modelName + "DTO model)");
+            //data.AppendLine("        {"); 
+            //data.AppendLine("            var Result = await _Service.Update" + modelName + "(model);");
+            //data.AppendLine("            if (Result)");
+            //data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });");
+            //data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });");
+            //data.AppendLine("        }");
+            //data.AppendLine("");
 
-            data.AppendLine("        [HttpDelete]");
-            data.AppendLine("        public async Task<IActionResult> Delete(string EncId)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Delete" + modelName + "(EncId);");
-            data.AppendLine("            if (Result)");
-            data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });");
-            data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });");
-            data.AppendLine("        }");
-            data.AppendLine("");
+            //data.AppendLine("        [HttpDelete]");
+            //data.AppendLine("        public async Task<IActionResult> Delete(string EncId)");
+            //data.AppendLine("        {");
+            //data.AppendLine("            var Result = await _Service.Delete" + modelName + "(EncId);");
+            //data.AppendLine("            if (Result)");
+            //data.AppendLine("                return Json(new { success = true, message = _loc[\"global:Message:Success\"].Value });");
+            //data.AppendLine("            return Json(new { success = false, message = _loc[\"global: Message:Error\"].Value });");
+            //data.AppendLine("        }");
+            //data.AppendLine("");
 
-            data.AppendLine("        #endregion");
-            data.AppendLine("");
-            data.AppendLine("    }");
-            data.AppendLine("}");
+            //data.AppendLine("        #endregion");
+            //data.AppendLine("");
+            //data.AppendLine("    }");
+            //data.AppendLine("}");
 
-            string cFileName = path + "\\" + modelName + "Controller.cs";
-            StreamWriter writer = new StreamWriter(cFileName, false);
-            writer.Write(data.ToString());
-            writer.Close();
+            //string cFileName = path + "\\" + modelName + "Controller.cs";
+            //StreamWriter writer = new StreamWriter(cFileName, false);
+            //writer.Write(data.ToString());
+            //writer.Close();
 
 
         }
         public void CreateControllers(string modelName, string path)
         {
-            StringBuilder data = new StringBuilder();
-            data.AppendLine("using Microsoft.AspNetCore.Mvc;");
-            data.AppendLine("using " + tbDTONameSpace.Text + ";");
-            data.AppendLine("using " + tbServiceInterface.Text + ";");
-            //data.AppendLine("using StockApp.WebAPI.Controllers.Base;");
-            data.AppendLine("");
-            data.AppendLine("namespace " + tbControllerNameSpace.Text);
-            data.AppendLine("{");
-            data.AppendLine("    public class " + modelName + "Controller : BaseController");
-            data.AppendLine("    {");
-            data.AppendLine("    private readonly I" + modelName + "Service _Service;");
-
-            data.AppendLine("        public " + modelName + "Controller(I" + modelName + "Service service)");
-            data.AppendLine("        {");
-            data.AppendLine("            _Service = service;");
-            data.AppendLine("        }");
-            //Add Methoud
-            data.AppendLine("        [HttpGet(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Get"+ modelName + "ByID(int ID)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Get" + modelName + "ByID(ID);");
-            data.AppendLine("            return Ok(Result);");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpGet]");
-            data.AppendLine("        public async Task<IActionResult> GetAll" + modelName + "()");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.GetAll" + modelName + "();");
-            data.AppendLine("            return Ok(Result);");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpPost]");
-            data.AppendLine("        public async Task<IActionResult> Add" + modelName + "(" + modelName + "DTO model)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Add" + modelName + "(model);");
-            data.AppendLine("            if (Result == true)");
-            data.AppendLine("            {");
-            data.AppendLine("                return Ok();");
-            data.AppendLine("            }");
-            data.AppendLine("            else");
-            data.AppendLine("            {");
-            data.AppendLine("                return BadRequest();");
-            data.AppendLine("            }");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpPut]");
-            data.AppendLine("        public async Task<IActionResult> Update" + modelName + "(" + modelName + "DTO model)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Update" + modelName + "(model);");
-            data.AppendLine("            if (Result == true)");
-            data.AppendLine("            {");
-            data.AppendLine("                return Ok();");
-            data.AppendLine("            }");
-            data.AppendLine("            else");
-            data.AppendLine("            {");
-            data.AppendLine("                return BadRequest();");
-            data.AppendLine("            }");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("        [HttpDelete(\"{ID}\")]");
-            data.AppendLine("        public async Task<IActionResult> Delete" + modelName + "(int ID)");
-            data.AppendLine("        {");
-            data.AppendLine("            var Result = await _Service.Delete" + modelName + "(ID);");
-            data.AppendLine("            if (Result == true)");
-            data.AppendLine("            {");
-            data.AppendLine("                return Ok();");
-            data.AppendLine("            }");
-            data.AppendLine("            else");
-            data.AppendLine("            {");
-            data.AppendLine("                return BadRequest();");
-            data.AppendLine("            }");
-            data.AppendLine("        }");
-            data.AppendLine("");
-
-            data.AppendLine("");
-            data.AppendLine("    }");
-            data.AppendLine("}");
-
-            string cFileName = path + "\\" + modelName + "Controller.cs";
-            StreamWriter writer = new StreamWriter(cFileName, false);
-            writer.Write(data.ToString());
-            writer.Close();
-
 
         }
         private void CreateMapperGroup(List<string> sFilesNames, string path)
@@ -932,8 +1023,8 @@ namespace ProgrammerTools
                 data.AppendLine("               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src." + modelName + "ID))");
                 data.AppendLine("               .ReverseMap();");
                 data.AppendLine("            CreateMap<Create" + modelName + "DTO, " + modelName + ">();");
-                data.AppendLine("            CreateMap<" + modelName +",Update" + modelName + "DTO>()");
-                data.AppendLine("               .ForMember(dest => dest."+ modelName + "ID, opt => opt.MapFrom(src => src.Id ))");
+                data.AppendLine("            CreateMap<" + modelName + ",Update" + modelName + "DTO>()");
+                data.AppendLine("               .ForMember(dest => dest." + modelName + "ID, opt => opt.MapFrom(src => src.Id ))");
                 data.AppendLine("               .ReverseMap();");
                 data.AppendLine("        }");
                 data.AppendLine("");
@@ -965,14 +1056,7 @@ namespace ProgrammerTools
             }
 
         }
-        private void CreateRepositoryGroup(List<string> sFilesNames, string path)
-        {
-            path += "\\" + "Repository";
-            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
-            //create IRepository
-            foreach (var modelName in sFileNames)
-            { CreateRepoFileByName(modelName, path); }
-        }
+
         private void CreateIRepositoryGroup(List<string> sFilesNames, string path)
         {
             path += "\\" + "IRepository";
@@ -1000,23 +1084,23 @@ namespace ProgrammerTools
                     keyValuePairs[key] = value;
                 }
                 tbSelectedPath.Text = keyValuePairs["outputPath"] != null ? keyValuePairs["outputPath"] : "";
-                tbRepoNameSpace.Text = keyValuePairs["RepositoryNameSpace"] != null ? keyValuePairs["RepositoryNameSpace"] : "";
-                tbDomainInterface.Text = keyValuePairs["InterfaceNameSpace"] != null ? keyValuePairs["InterfaceNameSpace"] : "";
-                tbDomainModels.Text = keyValuePairs["ModelsNameSpace"] != null ? keyValuePairs["ModelsNameSpace"] : "";
-                tbDbContextNameSpace.Text = keyValuePairs["DBContextNameSpace"] != null ? keyValuePairs["DBContextNameSpace"] : "";
-                tbDbContext.Text = keyValuePairs["DBContextName"] != null ? keyValuePairs["DBContextName"] : "";
-                tbdbContextInstance.Text = keyValuePairs["dbContextInstanceName"] != null ? keyValuePairs["dbContextInstanceName"] : "";
+                //tbRepoNameSpace.Text = keyValuePairs["RepositoryNameSpace"] != null ? keyValuePairs["RepositoryNameSpace"] : "";
+                //tbDomainInterface.Text = keyValuePairs["InterfaceNameSpace"] != null ? keyValuePairs["InterfaceNameSpace"] : "";
+                //tbDomainModels.Text = keyValuePairs["ModelsNameSpace"] != null ? keyValuePairs["ModelsNameSpace"] : "";
+                //tbDbContextNameSpace.Text = keyValuePairs["DBContextNameSpace"] != null ? keyValuePairs["DBContextNameSpace"] : "";
+                //tbDbContext.Text = keyValuePairs["DBContextName"] != null ? keyValuePairs["DBContextName"] : "";
+                //tbdbContextInstance.Text = keyValuePairs["dbContextInstanceName"] != null ? keyValuePairs["dbContextInstanceName"] : "";
 
-                tbRepositoryGenaric.Text = keyValuePairs["RepositoryGenaric"] != null ? keyValuePairs["RepositoryGenaric"] : "";
-                tbDTONameSpace.Text = keyValuePairs["DTONameSpace"] != null ? keyValuePairs["DTONameSpace"] : "";
-                tbControllerNameSpace.Text = keyValuePairs["ControllerNameSpace"] != null ? keyValuePairs["ControllerNameSpace"] : "";
-                tbServiceInterface.Text = keyValuePairs["ServiceInterface"] != null ? keyValuePairs["ServiceInterface"] : "";
-                tbServiceNameSpace.Text = keyValuePairs["ServiceNameSpace"] != null ? keyValuePairs["ServiceNameSpace"] : "";
-                 
+                //tbRepositoryGenaric.Text = keyValuePairs["RepositoryGenaric"] != null ? keyValuePairs["RepositoryGenaric"] : "";
+                //tbDTONameSpace.Text = keyValuePairs["DTONameSpace"] != null ? keyValuePairs["DTONameSpace"] : "";
+                //tbControllerNameSpace.Text = keyValuePairs["ControllerNameSpace"] != null ? keyValuePairs["ControllerNameSpace"] : "";
+                //tbServiceInterface.Text = keyValuePairs["ServiceInterface"] != null ? keyValuePairs["ServiceInterface"] : "";
+                //tbServiceNameSpace.Text = keyValuePairs["ServiceNameSpace"] != null ? keyValuePairs["ServiceNameSpace"] : "";
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show("delete data.txt from application folder \n" + ex.Message );
+                MessageBox.Show("delete data.txt from application folder \n" + ex.Message);
             }
 
         }
@@ -1026,18 +1110,18 @@ namespace ProgrammerTools
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var keyValuePairs = new Dictionary<string, string>();
             keyValuePairs.Add("outputPath", SelectedOutPut);
-            keyValuePairs.Add("RepositoryNameSpace", tbRepoNameSpace.Text);
-            keyValuePairs.Add("InterfaceNameSpace", tbDomainInterface.Text);
-            keyValuePairs.Add("ModelsNameSpace", tbDomainModels.Text);
-            keyValuePairs.Add("DBContextNameSpace", tbDbContextNameSpace.Text);
-            keyValuePairs.Add("DBContextName", tbDbContext.Text);
-            keyValuePairs.Add("dbContextInstanceName", tbdbContextInstance.Text);
+            //keyValuePairs.Add("RepositoryNameSpace", tbRepoNameSpace.Text);
+            //keyValuePairs.Add("InterfaceNameSpace", tbDomainInterface.Text);
+            //keyValuePairs.Add("ModelsNameSpace", tbDomainModels.Text);
+            //keyValuePairs.Add("DBContextNameSpace", tbDbContextNameSpace.Text);
+            //keyValuePairs.Add("DBContextName", tbDbContext.Text);
+            //keyValuePairs.Add("dbContextInstanceName", tbdbContextInstance.Text);
 
-            keyValuePairs.Add("RepositoryGenaric", tbRepositoryGenaric.Text);
-            keyValuePairs.Add("DTONameSpace", tbDTONameSpace.Text);
-            keyValuePairs.Add("ControllerNameSpace", tbControllerNameSpace.Text); 
-            keyValuePairs.Add("ServiceInterface", tbServiceInterface.Text); 
-            keyValuePairs.Add("ServiceNameSpace", tbServiceNameSpace.Text);  
+            //keyValuePairs.Add("RepositoryGenaric", tbRepositoryGenaric.Text);
+            //keyValuePairs.Add("DTONameSpace", tbDTONameSpace.Text);
+            //keyValuePairs.Add("ControllerNameSpace", tbControllerNameSpace.Text); 
+            //keyValuePairs.Add("ServiceInterface", tbServiceInterface.Text); 
+            //keyValuePairs.Add("ServiceNameSpace", tbServiceNameSpace.Text);  
 
             string fileName = path + "//" + "data.txt";
             char delimiter = '=';
@@ -1080,32 +1164,32 @@ namespace ProgrammerTools
         }
         private void CreateUnitOfWork(List<string> sFilesNames, string path)
         {
-            string RepositoryData = "//UnitOfWork Start Constractor() part \n";
-            foreach (var modelName in sFilesNames)
-            {
-                RepositoryData += modelName + "Repository" + " = new " + modelName + "Repository(" + tbdbContextInstance.Text + "); \n";
-            }
-            RepositoryData += "// End Constractor part \n \n";
-            RepositoryData += "// strat Content \n";
+            //string RepositoryData = "//UnitOfWork Start Constractor() part \n";
+            //foreach (var modelName in sFilesNames)
+            //{
+            //    RepositoryData += modelName + "Repository" + " = new " + modelName + "Repository(" + tbdbContextInstance.Text + "); \n";
+            //}
+            //RepositoryData += "// End Constractor part \n \n";
+            //RepositoryData += "// strat Content \n";
 
-            foreach (var modelName in sFilesNames)
-            {
-                RepositoryData += "public I" + modelName + "Repository " + modelName + "Repository" + " { get; private set; }  \n";
-            }
-            RepositoryData += "// End Content \n";
+            //foreach (var modelName in sFilesNames)
+            //{
+            //    RepositoryData += "public I" + modelName + "Repository " + modelName + "Repository" + " { get; private set; }  \n";
+            //}
+            //RepositoryData += "// End Content \n";
 
-            path += "\\" + "UnitOfWork";
-            if (!System.IO.Directory.Exists(path))
-            {
-                System.IO.Directory.CreateDirectory(path);
-            }
+            //path += "\\" + "UnitOfWork";
+            //if (!System.IO.Directory.Exists(path))
+            //{
+            //    System.IO.Directory.CreateDirectory(path);
+            //}
 
-            using (FileStream fs = File.Create(path + "\\" + "AddToUnitOfWork.txt"))
-            {
-                byte[] info = new UTF8Encoding(true).GetBytes(RepositoryData);
-                // Add some information to the file.
-                fs.Write(info, 0, info.Length);
-            }
+            //using (FileStream fs = File.Create(path + "\\" + "AddToUnitOfWork.txt"))
+            //{
+            //    byte[] info = new UTF8Encoding(true).GetBytes(RepositoryData);
+            //    // Add some information to the file.
+            //    fs.Write(info, 0, info.Length);
+            //}
         }
         private void CreateIUnitOfWork(List<string> sFilesNames, string path)
         {
@@ -1242,12 +1326,12 @@ namespace ProgrammerTools
 
         private void cbDTOs_CheckedChanged(object sender, EventArgs e)
         {
-          
+
         }
 
         private void cbBaseClass_CheckedChanged(object sender, EventArgs e)
         {
-            tbInhirit.Enabled = cbBaseClass.Checked;
+            //tbInhirit.Enabled = cbBaseClass.Checked;
         }
 
         private void rtUsingAdditonal_TextChanged(object sender, EventArgs e)
