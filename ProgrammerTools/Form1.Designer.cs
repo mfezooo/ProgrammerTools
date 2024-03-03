@@ -94,6 +94,7 @@ namespace ProgrammerTools
             this.cbSaveConfig = new System.Windows.Forms.CheckBox();
             this.rtUsingAdditonal = new System.Windows.Forms.RichTextBox();
             this.label23 = new System.Windows.Forms.Label();
+            this.tbProjectName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -181,7 +182,7 @@ namespace ProgrammerTools
             this.tbRepoNameSpace.Name = "tbRepoNameSpace";
             this.tbRepoNameSpace.Size = new System.Drawing.Size(259, 20);
             this.tbRepoNameSpace.TabIndex = 0;
-            this.tbRepoNameSpace.Text = "TransPro.DataAccess.Interfaces";
+            this.tbRepoNameSpace.Text = "Wetech.Omra.DataAccess.Interfaces";
             // 
             // label4
             // 
@@ -198,7 +199,7 @@ namespace ProgrammerTools
             this.tbDomainModels.Name = "tbDomainModels";
             this.tbDomainModels.Size = new System.Drawing.Size(259, 20);
             this.tbDomainModels.TabIndex = 0;
-            this.tbDomainModels.Text = "TransPro.Entities";
+            this.tbDomainModels.Text = "Wetech.Omra.Entities";
             // 
             // label5
             // 
@@ -215,7 +216,7 @@ namespace ProgrammerTools
             this.tbDomainInterface.Name = "tbDomainInterface";
             this.tbDomainInterface.Size = new System.Drawing.Size(259, 20);
             this.tbDomainInterface.TabIndex = 0;
-            this.tbDomainInterface.Text = "TransPro.DataAccess.Repositories";
+            this.tbDomainInterface.Text = "Wetech.Omra.DataAccess.Repositories";
             // 
             // label6
             // 
@@ -232,7 +233,7 @@ namespace ProgrammerTools
             this.tbDbContext.Name = "tbDbContext";
             this.tbDbContext.Size = new System.Drawing.Size(259, 20);
             this.tbDbContext.TabIndex = 0;
-            this.tbDbContext.Text = "TransProContext";
+            this.tbDbContext.Text = "Wetech.Omra.DataAccess.Context";
             // 
             // label7
             // 
@@ -249,7 +250,7 @@ namespace ProgrammerTools
             this.tbDbContextNameSpace.Name = "tbDbContextNameSpace";
             this.tbDbContextNameSpace.Size = new System.Drawing.Size(259, 20);
             this.tbDbContextNameSpace.TabIndex = 0;
-            this.tbDbContextNameSpace.Text = "TransPro.DataAccess.Context";
+            this.tbDbContextNameSpace.Text = "DataAccess.Context";
             // 
             // label8
             // 
@@ -348,7 +349,7 @@ namespace ProgrammerTools
             this.tbRepositoryGenaric.Name = "tbRepositoryGenaric";
             this.tbRepositoryGenaric.Size = new System.Drawing.Size(259, 20);
             this.tbRepositoryGenaric.TabIndex = 0;
-            this.tbRepositoryGenaric.Text = "TransPro.Infrastructure";
+            this.tbRepositoryGenaric.Text = "Wetech.Omra.Infrastructure";
             // 
             // label3
             // 
@@ -679,7 +680,7 @@ namespace ProgrammerTools
             this.tbInhirit.Name = "tbInhirit";
             this.tbInhirit.Size = new System.Drawing.Size(113, 20);
             this.tbInhirit.TabIndex = 0;
-            this.tbInhirit.Text = "BaseClassDTO";
+            this.tbInhirit.Text = "EntityDto<int> ";
             // 
             // label20
             // 
@@ -720,6 +721,14 @@ namespace ProgrammerTools
             this.label23.TabIndex = 1;
             this.label23.Text = "Using [Addtional to Services] ";
             // 
+            // tbProjectName
+            // 
+            this.tbProjectName.Location = new System.Drawing.Point(271, 30);
+            this.tbProjectName.Name = "tbProjectName";
+            this.tbProjectName.Size = new System.Drawing.Size(200, 20);
+            this.tbProjectName.TabIndex = 0;
+            this.tbProjectName.Text = "Wetech.Omra";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -749,6 +758,7 @@ namespace ProgrammerTools
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbModelName);
+            this.Controls.Add(this.tbProjectName);
             this.Controls.Add(this.tbSelectedPath);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -836,5 +846,6 @@ namespace ProgrammerTools
         private CheckBox cbControllerMVC;
         private TextBox tbInhirit;
         private CheckBox cbBaseClass;
+        private TextBox tbProjectName;
     }
 }

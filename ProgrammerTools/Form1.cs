@@ -23,6 +23,7 @@ namespace ProgrammerTools
         List<string> sFilePathes;
         string sDirectory;
         OpenFileDialog openFileDialog1;
+        string projectName = "projectName";
 
         private void btnSelectModels_Click(object sender, EventArgs e)
         {
@@ -308,13 +309,16 @@ namespace ProgrammerTools
         public void AbpCreatePagedAndSortedDto(string modelName, string path)
         {
             StringBuilder data = new StringBuilder();
-            data.AppendLine("using Volo.Abp.Application.Dtos;"); 
+            data.AppendLine("using Volo.Abp.Application.Dtos;");
             data.AppendLine("");
-            data.AppendLine("namespace Wetech.Tourism");
+            data.AppendLine("namespace " + projectName);
             data.AppendLine("{");
-            data.AppendLine("    public class "+modelName+"PagedAndSortedResultRequestDto : PagedAndSortedResultRequestDto");
+            data.AppendLine("    public class " + modelName + "PagedAndSortedResultRequestDto : ICustomPagedAndSortedResultRequest");
             data.AppendLine("    {");
             data.AppendLine("        public string? Filter { get; set; }");
+            data.AppendLine("        public string? Sorting { get; set; }");
+            data.AppendLine("        public int SkipCount { get; set; }");
+            data.AppendLine("        public int MaxResultCount { get; set; }");
             data.AppendLine("    }");
             data.AppendLine("}");
 
@@ -328,13 +332,76 @@ namespace ProgrammerTools
                 fs.Write(info, 0, info.Length);
             }
         }
+        public void addValidator(string modelName, string path)
+        {
+            string validator = $@"using FluentValidation;
+using Microsoft.Extensions.Localization;
+using {projectName}.Localization;
+
+namespace {projectName}
+{{
+    public class Add{modelName}DtoValidator: AbstractValidator<Add{modelName}Dto>
+    {{
+        public Add{modelName}DtoValidator(IStringLocalizer<OmraResource> localizer)
+        {{
+            RuleFor(x => x.NameAr)
+                 .NotNull().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameAr""]))
+                 .NotEmpty().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameAr""]));
+            RuleFor(x => x.NameEn)
+                .NotNull().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameEn""]))
+                .NotEmpty().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameEn""]));
+        }}
+    }}
+}}";
+
+            path += "\\Service\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\Add" + modelName + "Validator.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(validator);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void editValidator(string modelName, string path)
+        {
+            string validator = $@"using FluentValidation;
+using Microsoft.Extensions.Localization;
+using {projectName}.Localization;
+
+namespace {projectName}
+{{
+    public class Edit{modelName}DtoValidator: AbstractValidator<Edit{modelName}Dto>
+    {{
+        public Edit{modelName}DtoValidator(IStringLocalizer<OmraResource> localizer)
+        {{
+            RuleFor(x => x.NameAr)
+                 .NotNull().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameAr""]))
+                 .NotEmpty().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameAr""]));
+            RuleFor(x => x.NameEn)
+                .NotNull().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameEn""]))
+                .NotEmpty().WithMessage(string.Format(localizer[""validationMessages:PropertyRequired""], localizer[""property:global_NameEn""]));
+        }}
+    }}
+}}";
+
+            path += "\\Service\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\Edit" + modelName + "Validator.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(validator);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
         public void AbpCreateServiceInterface(string modelName, string path)
         {
             StringBuilder data = new StringBuilder();
             data.AppendLine("using Volo.Abp.Application.Services;");
-            data.AppendLine("using Wetech.Tourism.Lookup;");
             data.AppendLine("");
-            data.AppendLine("namespace Wetech.Tourism");
+            data.AppendLine("namespace " + projectName);
             data.AppendLine("{");
             data.AppendLine("    public interface I" + modelName + "AppService : " + "ICrudAppService<" + modelName + "Dto, int, " + modelName + "PagedAndSortedResultRequestDto, Add" + modelName + "Dto,Edit" + modelName + "Dto>");
             data.AppendLine("    {");
@@ -356,11 +423,10 @@ namespace ProgrammerTools
             StringBuilder data = new StringBuilder();
             data.AppendLine("using Volo.Abp.Application.Services;");
             data.AppendLine("using Volo.Abp.Domain.Repositories;");
-            data.AppendLine("using Wetech.Tourism.Lookup;");
             data.AppendLine("");
-            data.AppendLine("namespace Wetech.Tourism");
+            data.AppendLine("namespace " + projectName);
             data.AppendLine("{");
-            data.AppendLine("    public class " + modelName + "AppService : CrudAppService<" + modelName + ", "+modelName+"Dto, int, "+modelName+"PagedAndSortedResultRequestDto, Add"+modelName+"Dto, Edit"+modelName+"Dto >, I"+modelName+"AppService");
+            data.AppendLine("    public class " + modelName + "AppService : CrudAppService<" + modelName + ", " + modelName + "Dto, int, " + modelName + "PagedAndSortedResultRequestDto, Add" + modelName + "Dto, Edit" + modelName + "Dto >, I" + modelName + "AppService");
             data.AppendLine("    {");
             data.AppendLine("        public " + modelName + "AppService(IRepository<" + modelName + ", int> repository) : base(repository)");
             data.AppendLine("    {");
@@ -419,19 +485,20 @@ namespace ProgrammerTools
                 AbpGetDataFromModelDTOEdit(modelName, sDirectory, path);
                 AbpCreateServiceInterface(modelName, path);
                 AbpCreateService(modelName, path);
+                addValidator(modelName, path);
+                editValidator(modelName, path);
                 AbpCreatePagedAndSortedDto(modelName, path);
             }
         }
         string baseClass = ": EntityDto<int>";
         string DtoUsing = "using Volo.Abp.Application.Dtos;";
-        string DtoNameSpace = "Wetech.Tourism.Lookup";
         public void AbpGetDataFromModel(string modelName, string FilePath, string outPutPath)
         {
 
             StringBuilder dataForDTO = new StringBuilder();
             dataForDTO.AppendLine(DtoUsing);
             dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + DtoNameSpace);
+            dataForDTO.AppendLine("namespace " + projectName);
             dataForDTO.AppendLine("{");
             dataForDTO.AppendLine("    public class " + modelName + "Dto" + baseClass);
             dataForDTO.AppendLine("    {");
@@ -460,7 +527,7 @@ namespace ProgrammerTools
                     line.Trim().ToLower().Contains("createdby") ||
                     line.Trim().ToLower().Contains("createdon") ||
                     line.Trim().ToLower().Contains("updatedby") ||
-                    line.Trim().ToLower().Contains("lastmodifieddate")||
+                    line.Trim().ToLower().Contains("lastmodifieddate") ||
                     line.Trim().ToLower().Contains("\\\\")
                     )
                 {
@@ -489,9 +556,9 @@ namespace ProgrammerTools
             StringBuilder dataForDTO = new StringBuilder();
             dataForDTO.AppendLine(DtoUsing);
             dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + DtoNameSpace);
+            dataForDTO.AppendLine("namespace " + projectName);
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class Add" + modelName + "Dto"  );
+            dataForDTO.AppendLine("    public class Add" + modelName + "Dto");
             dataForDTO.AppendLine("    {");
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
@@ -546,7 +613,7 @@ namespace ProgrammerTools
             StringBuilder dataForDTO = new StringBuilder();
             dataForDTO.AppendLine(DtoUsing);
             dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace " + DtoNameSpace);
+            dataForDTO.AppendLine("namespace " + projectName);
             dataForDTO.AppendLine("{");
             dataForDTO.AppendLine("    public class Edit" + modelName + "Dto" + baseClass);
             dataForDTO.AppendLine("    {");
@@ -603,7 +670,7 @@ namespace ProgrammerTools
             StringBuilder dataForDTO = new StringBuilder();
             dataForDTO.AppendLine("ing Volo.Abp.Application.Dtos;");
             dataForDTO.AppendLine("");
-            dataForDTO.AppendLine("namespace Wetech.Tourism.Lookup");
+            dataForDTO.AppendLine("namespace " + projectName);
             dataForDTO.AppendLine("{");
             dataForDTO.AppendLine("    public class AddEdit" + modelName + "Dto :EntityDto<int>");
             dataForDTO.AppendLine("    {");
@@ -794,8 +861,10 @@ namespace ProgrammerTools
             }
             return true;
         }
+
         private void btnCreate_Click(object sender, EventArgs e)
         {
+            projectName = tbProjectName.Text;
             //getCurrentProccess();
             if (!check())
                 return;
