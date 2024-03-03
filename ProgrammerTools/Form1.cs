@@ -444,6 +444,38 @@ namespace {projectName}
                 fs.Write(info, 0, info.Length);
             }
         }
+        private void CreateMapperGroupAbp(List<string> sFilesNames, string path)
+        {
+            path += "\\" + "Mapper";
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            //create IRepository
+            StringBuilder data = new StringBuilder();
+            StringBuilder ctorMethods = new StringBuilder();
+            ctorMethods.AppendLine("        //Mapper Ctor - MapperConfig() Part Start");
+            data.AppendLine("        //Methods Start");
+            foreach (var modelName in sFileNames)
+            {
+                ctorMethods.AppendLine("            " + modelName + "Mapper();");
+                data.AppendLine("        private void " + modelName + "Mapper()");
+                data.AppendLine("        {");
+                data.AppendLine("            CreateMap<Add" + modelName + "Dto, " + modelName + ">();");
+                data.AppendLine("            CreateMap<Edit" + modelName + "Dto," + modelName + ">();");
+                data.AppendLine("            CreateMap<" + modelName + "," + modelName + "Dto>();");
+                data.AppendLine("        }");
+                data.AppendLine("");
+            }
+            ctorMethods.AppendLine("        //Mapper Ctor - MapperConfig() Part End");
+            ctorMethods.AppendLine(" ");
+            data.AppendLine("        //Methods End");
+            ctorMethods.Append(data.ToString());
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "mapperFunctions.txt"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(ctorMethods.ToString());
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
         //public void CreateServiceInterface(string modelName, string path)
         //{
         //    StringBuilder data = new StringBuilder();
@@ -475,6 +507,8 @@ namespace {projectName}
         {
             if (cbBaseClass.Checked)
                 baseClass = " : " + tbInhirit.Text;
+            CreateMapperGroupAbp(sFilesNames, path);
+
             path += "\\" + "DTOs";
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
@@ -489,6 +523,7 @@ namespace {projectName}
                 editValidator(modelName, path);
                 AbpCreatePagedAndSortedDto(modelName, path);
             }
+
         }
         string baseClass = ": EntityDto<int>";
         string DtoUsing = "using Volo.Abp.Application.Dtos;";
@@ -577,6 +612,8 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("public partial class") ||
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
+                    line.Trim().ToLower().StartsWith("[") ||
+
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().Contains("()") ||
                     line.Trim().ToLower().Contains("HashSet<") ||
@@ -635,6 +672,8 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
+                    line.Trim().ToLower().StartsWith("[") ||
+
                     line.Trim().ToLower().Contains("()") ||
                     line.Trim().ToLower().Contains("HashSet<") ||
                     line.Trim().ToLower().Contains("int id {") ||
@@ -690,6 +729,7 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("public partial class") ||
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
+                    line.Trim().ToLower().StartsWith("[") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().Contains("()") ||
                     line.Trim().ToLower().Contains("HashSet<")
