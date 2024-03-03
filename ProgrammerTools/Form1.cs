@@ -555,6 +555,7 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
+                    line.Trim().ToLower().StartsWith("[") ||
                     line.Trim().ToLower().Contains("()") ||
                     line.Trim().ToLower().Contains("HashSet<") ||
                     line.Trim().ToLower().Contains("int id {") ||
