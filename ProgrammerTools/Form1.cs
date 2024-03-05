@@ -418,6 +418,164 @@ namespace {projectName}
                 fs.Write(info, 0, info.Length);
             }
         }
+        public void AbpCreateServiceWithDomainService(string modelName, string path)
+        {
+            string serviceTemplate = $@"using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Volo.Abp;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
+
+namespace Wetech.Omra
+{{
+    public class {modelName}AppService : CrudAppService<{modelName}, {modelName}Dto, int, {modelName}PagedAndSortedResultRequestDto, Add{modelName}Dto, Edit{modelName}Dto>, I{modelName}AppService
+    {{
+        private readonly I{modelName}DomainService _{modelName}DomainService;
+        private readonly ILookupsRepositories _lookupsRepositories;
+
+        public {modelName}AppService(IRepository<{modelName}, int> repository, I{modelName}DomainService {modelName}DomainService, ILookupsRepositories lookupsRepositories) : base(repository)
+        {{
+            _{modelName}DomainService = {modelName}DomainService;
+            _lookupsRepositories = lookupsRepositories;
+        }}
+        public async override Task<PagedResultDto<{modelName}Dto>> GetListAsync({modelName}PagedAndSortedResultRequestDto input)
+        {{
+            await CheckGetListPolicyAsync();
+            var (items, count) = await _{modelName}DomainService.GetAllAsync(input, Predicate(input));
+            var dtos = ObjectMapper.Map<List<{modelName}>, List<{modelName}Dto>>(items);
+            return new PagedResultDto<{modelName}Dto>(
+                count,
+                dtos
+            );
+        }}
+        private static Expression<Func<{modelName}, bool>> Predicate({modelName}PagedAndSortedResultRequestDto filter)
+        {{
+            var predicate = PredicateBuilder.New<{modelName}>(false);
+            predicate = predicate.And(b => !b.IsDeleted);
+            if (!string.IsNullOrWhiteSpace(filter.Filter))
+                predicate = predicate.And(b => b.NameAr.ToString().Contains(filter.Filter) || b.NameEn.Contains(filter.Filter));
+            return predicate;
+        }}
+        public async Task<List<DropDownDto>> GetAllDropDown{modelName}()
+        {{
+            var data = await _lookupsRepositories.GetAllDropDown{modelName}();
+            var dataMapp = ObjectMapper.Map<List<{modelName}>, List<DropDownDto>>(data);
+            return dataMapp;
+        }}
+       public async override Task<{modelName}Dto> GetAsync(int id)
+        {{
+            var data = await _{modelName}DomainService.GetByIdAsync(id) ?? throw new UserFriendlyException(L[""globalMessages:nodata""]);
+            var result = ObjectMapper.Map<{modelName}, {modelName}Dto>(data);
+            return result;
+        }}
+    }}
+}}
+";
+
+            path += "\\ServiceWithDomain\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\" + modelName + "AppService.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(serviceTemplate);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void AbpCreateDomainServiceInterface(string modelName, string path)
+        {
+            string serviceTemplate = $@"using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Volo.Abp.Domain.Services;
+
+namespace Wetech.Omra
+{{
+    public interface I{modelName}DomainService : IDomainService
+    {{
+        Task<{modelName}> GetByIdAsync(int id);
+        Task<(List<{modelName}>, long)> GetAllAsync(ICustomPagedAndSortedResultRequest input, Expression<Func<{modelName}, bool>> expression);
+    }}
+}}";
+
+            path += "\\DomainService\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\I" + modelName + "DomainService.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(serviceTemplate);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
+        public void AbpCreateDomainService(string modelName, string path)
+        {
+            string serviceTemplate = $@" using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Domain.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+
+
+
+namespace Wetech.Omra.Service
+{{
+    public class {modelName}DomainService : DomainService, I{modelName}DomainService, ITransientDependency
+    {{
+        private readonly IRepository<{modelName}, int> _repository;
+        public {modelName}DomainService(IRepository<{modelName}, int> repository)
+        {{
+            _repository = repository;
+        }}
+
+        public async Task<{modelName}> GetByIdAsync(int id)
+        {{
+            var result = await _repository.FirstOrDefaultAsync(x => x.Id == id);
+ 
+            return result;
+        }}
+
+        public async Task<(List<{modelName}>, long)> GetAllAsync(ICustomPagedAndSortedResultRequest input, Expression<Func<{modelName}, bool>> expression)
+        {{
+            var qry = await _repository
+   .GetQueryableAsync();
+
+            qry = qry.Where(expression);
+
+            var count = qry.LongCount(q => !q.IsDeleted);
+           // qry = qry.Include(u => u.CodeCountry).Include(u=>u.AgentType);
+            qry = qry.OrderBy(input.Sorting ?? ""Id"").AsQueryable();
+            var list = qry.Skip(input.SkipCount)
+              .Take(input.MaxResultCount != 0 ? input.MaxResultCount : 10).ToList();
+            return (list, count);
+        }}
+    }}
+}}
+";
+
+            path += "\\DomainService\\" + modelName;
+            if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+            // Create the file, or overwrite if the file exists. 
+            using (FileStream fs = File.Create(path + "\\" + modelName + "DomainService.cs"))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(serviceTemplate);
+                // Add some information to the file.
+                fs.Write(info, 0, info.Length);
+            }
+        }
         public void AbpCreateService(string modelName, string path)
         {
             StringBuilder data = new StringBuilder();
@@ -461,6 +619,10 @@ namespace {projectName}
                 data.AppendLine("            CreateMap<Add" + modelName + "Dto, " + modelName + ">();");
                 data.AppendLine("            CreateMap<Edit" + modelName + "Dto," + modelName + ">();");
                 data.AppendLine("            CreateMap<" + modelName + "," + modelName + "Dto>();");
+                data.AppendLine("            CreateMap<" + modelName + ", DropDownDtoDto>()");
+                data.AppendLine("            .ForMember(d => d.Id, s => s.MapFrom(w => w.Id))");
+                data.AppendLine("            .ForMember(d => d.NameAr, s => s.MapFrom(w => w.NameAr))");
+                data.AppendLine("            .ForMember(d => d.NameEn, s => s.MapFrom(w => w.NameEn)).ReverseMap();");
                 data.AppendLine("        }");
                 data.AppendLine("");
             }
@@ -509,6 +671,7 @@ namespace {projectName}
                 baseClass = " : " + tbInhirit.Text;
             CreateMapperGroupAbp(sFilesNames, path);
 
+            string MainPath = path;
             path += "\\" + "DTOs";
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
@@ -517,11 +680,14 @@ namespace {projectName}
                 AbpGetDataFromModel(modelName, sDirectory, path);
                 AbpGetDataFromModelDTOAdd(modelName, sDirectory, path);
                 AbpGetDataFromModelDTOEdit(modelName, sDirectory, path);
-                AbpCreateServiceInterface(modelName, path);
-                AbpCreateService(modelName, path);
-                addValidator(modelName, path);
-                editValidator(modelName, path);
-                AbpCreatePagedAndSortedDto(modelName, path);
+                AbpCreateServiceWithDomainService(modelName, MainPath);
+                AbpCreateServiceInterface(modelName, MainPath);
+                AbpCreateDomainService(modelName, MainPath);
+                AbpCreateDomainServiceInterface(modelName, MainPath);
+               // AbpCreateService(modelName, MainPath);
+                addValidator(modelName, MainPath);
+                editValidator(modelName, MainPath);
+                AbpCreatePagedAndSortedDto(modelName, MainPath);
             }
 
         }
@@ -556,7 +722,7 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().StartsWith("[") ||
-                    line.Trim().ToLower().StartsWith("public void") ||
+                    line.Trim().ToLower().Contains("public void") ||
 
                     line.Trim().ToLower().Contains("LastUpdatedOn") ||
                     line.Trim().ToLower().Contains("()") ||
@@ -617,7 +783,7 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("[foreignkey") ||
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("[") ||
-                    line.Trim().ToLower().StartsWith("public void") ||
+                    line.Trim().ToLower().Contains("public void") ||
                     line.Trim().ToLower().Contains("LastUpdatedOn") ||
 
                     line.Trim().ToLower().StartsWith("namespace") ||
@@ -679,7 +845,7 @@ namespace {projectName}
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().StartsWith("[") ||
-                    line.Trim().ToLower().StartsWith("public void") ||
+                    line.Trim().ToLower().Contains("public void") ||
 
                     line.Trim().ToLower().Contains("()") ||
                     line.Trim().ToLower().Contains("HashSet<") ||
