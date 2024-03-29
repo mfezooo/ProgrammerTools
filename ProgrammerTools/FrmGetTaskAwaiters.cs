@@ -28,9 +28,9 @@ namespace ProgrammerTools
         private string getTaskWithOutAwaiter()
         {
             string result = null;
-            var projectPath = @"F:\Test file\Controlllers\Setup"; 
+            var projectPath = @"F:\Test file\Controlllers\Controllers"; 
             var project = new DirectoryInfo(projectPath);
-            var syntaxTrees = project.GetFiles("*.cs", SearchOption.AllDirectories)
+            var syntaxTrees = project.GetFiles("*Controller.cs", SearchOption.AllDirectories)
                 .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file.FullName)));
 
 
