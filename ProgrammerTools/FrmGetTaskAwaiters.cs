@@ -21,14 +21,67 @@ namespace ProgrammerTools
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            var result =  getTaskWithOutAwaiter();
+            var result = getTaskWithOutAwaiter();
             MessageBox.Show(result);
+
         }
-        
+        private string getServiceshOutAwaiter()
+        {
+            string result = null;
+            var projectPath = @"F:\Test file\Controllers";
+            var project = new DirectoryInfo(projectPath);
+            var syntaxTrees = project.GetFiles("*Controller.cs", SearchOption.AllDirectories)
+                .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file.FullName)));
+
+            var methodsUsingFields = new List<(MethodDeclarationSyntax Method, string FileName, int LineNumber)>();
+
+            foreach (var syntaxTree in syntaxTrees)
+            {
+                string controllerName = getFileName(syntaxTree.ToString());
+
+                var root = syntaxTree.GetRoot();
+                var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
+
+                var privateReadonlyFields = root.DescendantNodes().OfType<FieldDeclarationSyntax>()
+                    .Where(field =>
+                        field.Modifiers.Any(modifier => modifier.Kind() == SyntaxKind.PrivateKeyword) &&
+                        field.Modifiers.Any(modifier => modifier.Kind() == SyntaxKind.ReadOnlyKeyword))
+                    .SelectMany(field => field.Declaration.Variables.Select(variable => variable.Identifier.Text))
+                    .Where(field => field != "_mapper") // Exclude _mapper field
+                    .ToList();
+
+                privateReadonlyFields = privateReadonlyFields.Where(x=>x.EndsWith("Service")).ToList();
+                foreach (var privateReadonlyField in privateReadonlyFields)
+                {
+                    int lineNo = 0;
+                    var lines = root.ToFullString().Split('\n');
+                    var privateReadonlyFieldWithout = privateReadonlyField.TrimStart('_');
+                    foreach (var line in lines)
+                    {
+                        lineNo++;
+                        if (line.Contains(privateReadonlyField) && !line.Contains("await") && !line.Contains("private readonly")
+                            && !line.Contains(privateReadonlyField +" = " + privateReadonlyFieldWithout))
+                        { 
+                            result += $"Controller: {controllerName} - Line: {lineNo} - Method: {line.Trim()} \n";
+
+                        }
+                    }
+                }
+
+                
+            }
+
+            foreach (var (method, fileName, lineNumber) in methodsUsingFields)
+            {
+                result += $"Method using private readonly field: Controller: {fileName} - Line: {lineNumber} - Method: {method.Identifier} \n";
+            }
+
+            return result;
+        }
         private string getTaskWithOutAwaiter()
         {
             string result = null;
-            var projectPath = @"F:\Test file\Controlllers\Controllers"; 
+            var projectPath = @"F:\Test file\Controllers"; 
             var project = new DirectoryInfo(projectPath);
             var syntaxTrees = project.GetFiles("*Controller.cs", SearchOption.AllDirectories)
                 .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file.FullName)));
@@ -91,6 +144,12 @@ namespace ProgrammerTools
             string[] words = controllerData.Split(' ');
             string controllerName = words.FirstOrDefault(word => word.EndsWith("Controller"));
             return controllerName;
+        }
+        
+        private void btnServices_Click(object sender, EventArgs e)
+        {
+            var result2 = getServiceshOutAwaiter();
+            MessageBox.Show(result2);
         }
     }
 }
