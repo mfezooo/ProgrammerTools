@@ -101,6 +101,12 @@
     <Compile Include="FrmGetTaskAwaiters.Designer.cs">
       <DependentUpon>FrmGetTaskAwaiters.cs</DependentUpon>
     </Compile>
+    <Compile Include="HandleLogExceptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HandleLogExceptions.Designer.cs">
+      <DependentUpon>HandleLogExceptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -111,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGetTaskAwaiters.resx">
       <DependentUpon>FrmGetTaskAwaiters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandleLogExceptions.resx">
+      <DependentUpon>HandleLogExceptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

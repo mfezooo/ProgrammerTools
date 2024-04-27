@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-
+using Microsoft.CodeAnalysis.CSharp.Syntax; 
 using System.Windows.Forms;
 using Microsoft.CodeAnalysis;
 
