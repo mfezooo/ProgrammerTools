@@ -1043,6 +1043,7 @@ namespace ProgrammerTools
                     line.Trim().ToLower().StartsWith("public virtual ") ||
                     line.Trim().ToLower().StartsWith("namespace") ||
                     line.Trim().ToLower().Contains("()") ||
+                    line.Trim().ToLower().StartsWith("//") ||
                     line.Trim().ToLower().Contains("HashSet<")
                     )
                 {
