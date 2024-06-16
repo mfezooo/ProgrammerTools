@@ -97,11 +97,8 @@ namespace ProgrammerTools
         public void CreateRepoFileByName(string modelName, string path)
         {
             string nameSpace = tbDomainInterface.Text;
-            string RepositoryData =
-            "using Microsoft.EntityFrameworkCore; \n" +
-            "using " + tbRepoNameSpace.Text + "; \n" +
+            string RepositoryData = 
             "using " + tbDomainModels.Text + "; \n" +
-            "using " + tbRepositoryGenaric.Text + "; \n" +
             "namespace " + nameSpace + "\n" +
             "{" + "\n" +
                "    public class " + modelName + "Repository : Repository<" + modelName + ">, I" + modelName + "Repository" + "\n" +
@@ -246,7 +243,7 @@ namespace ProgrammerTools
         {
             if (cbBaseClass.Checked)
                 baseClass = " : " + tbInhirit.Text;
-            path += "\\" + "DTOs";
+            path += "\\" + "ViewModels";
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             //create IRepository
             foreach (var modelName in sFileNames)
@@ -257,12 +254,12 @@ namespace ProgrammerTools
         {
 
             StringBuilder dataForDTO = new StringBuilder();
-            dataForDTO.AppendLine("using System.ComponentModel.DataAnnotations;");
+         
             dataForDTO.AppendLine("namespace " + tbDTONameSpace.Text);
             dataForDTO.AppendLine("{");
-            dataForDTO.AppendLine("    public class " + modelName + "DTO" + baseClass);
+            dataForDTO.AppendLine("    public class " + modelName + "VM" + baseClass);
             dataForDTO.AppendLine("    {");
-            dataForDTO.AppendLine("        public int " + modelName + "ID { get; set; }");
+          
             string sFilePath = sDirectory + "\\" + modelName + ".cs";
 
             StreamReader reader = new StreamReader(sFilePath);
@@ -297,7 +294,7 @@ namespace ProgrammerTools
             dataForDTO.AppendLine("    }");
             dataForDTO.AppendLine("}");
 
-            string cFileName = outPutPath + "\\" + modelName + "DTO.cs";
+            string cFileName = outPutPath + "\\" + modelName + "VM.cs";
             StreamWriter writer = new StreamWriter(cFileName, false);
             writer.Write(dataForDTO.ToString());
             writer.Close();
@@ -306,8 +303,7 @@ namespace ProgrammerTools
         public void CreateIRepoFileByName(string modelName, string path)
         {
             string RepositoryData =
-            "using " + tbDomainModels.Text + "; \n" +
-            "using " + tbRepositoryGenaric.Text + "; \n" +
+            "using " + tbDomainModels.Text + "; \n" + 
             "namespace " + tbRepoNameSpace.Text + "\n" +
             "{" + "\n" +
                "    public interface I" + modelName + "Repository : IRepository<" + modelName + "> \n" +
@@ -697,9 +693,7 @@ namespace ProgrammerTools
 
                 data.AppendLine("        private void " + modelName + "Mapper()");
                 data.AppendLine("        {");
-                data.AppendLine("            CreateMap<" + modelName + "DTO, " + modelName + ">()");
-                data.AppendLine("               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src." + modelName + "ID))");
-                data.AppendLine("               .ReverseMap();");
+                data.AppendLine("            CreateMap<" + modelName + "VM, " + modelName + ">().ReverseMap();"); 
                 data.AppendLine("        }");
                 data.AppendLine("");
 
