@@ -18,17 +18,42 @@ namespace ProgrammerTools
         {
             InitializeComponent();
         }
-
+        public string projectPath = @"F:\Test file\Controllers";
         private void btnStart_Click(object sender, EventArgs e)
         {
             var result = getTaskWithOutAwaiter();
-            MessageBox.Show(result);
+            richTextBox1.Text = result;
+            //MessageBox.Show(result,"Errors");
 
+        }
+        private string getControllerInstances()
+        {
+            string result = "Controllers Instances are : \n";
+            var project = new DirectoryInfo(projectPath);
+            var syntaxTrees = project.GetFiles("*.cs", SearchOption.AllDirectories)
+                .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file.FullName)));
+
+            foreach (var syntaxTree in syntaxTrees)
+            { 
+                string controllerName = getFileName(syntaxTree.ToString());
+
+                var root = syntaxTree.GetRoot();
+                var objectCreations = root.DescendantNodes().OfType<ObjectCreationExpressionSyntax>()
+                    .Where(creation => creation.Type.ToString().EndsWith("Controller"));
+
+                foreach (var objectCreation in objectCreations)
+                {
+                    var lineSpan = objectCreation.GetLocation().GetLineSpan();
+                    int lineNumber = lineSpan.StartLinePosition.Line + 1;
+                    result += $"File: {controllerName} - Line: {lineNumber} - Instance: {objectCreation.ToFullString().Trim()} \n\n";
+                }
+            }
+
+            return result;
         }
         private string getServiceshOutAwaiter()
         {
-            string result = null;
-            var projectPath = @"F:\Test file\Controllers";
+            string result = "Service Called Without Await is : \n"; 
             var project = new DirectoryInfo(projectPath);
             var syntaxTrees = project.GetFiles("*Controller.cs", SearchOption.AllDirectories)
                 .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file.FullName)));
@@ -62,7 +87,7 @@ namespace ProgrammerTools
                         if (line.Contains(privateReadonlyField) && !line.Contains("await") && !line.Contains("private readonly")
                             && !line.Contains(privateReadonlyField +" = " + privateReadonlyFieldWithout))
                         { 
-                            result += $"Controller: {controllerName} - Line: {lineNo} - Method: {line.Trim()} \n";
+                            result += $"Controller: {controllerName} - Line: {lineNo} - Method: {line.Trim()} \n \n";
 
                         }
                     }
@@ -80,8 +105,7 @@ namespace ProgrammerTools
         }
         private string getTaskWithOutAwaiter()
         {
-            string result = null;
-            var projectPath = @"F:\Test file\Controllers"; 
+            string result = "Task Called Without Await is : \n"; 
             var project = new DirectoryInfo(projectPath);
             var syntaxTrees = project.GetFiles("*Controller.cs", SearchOption.AllDirectories)
                 .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file.FullName)));
@@ -149,7 +173,14 @@ namespace ProgrammerTools
         private void btnServices_Click(object sender, EventArgs e)
         {
             var result2 = getServiceshOutAwaiter();
-            MessageBox.Show(result2);
+            //MessageBox.Show(result2, "Errors");
+            richTextBox1.Text = result2;
+        }
+
+        private void btnControlerInstance_Click(object sender, EventArgs e)
+        { 
+            var result = getControllerInstances();
+            richTextBox1.Text = result;
         }
     }
 }
