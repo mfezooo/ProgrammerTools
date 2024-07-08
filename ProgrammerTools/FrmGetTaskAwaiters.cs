@@ -26,9 +26,10 @@ namespace ProgrammerTools
             //MessageBox.Show(result,"Errors");
 
         }
-        private string getControllerInstances()
+        private List<string> getControllerInstances()
         {
-            string result = "Controllers Instances are : \n";
+            //string result = "Controllers Instances are : \n";
+            List<string> resultList = new List<string>();
             var project = new DirectoryInfo(projectPath);
             var syntaxTrees = project.GetFiles("*.cs", SearchOption.AllDirectories)
                 .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file.FullName)));
@@ -45,11 +46,11 @@ namespace ProgrammerTools
                 {
                     var lineSpan = objectCreation.GetLocation().GetLineSpan();
                     int lineNumber = lineSpan.StartLinePosition.Line + 1;
-                    result += $"File: {controllerName} - Line: {lineNumber} - Instance: {objectCreation.ToFullString().Trim()} \n\n";
+                    //result += $"File: {controllerName} - Line: {lineNumber} - Instance: {objectCreation.ToFullString().Trim()} \n\n";
+                    resultList.Add( $"File: {controllerName} - Line: {lineNumber} - Instance: {objectCreation.ToFullString().Trim()} ");
                 }
             }
-
-            return result;
+            return resultList;
         }
         private string getServiceshOutAwaiter()
         {
@@ -180,7 +181,15 @@ namespace ProgrammerTools
         private void btnControlerInstance_Click(object sender, EventArgs e)
         { 
             var result = getControllerInstances();
-            richTextBox1.Text = result;
+            result.Sort();
+
+            string OrderedResult = "";
+                foreach (var str in result)
+            {
+                OrderedResult += str +"\n";
+
+            }
+            richTextBox1.Text = OrderedResult;
         }
     }
 }
